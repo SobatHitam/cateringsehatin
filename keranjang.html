@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keranjang Belanja - Sehatin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a6b3b;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        nav a.active {
+            color: #1a6b3b;
+            font-weight: 600;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #1a6b3b;
+            border-radius: 2px;
+        }
+
+        nav a:hover {
+            color: #1a6b3b;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .cart-icon {
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            background: #1a6b3b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 5%;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+        }
+
+        /* Cart Items */
+        .cart-items {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            gap: 1.5rem;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .item-info h3 {
+            font-size: 1rem;
+            color: #1a1a1a;
+            margin-bottom: 0.3rem;
+        }
+
+        .item-badge {
+            display: inline-block;
+            background: #a4f77f;
+            color: #1a6b3b;
+            padding: 0.3rem 0.7rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-badge.high-protein {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .item-detail {
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        .item-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            white-space: nowrap;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f0f0f0;
+            border-radius: 8px;
+            padding: 0.3rem;
+        }
+
+        .qty-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+
+        .qty-btn:hover {
+            color: #1a6b3b;
+        }
+
+        .qty-value {
+            min-width: 30px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .hapus-btn {
+            color: #999;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .hapus-btn:hover {
+            color: #d32f2f;
+        }
+
+        /* Sidebar */
+        .summary {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .summary-row:last-of-type {
+            border-bottom: none;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            border-top: 2px solid #f0f0f0;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .summary-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .summary-value {
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .summary-value.free {
+            color: #1a6b3b;
+        }
+
+        .voucher-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .voucher-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .voucher-btn {
+            width: 100%;
+            padding: 0.7rem;
+            background: #a4f77f;
+            color: #1a6b3b;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: background 0.3s;
+        }
+
+        .voucher-btn:hover {
+            background: #8FE468;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #1a6b3b;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+
+        .checkout-btn:hover {
+            background: #135a2f;
+        }
+
+        /* Footer */
+        footer {
+            background: #f5f5f5;
+            color: #666;
+            padding: 3rem 5%;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #1a6b3b;
+            font-weight: 700;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #1a6b3b;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #ddd;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .footer-icons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-icons img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .summary {
+                position: static;
+            }
+
+            .cart-item {
+                grid-template-columns: 80px 1fr;
+                gap: 1rem;
+            }
+
+            .item-price {
+                grid-column: 2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Sehatin</div>
+        <nav>
+            <a href="landingpage.html">Beranda</a>
+            <a href="paketcatering.html">Paket</a>
+            <a href="monitoring.html">Pantau Nutrisi</a>
+            <a href="riwayat.html">Pesanan</a>
+            <div class="nav-icons">
+                <a href="keranjang.html"><span class="cart-icon">🛒</span></a>
+                <a href="profil.html"><div class="profile-avatar">JD</div></a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Cart Items -->
+        <div>
+            <h1 class="page-title">Keranjang Belanja</h1>
+            <div class="cart-items">
+                <!-- Item 1 -->
+                <div class="cart-item">
+                    <img src="images/cart-item-1.png" alt="Weekly Zen Vitality Plan" class="item-image">
+                    <div class="item-info">
+                        <span class="item-badge">KETO FRIENDLY</span>
+                        <h3>Weekly Zen Vitality Plan</h3>
+                        <div class="item-detail">30y Hari • 21 Balanced Meals</div>
+                        <a href="#" class="hapus-btn">Hapus</a>
+                    </div>
+                    <div>
+                        <div class="item-price">Rp 3.281.000</div>
+                        <div class="quantity-control">
+                            <button class="qty-btn">−</button>
+                            <div class="qty-value">01</div>
+                            <button class="qty-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="summary">
+            <div class="summary-title">Ringkasan Pesanan</div>
+            
+            <div class="voucher-section">
+                <input type="text" class="voucher-input" placeholder="Kode Voucher">
+                <button class="voucher-btn">GUNAKAN</button>
+            </div>
+
+            <div class="summary-row">
+                <span class="summary-label">Subtotal</span>
+                <span class="summary-value">RP. 5.798.000</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Biaya Pengiriman</span>
+                <span class="summary-value free">GRATIS</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Diskon</span>
+                <span class="summary-value">RP. 0</span>
+            </div>
+            <div class="summary-row">
+                <span>Total</span>
+                <span>RP. 5.848.000</span>
+            </div>
+
+            <button class="checkout-btn">Lanjut ke Pembayaran</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Sehatin</h3>
+                <p style="color: #666; font-size: 0.9rem;">Katering sehat premium yang membawa kualitas restoran ke meja makan Anda setiap hari.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Layanan</h3>
+                <a href="#">Paket Diet</a>
+                <a href="#">Makanan Pesanan Khusus</a>
+                <a href="#">Katering Perusahaan</a>
+            </div>
+            <div class="footer-column">
+                <h3>Perusahaan</h3>
+                <a href="#">Karier</a>
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Syarat Layanan</a>
+            </div>
+            <div class="footer-column">
+                <h3>Bantuan</h3>
+                <a href="#">Tanya Jawab</a>
+                <a href="#">Hubungi Kami</a>
+                <div class="footer-icons">
+                    <a href="#"><img src="images/icon_share.png" alt="Share"></a>
+                    <a href="#"><img src="images/icon_mail.png" alt="Email"></a>
+                    <a href="#"><img src="images/icon_call.png" alt="Telepon"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Sehatin Healthy Catering. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <script>
+        // Quantity control
+        document.querySelectorAll('.qty-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const control = this.closest('.quantity-control');
+                const value = control.querySelector('.qty-value');
+                const current = parseInt(value.textContent);
+                if (this.textContent === '−' && current > 1) {
+                    value.textContent = String(current - 1).padStart(2, '0');
+                } else if (this.textContent === '+') {
+                    value.textContent = String(current + 1).padStart(2, '0');
+                }
+            });
+        });
+
+        // Hapus button
+        document.querySelectorAll('.hapus-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.closest('.cart-item').remove();
+            });
+        });
+
+        // Checkout button - navigate to checkout
+        document.querySelector('.checkout-btn').addEventListener('click', function() {
+            window.location.href = 'checkout.html';
+        });
+    </script>
+</body>
+</html>

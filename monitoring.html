@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantau Nutrisi - Sehatin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a6b3b;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        nav a.active {
+            color: #1a6b3b;
+            font-weight: 600;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #1a6b3b;
+            border-radius: 2px;
+        }
+
+        nav a:hover {
+            color: #1a6b3b;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .cart-icon {
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            background: #1a6b3b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .page-header {
+            padding: 2rem 0 1rem 0;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 250px;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        /* Daily Target Section */
+        .daily-target {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .target-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .target-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #999;
+            letter-spacing: 0.5px;
+        }
+
+        .target-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 0.3rem 0;
+        }
+
+        .target-max {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .progress-badge {
+            background: #a4f77f;
+            color: #1a6b3b;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 16px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1a6b3b 0%, #1a6b3b 50%, #a4f77f 100%);
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+
+        /* Nutrition Grid */
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .nutrition-item {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .nutrition-label {
+            font-size: 0.75rem;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .nutrition-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.3rem;
+        }
+
+        .nutrition-max {
+            font-size: 0.9rem;
+            color: #999;
+            display: inline;
+            margin-left: 0;
+        }
+
+        .nutrition-progress {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .nutrition-progress-fill {
+            height: 100%;
+            background: #1a6b3b;
+            border-radius: 3px;
+        }
+
+        /* Sidebar Calendar */
+        .sidebar-calendar {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .calendar-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+        }
+
+        .calendar-bars {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .calendar-day {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: center;
+            flex: 1;
+        }
+
+        .day-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #999;
+            order: 2;
+        }
+
+        .day-bar-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 140px;
+            gap: 0.4rem;
+            width: 100%;
+            order: 1;
+        }
+
+        .day-bar {
+            flex: 1;
+            background: #e0e0e0;
+            border-radius: 3px;
+            position: relative;
+            width: 100%;
+            min-height: 6px;
+        }
+
+        .day-bar.filled-1 {
+            background: #d4f77f;
+            height: 25%;
+        }
+
+        .day-bar.filled-2 {
+            background: #a4f77f;
+            height: 50%;
+        }
+
+        .day-bar.filled-3 {
+            background: #74f77f;
+            height: 75%;
+        }
+
+        .day-bar.filled-4 {
+            background: #1a6b3b;
+            height: 100%;
+        }
+
+        /* Meal Journal Section */
+        .meal-journal {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin: 2rem 0 3rem 0;
+            grid-column: 1 / -1;
+        }
+
+        .journal-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+        }
+
+        .meals-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .meal-card {
+            border-radius: 10px;
+            overflow: hidden;
+            background: white;
+            border: 1px solid #f0f0f0;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .meal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .meal-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .meal-type-label {
+            position: absolute;
+            top: 0.75rem;
+            left: 0.75rem;
+            background: rgba(255,255,255,0.9);
+            color: #1a6b3b;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .meal-content {
+            padding: 1rem;
+        }
+
+        .meal-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.4rem;
+            line-height: 1.4;
+        }
+
+        .meal-description {
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 0.5rem;
+        }
+
+        .meal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.75rem;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .meal-calories {
+            font-weight: 700;
+            color: #1a6b3b;
+            font-size: 0.9rem;
+        }
+
+        .meal-time {
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        /* Footer */
+        footer {
+            background: #f5f5f5;
+            color: #666;
+            padding: 3rem 5%;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #1a6b3b;
+            font-weight: 700;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-column p {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .footer-icons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .footer-icons a {
+            color: #1a6b3b;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-icons img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #ddd;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar-calendar {
+                position: static;
+            }
+
+            .nutrition-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .meals-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .day-bar-container {
+                height: 80px;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Sehatin</div>
+        <nav>
+            <a href="landingpage.html">Beranda</a>
+            <a href="paketcatering.html">Paket</a>
+            <a href="monitoring.html" class="active">Pantau Nutrisi</a>
+            <a href="riwayat.html">Pesanan</a>
+            <div class="nav-icons">
+                <a href="keranjang.html"><span class="cart-icon">🛒</span></a>
+                <a href="profil.html"><div class="profile-avatar">JD</div></a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Gizi Harian Anda.</h1>
+            <p class="page-subtitle">Melacak perjalanan Anda menuju gaya hidup seimbang melalui presisi organik dan nutrisi yang penuh kesadaran.</p>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Daily Target Section -->
+            <div class="daily-target">
+                <div class="target-header">
+                    <div>
+                        <div class="target-title">Target Harian</div>
+                        <div class="target-value">1,840<span style="font-size: 1rem;">/ 2,400 kcal</span></div>
+                    </div>
+                    <span class="progress-badge">76% Tercapai</span>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 76%;"></div>
+                </div>
+
+                <div class="nutrition-grid">
+                    <div class="nutrition-item">
+                        <div class="nutrition-label">Protein</div>
+                        <div class="nutrition-value">142g<span class="nutrition-max">/180g</span></div>
+                        <div class="nutrition-progress">
+                            <div class="nutrition-progress-fill" style="width: 79%;"></div>
+                        </div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-label">Karbohidrat</div>
+                        <div class="nutrition-value">210g<span class="nutrition-max">/300g</span></div>
+                        <div class="nutrition-progress">
+                            <div class="nutrition-progress-fill" style="width: 70%;"></div>
+                        </div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-label">Lemak</div>
+                        <div class="nutrition-value">48g<span class="nutrition-max">/80g</span></div>
+                        <div class="nutrition-progress">
+                            <div class="nutrition-progress-fill" style="width: 60%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Calendar -->
+            <div class="sidebar-calendar">
+                <div class="calendar-title">Pemantauan Gizi Berlaku</div>
+                <div class="calendar-bars">
+                    <div class="calendar-day">
+                        <div class="day-label">12 Apr</div>
+                        <div class="day-bar-container">
+                            <div class="day-bar filled-4"></div>
+                        </div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-label">13 Apr</div>
+                        <div class="day-bar-container">
+                            <div class="day-bar filled-4"></div>
+                        </div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-label">14 Apr</div>
+                        <div class="day-bar-container">
+                            <div class="day-bar filled-4"></div>
+                        </div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-label">15 Apr</div>
+                        <div class="day-bar-container">
+                            <div class="day-bar filled-4"></div>
+                        </div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-label">16 Apr</div>
+                        <div class="day-bar-container">
+                            <div class="day-bar filled-2"></div>
+                        </div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-label">17 Apr</div>
+                        <div class="day-bar-container">
+                            <div class="day-bar filled-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1rem; background: #f5f5f5; border-radius: 8px; text-align: center;">
+                    <div style="font-size: 0.7rem; color: #999; text-transform: uppercase; margin-bottom: 0.3rem;">Perkiran Gerat Saat Ini</div>
+                    <div style="font-size: 1.3rem; font-weight: 700; color: #1a1a1a;">74.2 kg</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Meal Journal Section -->
+        <div class="meal-journal">
+            <h2 class="journal-title">Jurnal Makan Harian</h2>
+            <div class="meals-grid">
+                <!-- Breakfast -->
+                <div class="meal-card">
+                    <div style="position: relative;">
+                        <img src="images/meal-breakfast.png" alt="Organic Acai Bowl" class="meal-image">
+                        <span class="meal-type-label">Breakfast</span>
+                    </div>
+                    <div class="meal-content">
+                        <div class="meal-name">Organic Acai Bowl</div>
+                        <div class="meal-description">Seeds, Honey & Forest Berries</div>
+                        <div class="meal-footer">
+                            <span class="meal-calories">420 kcal</span>
+                            <span class="meal-time">08:30</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lunch -->
+                <div class="meal-card">
+                    <div style="position: relative;">
+                        <img src="images/meal-lunch.png" alt="Mediterranean Power Bowl" class="meal-image">
+                        <span class="meal-type-label">Lunch</span>
+                    </div>
+                    <div class="meal-content">
+                        <div class="meal-name">Mediterranean Power Bowl</div>
+                        <div class="meal-description">Quinoa, Chickpeas & Lemon Tahini</div>
+                        <div class="meal-footer">
+                            <span class="meal-calories">680 kcal</span>
+                            <span class="meal-time">12:45</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Snack -->
+                <div class="meal-card">
+                    <div style="position: relative;">
+                        <img src="images/meal-lunch.png" alt="Mixed Raw Nuts" class="meal-image">
+                        <span class="meal-type-label">Snack</span>
+                    </div>
+                    <div class="meal-content">
+                        <div class="meal-name">Mixed Raw Nuts</div>
+                        <div class="meal-description">Almonds, Walnuts & Sea Salt</div>
+                        <div class="meal-footer">
+                            <span class="meal-calories">210 kcal</span>
+                            <span class="meal-time">16:15</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dinner -->
+                <div class="meal-card">
+                    <div style="position: relative;">
+                        <img src="images/meal-dinner.png" alt="Mixed Raw Nuts" class="meal-image">
+                        <span class="meal-type-label" style="background: #1a1a1a; color: white;">Snack</span>
+                    </div>
+                    <div class="meal-content">
+                        <div class="meal-name">Mixed Raw Nuts</div>
+                        <div class="meal-description">Almonds, Walnuts & Sea Salt</div>
+                        <div class="meal-footer">
+                            <span class="meal-calories">210 kcal</span>
+                            <span class="meal-time">19:15</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Sehatin</h3>
+                <p style="color: #666; font-size: 0.9rem;">Katering sehat premium yang membawa kualitas restoran ke meja makan Anda setiap hari.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Layanan</h3>
+                <a href="#">Paket Diet</a>
+                <a href="#">Makanan Pesanan Khusus</a>
+                <a href="#">Katering Perusahaan</a>
+            </div>
+            <div class="footer-column">
+                <h3>Perusahaan</h3>
+                <a href="#">Karier</a>
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Syarat Layanan</a>
+            </div>
+            <div class="footer-column">
+                <h3>Bantuan</h3>
+                <a href="#">Tanya Jawab</a>
+                <a href="#">Hubungi Kami</a>
+                <div class="footer-icons">
+                    <a href="#"><img src="images/icon_share.png" alt="Share"></a>
+                    <a href="#"><img src="images/icon_mail.png" alt="Email"></a>
+                    <a href="#"><img src="images/icon_call.png" alt="Telepon"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Sehatin Healthy Catering. All rights reserved.</span>
+        </div>
+    </footer>
+</body>
+</html>

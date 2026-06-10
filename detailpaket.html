@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Paket - Sehatin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f9f9f9;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a6b3b;
+        }
+
+        nav {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        nav a.active {
+            color: #1a6b3b;
+            font-weight: 600;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #1a6b3b;
+            border-radius: 2px;
+        }
+
+        nav a:hover {
+            color: #1a6b3b;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            margin-left: 1rem;
+        }
+
+        .cart-icon {
+            cursor: pointer;
+            font-size: 1.3rem;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            background: #1a6b3b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 5%;
+            padding-bottom: 120px;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+            margin-bottom: 4rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #a4f77f;
+            color: #1a6b3b;
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            color: #1a1a1a;
+            margin-bottom: 0.3rem;
+            line-height: 1.1;
+            font-weight: 700;
+        }
+
+        .hero h1 .highlight {
+            color: #1a6b3b;
+            font-style: italic;
+            font-weight: 700;
+        }
+
+        .hero-desc {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .package-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-btn {
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .option-btn.active {
+            background: #1a6b3b;
+            color: white;
+            border-color: #1a6b3b;
+        }
+
+        .option-btn:hover {
+            border-color: #1a6b3b;
+        }
+
+        .duration-label {
+            font-size: 0.7rem;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .duration-group {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .duration-btn {
+            flex: 1;
+            padding: 0.6rem;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #333;
+        }
+
+        .duration-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .duration-btn.active {
+            background: #1a6b3b;
+            color: white;
+        }
+
+        .total-price-label {
+            font-size: 0.7rem;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        .price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        /* Hero Image */
+        .hero-image {
+            text-align: center;
+        }
+
+        .food-image-wrapper {
+            width: 480px;
+            height: 480px;
+            background: linear-gradient(135deg, #d4a574 0%, #8b6f47 100%);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .food-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .nutrition-card {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            text-align: left;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-width: 220px;
+        }
+
+        .nutrition-title {
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+        }
+
+        .nutrition-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .nutrition-item {
+            text-align: left;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .nutrition-label {
+            color: #666;
+            font-size: 0.7rem;
+            text-transform: capitalize;
+            margin-bottom: 0;
+            font-weight: 500;
+            letter-spacing: 0;
+            min-width: 40px;
+        }
+
+        .nutrition-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a6b3b;
+        }
+
+        .nutrition-unit {
+            font-size: 0.75rem;
+            color: #999;
+            font-weight: 500;
+            margin-left: 0.2rem;
+        }
+
+        /* Section Title */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-badge {
+            background: #1a6b3b;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .section-title-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        /* Schedule Section */
+        .schedule-section {
+            margin-bottom: 3rem;
+        }
+
+        .schedule-desc {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .day-section {
+            margin-bottom: 2rem;
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .day-badge {
+            background: #1a6b3b;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .day-name {
+            font-weight: 700;
+            color: #1a1a1a;
+            font-size: 1rem;
+        }
+
+        .meals-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .meal-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .meal-item:hover {
+            transform: translateY(-4px);
+        }
+
+        .meal-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .meal-info {
+            padding: 1rem;
+        }
+
+        .meal-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.4rem;
+            line-height: 1.3;
+        }
+
+        .meal-stats {
+            display: flex;
+            gap: 0.8rem;
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        .view-full-btn {
+            display: block;
+            margin: 2rem auto;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            padding: 0.7rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .view-full-btn:hover {
+            background: #e8e8e8;
+        }
+
+        /* Visual Section */
+        .visual-section {
+            margin-bottom: 3rem;
+        }
+
+        .carousel-wrapper {
+            position: relative;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 1rem;
+            pointer-events: none;
+        }
+
+        .carousel-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            pointer-events: all;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .carousel-btn:hover {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 1.2rem;
+            grid-auto-rows: auto;
+        }
+
+        .visual-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            height: 280px;
+        }
+
+        .visual-card.large {
+            grid-row: 1 / 3;
+            grid-column: 1;
+            height: auto;
+        }
+
+        .visual-card:nth-child(4) {
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        .visual-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .visual-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.4));
+            color: white;
+            padding: 1.2rem 1rem;
+        }
+
+        .visual-title {
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .visual-desc {
+            font-size: 0.9rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Full Menu Modal */
+        .full-menu-modal {
+            display: none;
+            background: white;
+            border-top: 2px solid #e0e0e0;
+            margin-top: 0;
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.5s ease;
+            position: static;
+            width: 100%;
+            height: auto;
+            z-index: auto;
+            background: transparent;
+        }
+
+        .full-menu-modal.active {
+            display: block;
+            max-height: 5000px;
+            padding: 2rem 0;
+            background: white;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .modal-content {
+            background: transparent;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+            border-radius: 0;
+            position: relative;
+        }
+
+        .modal-close {
+            display: none;
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #1a6b3b;
+        }
+
+        .modal-title {
+            display: none;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Bottom Bar */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 99;
+        }
+
+        .bottom-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .bottom-label {
+            font-size: 0.75rem;
+            color: #999;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .bottom-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a6b3b;
+        }
+
+        .bottom-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            overflow: hidden;
+        }
+
+        .qty-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: white;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #999;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .qty-input {
+            width: 50px;
+            border: none;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .qty-input:focus {
+            outline: none;
+        }
+
+        /* Remove number input spinner */
+        .qty-input::-webkit-outer-spin-button,
+        .qty-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .qty-input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .btn-primary {
+            background: #1a6b3b;
+            color: white;
+            padding: 0.9rem 2.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: background 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-primary:hover {
+            background: #135a2f;
+        }
+
+        /* Footer */
+        footer {
+            background: #f5f5f5;
+            color: #666;
+            padding: 3rem 5%;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #1a6b3b;
+        }
+
+        .footer-column p,
+        .footer-column a {
+            display: block;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #1a6b3b;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #ddd;
+            padding-top: 2rem;
+            text-align: center;
+            color: #aaa;
+            font-size: 0.85rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .meals-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .visual-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .visual-card,
+            .visual-card.large {
+                height: 250px;
+            }
+
+            .bottom-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .container {
+                padding-bottom: 180px;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Sehatin</div>
+        <nav>
+            <a href="landingpage.html">Beranda</a>
+            <a href="paketcatering.html">Paket</a>
+            <a href="monitoring.html">Pantau Nutrisi</a>
+            <a href="riwayat.html">Pesanan</a>
+            <div class="nav-icons">
+                <a href="keranjang.html"><span class="cart-icon">🛒</span></a>
+                <a href="profil.html"><div class="profile-avatar">JD</div></a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div>
+                <span class="badge">✨ BEST FOR RESULTS</span>
+                <h1>Weight Loss<br><span class="highlight">Delight</span></h1>
+                <p class="hero-desc">Makanan buatan chef dengan porsi yang dihitung secara ilmiah untuk membantu menurunkan berat badan tanpa mengorbankan cita rasa lezat yang Anda sukai.</p>
+
+                <div class="package-options">
+                    <button class="option-btn active">Full Day</button>
+                    <button class="option-btn">Lunch Only</button>
+                </div>
+
+                <div>
+                    <div class="duration-label">DURASI</div>
+                    <div class="duration-group">
+                        <button class="duration-btn active">1 hari</button>
+                        <button class="duration-btn">3 hari</button>
+                        <button class="duration-btn">7 hari</button>
+                        <button class="duration-btn">30 hari</button>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="total-price-label">TOTAL UNTUK 7 HARI</div>
+                    <div class="price">Rp 1.050.000K</div>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <div class="food-image-wrapper">
+                    <img src="images/detail-food-main.png" alt="Weight Loss Delight" class="food-image">
+                    <div class="nutrition-card">
+                        <div class="nutrition-title">Rata-rata Harian</div>
+                        <div class="nutrition-grid">
+                            <div class="nutrition-item">
+                                <div class="nutrition-label">Kalori</div>
+                                <div class="nutrition-value">1,450<span class="nutrition-unit">kcal</span></div>
+                            </div>
+                            <div style="border-top: 1px solid #eee; padding-top: 0.7rem; margin-top: 0.7rem;">
+                                <div style="font-size: 0.65rem; color: #999; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 600;">Protein Carbohydrate Lemak</div>
+                                <div style="display: flex; gap: 2rem; justify-content: space-between;">
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 1.1rem; font-weight: 700; color: #1a1a1a;">110<span style="font-size: 0.7rem; color: #999; margin-left: 0.2rem;">g</span></div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 1.1rem; font-weight: 700; color: #1a1a1a;">120<span style="font-size: 0.7rem; color: #999; margin-left: 0.2rem;">g</span></div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 1.1rem; font-weight: 700; color: #1a1a1a;">45<span style="font-size: 0.7rem; color: #999; margin-left: 0.2rem;">g</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jadwal Makan Mingguan -->
+        <div class="schedule-section">
+            <div class="section-title">
+                <div class="section-badge">1</div>
+                <div class="section-title-text">Jadwal Makan Mingguan</div>
+            </div>
+            <p class="schedule-desc">Panduan nutrisi lengkap Anda untuk seminggu. Setiap makanan dirancang untuk membantu mencapai hasil penurunan berat badan secara efektif.</p>
+
+            <!-- Hari: Senin -->
+            <div class="day-section">
+                <div class="day-header">
+                    <div class="day-badge">📅</div>
+                    <div class="day-name">Senin</div>
+                </div>
+                <div class="meals-grid">
+                    <div class="meal-item">
+                        <img src="images/detail-meal-1.png" alt="Overnight Oats" class="meal-image">
+                        <div class="meal-info">
+                            <div class="meal-name">Overnight Oats with Berries</div>
+                            <div class="meal-stats">
+                                <span>320 kcal</span>
+                                <span>13g Protein</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <img src="images/detail-meal-2.png" alt="Herb Chicken" class="meal-image">
+                        <div class="meal-info">
+                            <div class="meal-name">Herb-Crusted Grilled Chicken</div>
+                            <div class="meal-stats">
+                                <span>450 kcal</span>
+                                <span>42g Protein</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <img src="images/detail-meal-3.png" alt="Salmon" class="meal-image">
+                        <div class="meal-info">
+                            <div class="meal-name">Baked Salmon & Asparagus</div>
+                            <div class="meal-stats">
+                                <span>530 kcal</span>
+                                <span>38g Protein</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <img src="images/detail-meal-4.png" alt="Nuts" class="meal-image">
+                        <div class="meal-info">
+                            <div class="meal-name">Mixed Organic Nuts</div>
+                            <div class="meal-stats">
+                                <span>160 kcal</span>
+                                <span>6g Protein</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hari: Selasa -->
+            <div class="day-section">
+                <div class="day-header">
+                    <div class="day-badge">📅</div>
+                    <div class="day-name">Selasa</div>
+                </div>
+                <div class="meals-grid">
+                    <div class="meal-item">
+                        <img src="images/detail-meal-5.png" alt="Green Smoothie Bowl" class="meal-image">
+                        <div class="meal-info">
+                            <div class="meal-name">Green Smoothie Bowl</div>
+                            <div class="meal-stats">
+                                <span>280 kcal</span>
+                                <span>10g Protein</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <img src="images/detail-meal-6.png" alt="Tofu Stir-Fry" class="meal-image">
+                        <div class="meal-info">
+                            <div class="meal-name">Sesame Ginger Tofu Stir-Fry</div>
+                            <div class="meal-stats">
+                                <span>380 kcal</span>
+                                <span>28g Protein</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <img src="images/detail-meal-7.png" alt="Turkey Chili" class="meal-image">
+                        <div class="meal-info">
+                            <div class="meal-name">Lean Turkey Chili</div>
+                            <div class="meal-stats">
+                                <span>420 kcal</span>
+                                <span>45g Protein</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-item">
+                        <img src="images/detail-meal-8.png" alt="Apple" class="meal-image">
+                        <div class="meal-info">
+                            <div class="meal-name">Fresh Apple Slices</div>
+                            <div class="meal-stats">
+                                <span>95 kcal</span>
+                                <span>0g Protein</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="view-full-btn" id="viewFullMenuBtn">Lihat Menu Lengkap 7 Hari</button>
+        </div>
+
+        <!-- Full Menu Modal -->
+        <div class="full-menu-modal" id="fullMenuModal">
+            <div class="modal-content">
+                <button class="modal-close" id="closeModalBtn">×</button>
+                <h2 class="modal-title">Menu Lengkap 7 Hari</h2>
+                
+                <!-- Rabu -->
+                <div class="day-section">
+                    <div class="day-header">
+                        <div class="day-badge">📅</div>
+                        <div class="day-name">Rabu</div>
+                    </div>
+                    <div class="meals-grid">
+                        <div class="meal-item">
+                            <img src="images/detail-meal-1.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Green Smoothie Bowl</div>
+                                <div class="meal-stats"><span>280 kcal</span><span>10g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-2.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Sesame Ginger Tofu Stir-Fry</div>
+                                <div class="meal-stats"><span>380 kcal</span><span>28g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-3.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Lean Turkey Chili</div>
+                                <div class="meal-stats"><span>420 kcal</span><span>45g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-4.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Fresh Apple Slices</div>
+                                <div class="meal-stats"><span>95 kcal</span><span>0g Protein</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kamis -->
+                <div class="day-section">
+                    <div class="day-header">
+                        <div class="day-badge">📅</div>
+                        <div class="day-name">Kamis</div>
+                    </div>
+                    <div class="meals-grid">
+                        <div class="meal-item">
+                            <img src="images/detail-meal-5.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Overnight Oats with Berries</div>
+                                <div class="meal-stats"><span>320 kcal</span><span>13g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-6.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Herb-Crusted Grilled Chicken</div>
+                                <div class="meal-stats"><span>450 kcal</span><span>42g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-7.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Baked Salmon & Asparagus</div>
+                                <div class="meal-stats"><span>530 kcal</span><span>38g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-8.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Mixed Organic Nuts</div>
+                                <div class="meal-stats"><span>160 kcal</span><span>6g Protein</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jumat -->
+                <div class="day-section">
+                    <div class="day-header">
+                        <div class="day-badge">📅</div>
+                        <div class="day-name">Jumat</div>
+                    </div>
+                    <div class="meals-grid">
+                        <div class="meal-item">
+                            <img src="images/detail-meal-1.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Green Smoothie Bowl</div>
+                                <div class="meal-stats"><span>280 kcal</span><span>10g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-2.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Sesame Ginger Tofu Stir-Fry</div>
+                                <div class="meal-stats"><span>380 kcal</span><span>28g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-3.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Lean Turkey Chili</div>
+                                <div class="meal-stats"><span>420 kcal</span><span>45g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-4.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Fresh Apple Slices</div>
+                                <div class="meal-stats"><span>95 kcal</span><span>0g Protein</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sabtu -->
+                <div class="day-section">
+                    <div class="day-header">
+                        <div class="day-badge">📅</div>
+                        <div class="day-name">Sabtu</div>
+                    </div>
+                    <div class="meals-grid">
+                        <div class="meal-item">
+                            <img src="images/detail-meal-5.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Overnight Oats with Berries</div>
+                                <div class="meal-stats"><span>320 kcal</span><span>13g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-6.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Herb-Crusted Grilled Chicken</div>
+                                <div class="meal-stats"><span>450 kcal</span><span>42g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-7.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Baked Salmon & Asparagus</div>
+                                <div class="meal-stats"><span>530 kcal</span><span>38g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-8.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Mixed Organic Nuts</div>
+                                <div class="meal-stats"><span>160 kcal</span><span>6g Protein</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Minggu -->
+                <div class="day-section">
+                    <div class="day-header">
+                        <div class="day-badge">📅</div>
+                        <div class="day-name">Minggu</div>
+                    </div>
+                    <div class="meals-grid">
+                        <div class="meal-item">
+                            <img src="images/detail-meal-1.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Green Smoothie Bowl</div>
+                                <div class="meal-stats"><span>280 kcal</span><span>10g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-2.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Sesame Ginger Tofu Stir-Fry</div>
+                                <div class="meal-stats"><span>380 kcal</span><span>28g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-3.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Lean Turkey Chili</div>
+                                <div class="meal-stats"><span>420 kcal</span><span>45g Protein</span></div>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <img src="images/detail-meal-4.png" alt="Meal" class="meal-image">
+                            <div class="meal-info">
+                                <div class="meal-name">Fresh Apple Slices</div>
+                                <div class="meal-stats"><span>95 kcal</span><span>0g Protein</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual Hidangan -->
+        <div class="visual-section">
+            <div class="section-title">
+                <div class="section-badge">2</div>
+                <div class="section-title-text">Visual Hidangan</div>
+            </div>
+            <p class="schedule-desc">Lihat lebih dekat kualitas bahan makanan dalam paket Anda.</p>
+
+            <div class="carousel-wrapper">
+                <div class="carousel-controls">
+                    <button class="carousel-btn">❮</button>
+                    <button class="carousel-btn">❯</button>
+                </div>
+
+                <div class="visual-grid">
+                    <div class="visual-card large">
+                        <img src="images/detail-visual-1.png" alt="Herb-Crusted Grilled Chicken" class="visual-image">
+                        <div class="visual-label">
+                            <div class="visual-title">HIDANGAN ANDALAN</div>
+                            <div class="visual-desc">Herb-Crusted Grilled Chicken</div>
+                        </div>
+                    </div>
+                    <div class="visual-card">
+                        <img src="images/detail-visual-2.png" alt="Sesame Ginger Tofu" class="visual-image">
+                        <div class="visual-label">
+                            <div class="visual-title">MAIN</div>
+                            <div class="visual-desc">Sesame Ginger Tofu</div>
+                        </div>
+                    </div>
+                    <div class="visual-card">
+                        <img src="images/detail-visual-4.png" alt="Zesty Squash Pasta" class="visual-image">
+                        <div class="visual-label">
+                            <div class="visual-title">RENDAH KARBOHIDRAT</div>
+                            <div class="visual-desc">Zesty Squash Pasta</div>
+                        </div>
+                    </div>
+                    <div class="visual-card">
+                        <img src="images/detail-visual-3.png" alt="Power Tuna Salad" class="visual-image">
+                        <div class="visual-label">
+                            <div class="visual-title">TINGGI PROTEIN</div>
+                            <div class="visual-desc">Power Tuna Salad</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="bottom-bar">
+        <div class="bottom-info">
+            <div class="bottom-label">Weight Loss Delight • Full Day • 7 Hari</div>
+            <div class="bottom-price">Rp 1.519.000</div>
+        </div>
+        <div class="bottom-actions">
+            <div class="quantity-control">
+                <button class="qty-btn" id="decreaseBtn">−</button>
+                <input type="number" class="qty-input" id="qtyInput" value="1" min="1">
+                <button class="qty-btn" id="increaseBtn">+</button>
+            </div>
+            <button class="btn-primary" id="addToCartBtn">Tambah ke Keranjang</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Sehatin</h3>
+                <p style="color: #666; font-size: 0.9rem;">Katering sehat premium yang membawa kualitas restoran ke meja makan Anda setiap hari.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Layanan</h3>
+                <a href="#">Paket Diet</a>
+                <a href="#">Makanan Pesanan Khusus</a>
+                <a href="#">Katering Perusahaan</a>
+            </div>
+            <div class="footer-column">
+                <h3>Perusahaan</h3>
+                <a href="#">Karier</a>
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Syarat Layanan</a>
+            </div>
+            <div class="footer-column">
+                <h3>Bantuan</h3>
+                <a href="#">Tanya Jawab</a>
+                <a href="#">Hubungi Kami</a>
+                <div class="footer-icons">
+                    <a href="#"><img src="images/icon_share.png" alt="Share"></a>
+                    <a href="#"><img src="images/icon_mail.png" alt="Email"></a>
+                    <a href="#"><img src="images/icon_call.png" alt="Telepon"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Sehatin Healthy Catering. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <script>
+        // Package option selection
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Duration button selection
+        document.querySelectorAll('.duration-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Quantity control
+        const qtyInput = document.getElementById('qtyInput');
+        const decreaseBtn = document.getElementById('decreaseBtn');
+        const increaseBtn = document.getElementById('increaseBtn');
+
+        decreaseBtn.addEventListener('click', () => {
+            let value = parseInt(qtyInput.value) || 1;
+            if (value > 1) {
+                qtyInput.value = value - 1;
+            }
+        });
+
+        increaseBtn.addEventListener('click', () => {
+            let value = parseInt(qtyInput.value) || 1;
+            qtyInput.value = value + 1;
+        });
+
+        // Add to cart button
+        document.getElementById('addToCartBtn').addEventListener('click', function() {
+            window.location.href = 'keranjang.html';
+        });
+
+        // Carousel controls
+        document.querySelectorAll('.carousel-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('Carousel navigation');
+            });
+        });
+
+        // Full Menu Modal
+        const viewFullMenuBtn = document.getElementById('viewFullMenuBtn');
+        const fullMenuModal = document.getElementById('fullMenuModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        viewFullMenuBtn.addEventListener('click', () => {
+            fullMenuModal.classList.toggle('active');
+        });
+
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', () => {
+                fullMenuModal.classList.remove('active');
+            });
+        }
+    </script>
+</body>
+</html>

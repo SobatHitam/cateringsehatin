@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Bergizi - Sehatin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a6b3b;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        nav a.active {
+            color: #1a6b3b;
+            font-weight: 600;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #1a6b3b;
+            border-radius: 2px;
+        }
+
+        nav a:hover {
+            color: #1a6b3b;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .cart-icon {
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            background: #1a6b3b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: white;
+            padding: 3rem 5%;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 5%;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar Filter */
+        .sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            height: fit-content;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 100px;
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .filter-section:last-child {
+            border-bottom: none;
+        }
+
+        .filter-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .filter-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #1a6b3b;
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: #e8e8e8;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #d0d0d0;
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .menu-image-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            background: #f0f0f0;
+        }
+
+        .menu-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #1a6b3b;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge.secondary {
+            background: white;
+            color: #333;
+            border: 1px solid #1a6b3b;
+        }
+
+        .badge-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .menu-info {
+            padding: 1.5rem;
+        }
+
+        .menu-category {
+            color: #1a6b3b;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .price-label {
+            font-size: 0.75rem;
+            color: #999;
+            font-weight: 400;
+        }
+
+        /* Duration Selection */
+        .duration-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .duration-btn {
+            flex: 1;
+            padding: 0.6rem;
+            background: #f0f0f0;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .duration-btn:hover {
+            background: #e8e8e8;
+        }
+
+        .duration-btn.active {
+            background: #1a6b3b;
+            color: white;
+            border-color: #1a6b3b;
+        }
+
+        /* Nutrition Info */
+        .nutrition-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .nutrition-item {
+            text-align: center;
+        }
+
+        .nutrition-label {
+            color: #999;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .nutrition-value {
+            font-weight: 700;
+            color: #333;
+        }
+
+        /* Choose Button */
+        .choose-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: #1a6b3b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .choose-btn:hover {
+            background: #135a2f;
+        }
+
+        /* Footer */
+        footer {
+            background: #f5f5f5;
+            color: #666;
+            padding: 3rem 5%;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #1a6b3b;
+            font-weight: 700;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #1a6b3b;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #ddd;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .footer-icons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-icons img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            nav {
+                gap: 1rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Sehatin</div>
+        <nav>
+            <a href="landingpage.html">Beranda</a>
+            <a href="paketcatering.html" class="active">Paket</a>
+            <a href="monitoring.html">Pantau Nutrisi</a>
+            <a href="riwayat.html">Pesanan</a>
+            <div class="nav-icons">
+                <a href="keranjang.html"><span class="cart-icon">🛒</span></a>
+                <a href="profil.html"><div class="profile-avatar">JD</div></a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Menu Bergizi</h1>
+        <p>Makanan dibuat oleh chef yang disesuaikan dengan kebutuhan biologis Anda. Pilih paket dan durasi di bawah ini.</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar Filter -->
+        <aside class="sidebar">
+            <!-- Jenis Paket -->
+            <div class="filter-section">
+                <div class="filter-title">Jenis Paket</div>
+                <div class="filter-option">
+                    <input type="checkbox" id="lunch" checked>
+                    <label for="lunch">Lunch Only</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="fullday" checked>
+                    <label for="fullday">Full Day</label>
+                </div>
+            </div>
+
+            <!-- Tujuan -->
+            <div class="filter-section">
+                <div class="filter-title">Tujuan</div>
+                <div class="filter-option">
+                    <input type="checkbox" id="weight" checked>
+                    <label for="weight">Weight Loss</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="muscle" checked>
+                    <label for="muscle">Muscle Gain</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="keto">
+                    <label for="keto">Keto Friendly</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="balanced">
+                    <label for="balanced">Balanced</label>
+                </div>
+            </div>
+
+            <!-- Preferensi Diet -->
+            <div class="filter-section">
+                <div class="filter-title">Preferensi Diet</div>
+                <div class="filter-option">
+                    <input type="checkbox" id="gluten">
+                    <label for="gluten">Gluten-free</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="nutfree">
+                    <label for="nutfree">Nut-free</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="lowsodium">
+                    <label for="lowsodium">Low Sodium</label>
+                </div>
+            </div>
+
+            <!-- Reset Button -->
+            <button class="reset-btn">Atur Ulang Semua Filter</button>
+        </aside>
+
+        <!-- Menu Grid -->
+        <main>
+            <div class="menu-grid">
+                <!-- Menu Card 1 -->
+                <div class="menu-card">
+                    <div class="menu-image-container">
+                        <img src="images/menu-lean-1.png" alt="Lean Metabolic - Weight Loss" class="menu-image">
+                        <div class="badge-group">
+                            <span class="badge">Lunch Only</span>
+                            <span class="badge secondary">Rekomendasi</span>
+                        </div>
+                    </div>
+                    <div class="menu-info">
+                        <div class="menu-category">Weight Loss</div>
+                        <div class="menu-name">Lean Metabolic</div>
+                        <div class="menu-price">Rp 30k<span class="price-label"> per hari</span></div>
+                        
+                        <div class="duration-group">
+                            <button class="duration-btn active">1h</button>
+                            <button class="duration-btn">3h</button>
+                            <button class="duration-btn">7h</button>
+                            <button class="duration-btn">30h</button>
+                        </div>
+
+                        <div class="nutrition-info">
+                            <div class="nutrition-item">
+                                <div class="nutrition-label">Kalori</div>
+                                <div class="nutrition-value">650 kcal</div>
+                            </div>
+                            <div class="nutrition-item">
+                                <div class="nutrition-label">Protein</div>
+                                <div class="nutrition-value">45g</div>
+                            </div>
+                        </div>
+
+                        <button class="choose-btn">Pilih Paket</button>
+                    </div>
+                </div>
+
+                <!-- Menu Card 2 -->
+                <div class="menu-card">
+                    <div class="menu-image-container">
+                        <img src="images/menu-lean-2.png" alt="Lean Metabolic - Muscle Gain" class="menu-image">
+                        <div class="badge-group">
+                            <span class="badge">Full Day is Meals</span>
+                            <span class="badge secondary">Rekomendasi</span>
+                        </div>
+                    </div>
+                    <div class="menu-info">
+                        <div class="menu-category">Muscle Gain</div>
+                        <div class="menu-name">Lean Metabolic</div>
+                        <div class="menu-price">Rp 200k<span class="price-label"> per hari</span></div>
+                        
+                        <div class="duration-group">
+                            <button class="duration-btn active">1h</button>
+                            <button class="duration-btn">3h</button>
+                            <button class="duration-btn">7h</button>
+                            <button class="duration-btn">30h</button>
+                        </div>
+
+                        <div class="nutrition-info">
+                            <div class="nutrition-item">
+                                <div class="nutrition-label">Kalori</div>
+                                <div class="nutrition-value">1,450 kcal</div>
+                            </div>
+                            <div class="nutrition-item">
+                                <div class="nutrition-label">Protein</div>
+                                <div class="nutrition-value">115g</div>
+                            </div>
+                        </div>
+
+                        <button class="choose-btn">Pilih Paket</button>
+                    </div>
+                </div>
+
+                <!-- Menu Card 3 -->
+                <div class="menu-card">
+                    <div class="menu-image-container">
+                        <img src="images/menu-muscle-1.png" alt="Muscle Alchemy - Muscle Gain" class="menu-image">
+                        <div class="badge-group">
+                            <span class="badge">Lunch Only</span>
+                        </div>
+                    </div>
+                    <div class="menu-info">
+                        <div class="menu-category">Muscle Gain</div>
+                        <div class="menu-name">Muscle Alchemy</div>
+                        <div class="menu-price">Rp 120k<span class="price-label"> per hari</span></div>
+                        
+                        <div class="duration-group">
+                            <button class="duration-btn active">1h</button>
+                            <button class="duration-btn">3h</button>
+                            <button class="duration-btn">7h</button>
+                            <button class="duration-btn">30h</button>
+                        </div>
+
+                        <div class="nutrition-info">
+                            <div class="nutrition-item">
+                                <div class="nutrition-label">Kalori</div>
+                                <div class="nutrition-value">950 kcal</div>
+                            </div>
+                            <div class="nutrition-item">
+                                <div class="nutrition-label">Protein</div>
+                                <div class="nutrition-value">85g</div>
+                            </div>
+                        </div>
+
+                        <button class="choose-btn">Pilih Paket</button>
+                    </div>
+                </div>
+
+                <!-- Menu Card 4 -->
+                <div class="menu-card">
+                    <div class="menu-image-container">
+                        <img src="images/menu-muscle-2.png" alt="Muscle Alchemy - Full Day" class="menu-image">
+                        <div class="badge-group">
+                            <span class="badge">Full Day is Meals</span>
+                        </div>
+                    </div>
+                    <div class="menu-info">
+                        <div class="menu-category">Muscle Gain</div>
+                        <div class="menu-name">Muscle Alchemy</div>
+                        <div class="menu-price">Rp 100k<span class="price-label"> per hari</span></div>
+                        
+                        <div class="duration-group">
+                            <button class="duration-btn active">1h</button>
+                            <button class="duration-btn">3h</button>
+                            <button class="duration-btn">7h</button>
+                            <button class="duration-btn">30h</button>
+                        </div>
+
+                        <div class="nutrition-info">
+                            <div class="nutrition-item">
+                                <div class="nutrition-label">Kalori</div>
+                                <div class="nutrition-value">2,800 kcal</div>
+                            </div>
+                            <div class="nutrition-item">
+                                <div class="nutrition-label">Protein</div>
+                                <div class="nutrition-value">195g</div>
+                            </div>
+                        </div>
+
+                        <button class="choose-btn">Pilih Paket</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Sehatin</h3>
+                <p style="color: #666; font-size: 0.9rem;">Katering sehat premium yang membawa kualitas restoran ke meja makan Anda setiap hari.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Layanan</h3>
+                <a href="#">Paket Diet</a>
+                <a href="#">Makanan Pesanan Khusus</a>
+                <a href="#">Katering Perusahaan</a>
+            </div>
+            <div class="footer-column">
+                <h3>Perusahaan</h3>
+                <a href="#">Karier</a>
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Syarat Layanan</a>
+            </div>
+            <div class="footer-column">
+                <h3>Bantuan</h3>
+                <a href="#">Tanya Jawab</a>
+                <a href="#">Hubungi Kami</a>
+                <div class="footer-icons">
+                    <a href="#"><img src="images/icon_share.png" alt="Share"></a>
+                    <a href="#"><img src="images/icon_mail.png" alt="Email"></a>
+                    <a href="#"><img src="images/icon_call.png" alt="Telepon"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Sehatin Healthy Catering. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <script>
+        // Duration button selection
+        document.querySelectorAll('.duration-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.parentElement.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Choose button action
+        document.querySelectorAll('.choose-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                window.location.href = 'detailpaket.html';
+            });
+        });
+
+        // Reset filters
+        document.querySelector('.reset-btn').addEventListener('click', function() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar - Sehatin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #e8f5f0 0%, #f5f0e8 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .left-circle {
+            position: fixed;
+            left: -80px;
+            top: 35%;
+            width: 350px;
+            height: 350px;
+            background: url('images/background.jpg') center/cover no-repeat;
+            border-radius: 50%;
+            box-shadow: inset 0 0 80px rgba(255, 255, 255, 0.2);
+            z-index: 0;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 1400px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .left-section {
+            display: none;
+        }
+
+        .right-section {
+            background: white;
+            border-radius: 30px;
+            padding: 3.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            margin-right: 150px;
+        }
+
+        .plant-card {
+            display: none;
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a6b3b;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.95rem;
+            color: #333;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background: #fafafa;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1a6b3b;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(26, 107, 59, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #bbb;
+        }
+
+        .password-help {
+            text-align: right;
+            margin-bottom: 2rem;
+        }
+
+        .password-help a {
+            color: #1a6b3b;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .password-help a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 1.1rem;
+            background: #1a6b3b;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-register:hover {
+            background: #135a2f;
+            transform: translateY(-2px);
+        }
+
+        .btn-register:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider-text {
+            color: #999;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .social-login {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .social-btn {
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            color: #333;
+        }
+
+        .social-btn:hover {
+            border-color: #1a6b3b;
+            background: #f9f9f9;
+            transform: translateY(-2px);
+        }
+
+        .social-icon {
+            font-size: 1.2rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-icon.google {
+            width: 24px;
+            height: 24px;
+            background: url('images/google.png') center/contain no-repeat;
+        }
+
+        .social-icon.facebook {
+            width: 24px;
+            height: 24px;
+            background: url('images/facebook.png') center/contain no-repeat;
+        }
+
+        .login-link {
+            text-align: center;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .login-link a {
+            color: #1a6b3b;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Illustration Styles */
+        .illustration {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .plant-illustration {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .left-section {
+                display: none;
+            }
+
+            .right-section {
+                max-width: 100%;
+                padding: 2.5rem;
+                margin-right: 0;
+            }
+
+            .plant-card {
+                display: none;
+            }
+
+            .left-circle {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .right-section {
+                padding: 2rem;
+            }
+
+            .title {
+                font-size: 1.5rem;
+            }
+
+            .social-login {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Eye icon for password toggle */
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle input {
+            padding-right: 3rem;
+        }
+
+        .toggle-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-image: url('images/eye-closed.png');
+        }
+
+        .toggle-icon.visible {
+            background-image: url('images/eye-open.png');
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 0.3rem;
+            cursor: pointer;
+            accent-color: #1a6b3b;
+        }
+
+        .checkbox-group label {
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .checkbox-group a {
+            color: #1a6b3b;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .checkbox-group a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="left-circle"></div>
+    <div class="container">
+        <!-- Left Section with Illustration -->
+        <div class="left-section">
+            <div class="illustration">
+                <div class="plant-illustration"></div>
+            </div>
+        </div>
+
+        <!-- Right Section with Form -->
+        <div class="right-section">
+            <div class="plant-card"></div>
+            <h1 class="title">Sehatin</h1>
+            <p class="subtitle">Ayo bergabung ke sehatin</p>
+
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="fullname">Nama Lengkap</label>
+                    <input 
+                        type="text" 
+                        id="fullname" 
+                        name="fullname" 
+                        placeholder="Nama lengkap Anda"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Alamat Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="name@example.com"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Kata sandi</label>
+                    <div class="password-toggle">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="••••••••"
+                            required
+                        >
+                        <span class="toggle-icon" onclick="togglePassword('password')"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Konfirmasi Kata Sandi</label>
+                    <div class="password-toggle">
+                        <input 
+                            type="password" 
+                            id="confirm-password" 
+                            name="confirm-password" 
+                            placeholder="••••••••"
+                            required
+                        >
+                        <span class="toggle-icon" onclick="togglePassword('confirm-password')"></span>
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input 
+                        type="checkbox" 
+                        id="terms" 
+                        name="terms"
+                        required
+                    >
+                    <label for="terms">
+                        Saya menyetujui <a href="#">Syarat & Ketentuan</a> dan <a href="#">Kebijakan Privasi</a> Sehatin
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-register">
+                    Mendaftar →
+                </button>
+            </form>
+
+            <div class="divider">
+                <div class="divider-line"></div>
+                <div class="divider-text">ATAU DAFTAR DENGAN</div>
+                <div class="divider-line"></div>
+            </div>
+
+            <div class="social-login">
+                <button type="button" class="social-btn" onclick="registerWithGoogle()">
+                    <span class="social-icon google"></span>
+                    Google
+                </button>
+                <button type="button" class="social-btn" onclick="registerWithFacebook()">
+                    <span class="social-icon facebook"></span>
+                    Facebook
+                </button>
+            </div>
+
+            <p class="login-link">
+                Sudah punya akun? <a href="login.html">Masuk Sekarang</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = event.currentTarget;
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.add('visible');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('visible');
+            }
+        }
+
+        function registerWithGoogle() {
+            alert('Daftar dengan Google dimulai...');
+            // Implementasi Google registration
+        }
+
+        function registerWithFacebook() {
+            alert('Daftar dengan Facebook dimulai...');
+            // Implementasi Facebook registration
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const fullname = document.getElementById('fullname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const terms = document.getElementById('terms').checked;
+
+            if (password !== confirmPassword) {
+                alert('Kata sandi tidak cocok!');
+                return;
+            }
+
+            if (!terms) {
+                alert('Anda harus menerima Syarat & Ketentuan');
+                return;
+            }
+
+            if (fullname && email && password) {
+                // Redirect to profile page on successful registration
+                window.location.href = 'profil.html';
+            }
+        });
+    </script>
+</body>
+</html>

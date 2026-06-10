@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Sehatin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a6b3b;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        nav a.active {
+            color: #1a6b3b;
+            font-weight: 600;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #1a6b3b;
+            border-radius: 2px;
+        }
+
+        nav a:hover {
+            color: #1a6b3b;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .cart-icon {
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            background: #1a6b3b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 5%;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        .page-header {
+            grid-column: 1 / -1;
+            margin-bottom: 1rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Form Sections */
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .form-section h2 {
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Address Section */
+        .address-input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 250px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9rem;
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .location-info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+        }
+
+        /* Date Selection */
+        .date-group {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .date-btn {
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .date-btn:hover {
+            border-color: #1a6b3b;
+        }
+
+        .date-btn.active {
+            background: #1a6b3b;
+            color: white;
+            border-color: #1a6b3b;
+        }
+
+        .date-day {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #999;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .date-btn.active .date-day {
+            color: #fff;
+        }
+
+        .date-number {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .date-month {
+            font-size: 0.7rem;
+            color: #999;
+            display: block;
+            margin-top: 0.2rem;
+        }
+
+        .date-btn.active .date-month {
+            color: #a4f77f;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .payment-option {
+            padding: 1.5rem;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .payment-option:hover {
+            border-color: #1a6b3b;
+        }
+
+        .payment-option.active {
+            border-color: #1a6b3b;
+            background: #e8f5e9;
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .payment-name {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.3rem;
+        }
+
+        .payment-desc {
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        /* Summary Sidebar */
+        .summary {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-item {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .summary-item:last-of-type {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .item-image-small {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.2rem;
+        }
+
+        .item-desc {
+            font-size: 0.7rem;
+            color: #999;
+        }
+
+        .item-price {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1a6b3b;
+        }
+
+        .summary-totals {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .total-row.grand {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            padding-top: 0.5rem;
+        }
+
+        .pay-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #1a6b3b;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .pay-btn:hover {
+            background: #135a2f;
+        }
+
+        /* Footer */
+        footer {
+            background: #f5f5f5;
+            color: #666;
+            padding: 3rem 5%;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #1a6b3b;
+            font-weight: 700;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #1a6b3b;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #ddd;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .footer-icons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-icons img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .summary {
+                position: static;
+            }
+
+            .date-group {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Sehatin</div>
+        <nav>
+            <a href="landingpage.html">Beranda</a>
+            <a href="paketcatering.html">Paket</a>
+            <a href="monitoring.html">Pantau Nutrisi</a>
+            <a href="riwayat.html">Pesanan</a>
+            <div class="nav-icons">
+                <a href="keranjang.html"><span class="cart-icon">🛒</span></a>
+                <a href="profil.html"><div class="profile-avatar">JD</div></a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Selesaikan perjalanan vitalitas Anda.</h1>
+            <p>Tinjau paket kesehatan yang Anda pilih dan lanjutkan ke pembayaran.</p>
+        </div>
+
+        <!-- Main Content -->
+        <div>
+            <!-- Alamat Pengiriman -->
+            <div class="form-section">
+                <h2><span class="section-icon">📍</span> Alamat pengiriman</h2>
+                <textarea class="address-input" placeholder="Tandai Lokasi Pengiriman" rows="3"></textarea>
+                
+                <div class="map-container">
+                    <div id="map"></div>
+                </div>
+                
+                <div class="location-info">
+                    Daerah jini ke Geranium Anda untuk pengiriman yang lebih lebih lebar!
+                </div>
+            </div>
+
+            <!-- Catatan Pesanan -->
+            <div class="form-section">
+                <h2>Catatan Optional / Pesan (Cataran Pesanan)</h2>
+                <textarea class="address-input" placeholder="mis. Tolong dikiipkan ke saptaim." rows="4"></textarea>
+            </div>
+
+            <!-- Pengiriman Mulai Dari -->
+            <div class="form-section">
+                <h2><span class="section-icon">📅</span> Pengiriman Mulai Dari:</h2>
+                <div class="date-group">
+                    <button class="date-btn active">
+                        <span class="date-day">SEN</span>
+                        <span class="date-number">24</span>
+                        <span class="date-month">Jun</span>
+                    </button>
+                    <button class="date-btn">
+                        <span class="date-day">SEL</span>
+                        <span class="date-number">25</span>
+                        <span class="date-month">Jun</span>
+                    </button>
+                    <button class="date-btn">
+                        <span class="date-day">RAB</span>
+                        <span class="date-number">26</span>
+                        <span class="date-month">Jun</span>
+                    </button>
+                    <button class="date-btn">
+                        <span class="date-day">KAM</span>
+                        <span class="date-number">27</span>
+                        <span class="date-month">Jun</span>
+                    </button>
+                    <button class="date-btn">
+                        <span class="date-day">JUM</span>
+                        <span class="date-number">28</span>
+                        <span class="date-month">Jun</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Metode Pembayaran -->
+            <div class="form-section">
+                <h2><span class="section-icon">💳</span> Metode Pembayaran</h2>
+                <div class="payment-methods">
+                    <div class="payment-option active">
+                        <div class="payment-icon">🏦</div>
+                        <div class="payment-name">Transfer Bank</div>
+                        <div class="payment-desc">Pembayaran melalui virtual account</div>
+                    </div>
+                    <div class="payment-option">
+                        <div class="payment-icon">📱</div>
+                        <div class="payment-name">Dompet Digital</div>
+                        <div class="payment-desc">Pembayaran melalui GCash</div>
+                    </div>
+                    <div class="payment-option">
+                        <div class="payment-icon">💳</div>
+                        <div class="payment-name">Kartu Kredit</div>
+                        <div class="payment-desc">Pembayaran melalui kartu Visa/Mastercard</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Summary Sidebar -->
+        <div class="summary">
+            <div class="summary-title">Ulasan Pesanan</div>
+            
+            <!-- Order Items -->
+            <div class="summary-item">
+                <img src="images/cart-item-1.png" alt="Keto Keto Plan" class="item-image-small">
+                <div class="item-details">
+                    <div class="item-name">Lion Cleen Keto Plan</div>
+                    <div class="item-desc">Lengkaplah 7 Hari</div>
+                    <div class="item-price">Rp 2.170.000</div>
+                </div>
+            </div>
+
+            <!-- Totals -->
+            <div class="summary-totals">
+                <div class="total-row">
+                    <span>Subtotal</span>
+                    <span>Rp 2.170.000</span>
+                </div>
+                <div class="total-row">
+                    <span>Biaya Pengiriman</span>
+                    <span style="color: #1a6b3b;">GRATIS</span>
+                </div>
+                <div class="total-row">
+                    <span>Diskon</span>
+                    <span>RP. 0</span>
+                </div>
+                <div class="total-row grand">
+                    <span>Total</span>
+                    <span>Rp 2.170.000</span>
+                </div>
+            </div>
+
+            <button class="pay-btn">Bayar →</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Sehatin</h3>
+                <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Katering sehat premium yang membawa kualitas restoran ke meja makan Anda setiap hari.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Layanan</h3>
+                <a href="#">Paket Diet</a>
+                <a href="#">Makanan Pesanan Khusus</a>
+                <a href="#">Katering Perusahaan</a>
+            </div>
+            <div class="footer-column">
+                <h3>Perusahaan</h3>
+                <a href="#">Karier</a>
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Syarat Layanan</a>
+            </div>
+            <div class="footer-column">
+                <h3>Bantuan</h3>
+                <a href="#">Tanya Jawab</a>
+                <a href="#">Hubungi Kami</a>
+                <div class="footer-icons">
+                    <a href="#"><img src="images/icon_share.png" alt="Share"></a>
+                    <a href="#"><img src="images/icon_mail.png" alt="Email"></a>
+                    <a href="#"><img src="images/icon_call.png" alt="Telepon"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Sehatin Healthy Catering. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([-7.8050, 110.3693], 13);
+        
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(map);
+        
+        // Add marker for delivery location
+        const marker = L.marker([-7.8050, 110.3693], {
+            icon: L.icon({
+                iconUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNCIgZmlsbD0iIzFhNmIzYiIvPjwvc3ZnPg==',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32]
+            })
+        }).addTo(map);
+        
+        marker.bindPopup('<strong>Lokasi Pengiriman</strong><br>Yogyakarta');
+    </script>
+    <script>
+        // Date selection
+        document.querySelectorAll('.date-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Payment method selection
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Pay button - navigate to payment success
+        document.querySelector('.pay-btn').addEventListener('click', function() {
+            window.location.href = 'pembayaran.html';
+        });
+    </script>
+</body>
+</html>

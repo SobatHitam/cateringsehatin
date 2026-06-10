@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sehatin - Catering Sehat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: #fff;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a6b3b;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #1a6b3b;
+        }
+
+        .cart-icon {
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .btn-primary {
+            background: #1a6b3b;
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #135a2f;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            padding: 4rem 5%;
+            background: linear-gradient(135deg, rgba(26,107,59,0.05) 0%, rgba(26,107,59,0.02) 100%);
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .hero-content h1 .highlight {
+            color: #1a6b3b;
+            font-style: italic;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #c8f5d8;
+            color: #1a6b3b;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .hero-image {
+            text-align: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 5%;
+            background: #fff;
+        }
+
+        .features h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+
+        .features-text {
+            color: #666;
+            margin-bottom: 3rem;
+            max-width: 500px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: #f9f9f9;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #1a6b3b 0%, #0f4a27 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #1a1a1a;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Packages Section */
+        .packages {
+            padding: 4rem 5%;
+            background: #f9f9f9;
+        }
+
+        .packages h2 {
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #1a1a1a;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .package-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .package-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .package-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .package-info {
+            padding: 2rem;
+        }
+
+        .package-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .package-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .package-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .package-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a6b3b;
+        }
+
+        .package-price small {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .check-icon {
+            width: 30px;
+            height: 30px;
+            background: #1a6b3b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Tips Section */
+        .tips {
+            padding: 4rem 5%;
+            background: white;
+        }
+
+        .tips-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .tips-header h2 {
+            font-size: 1.8rem;
+            color: #1a1a1a;
+        }
+
+        .tips-link {
+            color: #1a6b3b;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .tips-link:hover {
+            text-decoration: underline;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .tip-card {
+            background: #f9f9f9;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tip-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #e0e0e0;
+        }
+
+        .tip-content {
+            padding: 1.5rem;
+        }
+
+        .tip-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            color: #999;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .tip-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .tip-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, #1a6b3b 0%, #0f4a27 100%);
+            color: white;
+            padding: 4rem 5%;
+            text-align: center;
+            border-radius: 20px;
+            margin: 4rem 5%;
+        }
+
+        .cta h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta .btn-secondary {
+            background: white;
+            color: #1a6b3b;
+            padding: 1rem 2.5rem;
+        }
+
+        .cta .btn-secondary:hover {
+            background: #f0f0f0;
+        }
+
+        /* Footer */
+        footer {
+            background: #f5f5f5;
+            color: #666;
+            padding: 3rem 5%;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #1a6b3b;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #1a6b3b;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #ddd;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .footer-icons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-icons img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero, .features-grid, .packages-grid, .tips-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            nav {
+                gap: 1rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Sehatin</div>
+        <nav>
+            <a href="landingpage.html">Beranda</a>
+            <a href="#paket">Paket</a>
+            <a href="#menu">Paket Menu</a>
+            <a href="#blog">Blog</a>
+            <a href="#kontak">Kontak</a>
+            <a href="#keranjang">🛒</a>
+            <a href="login.html" class="btn-primary">Mulai Belanja</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="badge">HEALTHY LIVING REDEFINED</span>
+            <h1>Makan Sehat, <span class="highlight">Hidup Bahagia</span></h1>
+            <p class="hero-text">Nikmati selen katoring sehat premium yang dirancang khusus udi gizi untuk membantu gaya hidup Anda lebih sehat arif. Anda tanpa menghabiskan waktu.</p>
+            <div class="hero-buttons">
+                <button class="btn-primary">Daftar Sekarang</button>
+                <button class="btn-secondary">Lihat Menu</button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="images/salad-hero.png" alt="Salad Segar" style="filter: drop-shadow(0 10px 30px rgba(0,0,0,0.1));">
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <h2>Mengapa Sehatin?</h2>
+        <p class="features-text">Kami menyediakan solusi tahan dengan standar kualitas tertinggi untuk memastikan Anda mendapatkan nutrisi terbaik setiap hari.</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, #90EE90 0%, #7CB342 100%);">
+                    <img src="images/icon-organic.png" alt="Organic" style="width: 40px; height: 40px; object-fit: contain;">
+                </div>
+                <h3>100% Organic</h3>
+                <p>Semua bahan baku kami bersumber dari pertanian lokal bersertifikat organic tanpa pestisida kimia.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, #00BCD4 0%, #0097A7 100%);">
+                    <img src="images/icon-nutrition.png" alt="Nutrition" style="width: 40px; height: 40px; object-fit: contain;">
+                </div>
+                <h3>Nutritious</h3>
+                <p>Setiap menu dirancang oleh kami gizi profesional untuk memberikan Anda keseimbangan nutrisi harian.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: linear-gradient(135deg, #90EE90 0%, #7CB342 100%);">
+                    <img src="images/icon-delivery.png" alt="Delivery" style="width: 40px; height: 40px; object-fit: contain;">
+                </div>
+                <h3>Delivered Fresh</h3>
+                <p>Pengiriman tepat waktu setiap pagi dengan kontrol suhu terjaga untuk menjamin kesegaran maksimal.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Packages Section -->
+    <section class="packages">
+        <h2>Pilih Paket Sehatmu</h2>
+        <div class="packages-grid">
+            <div class="package-card">
+                <img src="images/package-salmon.png" alt="Weight Loss Elite" class="package-image">
+                <div class="package-info">
+                    <div class="package-name">Weight Loss Elite</div>
+                    <p class="package-description">Program diet sehat untuk mencapai berat badan ideal dengan nutrisi optimal.</p>
+                    <div class="package-footer">
+                        <div>
+                            <div class="package-price">Rp 450k<small>/minggu</small></div>
+                        </div>
+                        <div class="check-icon">✓</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <img src="images/package-steak.png" alt="Muscle Builder" class="package-image">
+                <div class="package-info">
+                    <div class="package-name">Muscle Builder</div>
+                    <p class="package-description">Protein tinggi untuk membangun otot dan meningkatkan performa atletik Anda.</p>
+                    <div class="package-footer">
+                        <div>
+                            <div class="package-price">Rp 550k<small>/minggu</small></div>
+                        </div>
+                        <div class="check-icon">✓</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <img src="images/package-salad.png" alt="Vegan Zen" class="package-image">
+                <div class="package-info">
+                    <div class="package-name">Vegan Zen</div>
+                    <p class="package-description">Menu 100% plant-based untuk gaya hidup vegan yang sehat dan berkelanjutan.</p>
+                    <div class="package-footer">
+                        <div>
+                            <div class="package-price">Rp 480k<small>/minggu</small></div>
+                        </div>
+                        <div class="check-icon">✓</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips Section -->
+    <section class="tips">
+        <div class="tips-header">
+            <h2>Tips Kesehatan Terkini</h2>
+            <a href="#" class="tips-link">Lihat Semua Artikel →</a>
+        </div>
+        <div class="tips-grid">
+            <div class="tip-card">
+                <img src="images/tip-vegetables.png" alt="Manfaat Sayuran" class="tip-image">
+                <div class="tip-content">
+                    <div class="tip-label">Nutrisi</div>
+                    <div class="tip-title">5 Manfaat Sayuran Hijau Untuk Kulit</div>
+                    <p class="tip-description">Sayuran hijau memiliki kandungan sehat untuk menjaga kesehatan kulit agar tetap cerah.</p>
+                </div>
+            </div>
+            <div class="tip-card">
+                <img src="images/tip-article.png" alt="Artikel Kesehatan" class="tip-image">
+                <div class="tip-content">
+                    <div class="tip-label">Care Guide</div>
+                    <div class="tip-title">Pentingnya Hidrasi di Sela Kesibukan</div>
+                    <p class="tip-description">Setiap detik mengkonsumsi air membuat tubuh lebih sehat dan produktif sepanjang hari.</p>
+                </div>
+            </div>
+            <div class="tip-card">
+                <img src="images/tip-recipe.png" alt="Resep Sehat" class="tip-image">
+                <div class="tip-content">
+                    <div class="tip-label">RESEP</div>
+                    <div class="tip-title">Sarapan Sehat Untuk Produktivitas</div>
+                    <p class="tip-description">Awali pagi Anda dengan sarapan bergizi lengkap untuk performa maksimal sepanjang hari.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <h2>Siap Memulai Hidup Lebih Sehat?</h2>
+        <button class="btn-secondary">Daftar Sekarang</button>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Sehatin</h3>
+                <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">Katering sehat premium yang membawa kualitas restoran ke meja makan Anda setiap hari.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Layanan</h3>
+                <a href="#">Paket Diet</a>
+                <a href="#">Makanan Pesanan Khusus</a>
+                <a href="#">Katering Perusahaan</a>
+            </div>
+            <div class="footer-column">
+                <h3>Perusahaan</h3>
+                <a href="#">Karier</a>
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Syarat Layanan</a>
+            </div>
+            <div class="footer-column">
+                <h3>Bantuan</h3>
+                <a href="#">Tanya Jawab</a>
+                <a href="#">Hubungi Kami</a>
+                <div class="footer-icons">
+                    <a href="#"><img src="images/icon_share.png" alt="Share"></a>
+                    <a href="#"><img src="images/icon_mail.png" alt="Email"></a>
+                    <a href="#"><img src="images/icon_call.png" alt="Telepon"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Sehatin Healthy Catering. All rights reserved.</span>
+        </div>
+    </footer>
+</body>
+</html>
