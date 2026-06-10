@@ -141,7 +141,9 @@
         }
 
         .section-icon {
-            font-size: 1.5rem;
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
         }
 
         /* Address Section */
@@ -185,18 +187,23 @@
         .date-group {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 0.75rem;
+            gap: 1rem;
             margin-bottom: 2rem;
         }
 
         .date-btn {
-            padding: 1rem;
+            padding: 1.2rem 0.8rem;
             border: 2px solid #e0e0e0;
             background: white;
-            border-radius: 10px;
+            border-radius: 30px;
             cursor: pointer;
             text-align: center;
             transition: all 0.3s;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .date-btn:hover {
@@ -210,12 +217,13 @@
         }
 
         .date-day {
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             font-weight: 700;
             text-transform: uppercase;
             color: #999;
             display: block;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.5px;
         }
 
         .date-btn.active .date-day {
@@ -223,15 +231,16 @@
         }
 
         .date-number {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: 700;
+            line-height: 1;
         }
 
         .date-month {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #999;
             display: block;
-            margin-top: 0.2rem;
+            margin-top: 0.3rem;
         }
 
         .date-btn.active .date-month {
@@ -242,17 +251,22 @@
         .payment-methods {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .payment-option {
-            padding: 1.5rem;
+            padding: 2rem 1.5rem;
             border: 2px solid #e0e0e0;
             background: white;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
-            text-align: center;
+            text-align: left;
             transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            min-height: 180px;
+            justify-content: flex-start;
         }
 
         .payment-option:hover {
@@ -265,19 +279,23 @@
         }
 
         .payment-icon {
-            font-size: 2rem;
-            margin-bottom: 0.75rem;
+            width: 24px;
+            height: 24px;
+            margin-bottom: 1rem;
+            object-fit: contain;
         }
 
         .payment-name {
-            font-weight: 600;
+            font-weight: 700;
             color: #1a1a1a;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
         }
 
         .payment-desc {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #999;
+            line-height: 1.4;
         }
 
         /* Summary Sidebar */
@@ -489,14 +507,15 @@
         <!-- Page Header -->
         <div class="page-header">
             <h1>Selesaikan perjalanan vitalitas Anda.</h1>
-            <p>Tinjau paket kesehatan yang Anda pilih dan lanjutkan ke pembayaran.</p>
+            <p>Tinjau rencana nutrisi Anda dan pilih lokasi pengiriman yang Anda inginkan. 
+                Kesegaran tiba sesuai jadwal Anda..</p>
         </div>
 
         <!-- Main Content -->
         <div>
             <!-- Alamat Pengiriman -->
             <div class="form-section">
-                <h2><span class="section-icon">📍</span> Alamat pengiriman</h2>
+                <h2><img src="images/icon_location.png" alt="Location" class="section-icon"> Alamat pengiriman</h2>
                 <textarea class="address-input" placeholder="Tandai Lokasi Pengiriman" rows="3"></textarea>
                 
                 <div class="map-container">
@@ -516,7 +535,7 @@
 
             <!-- Pengiriman Mulai Dari -->
             <div class="form-section">
-                <h2><span class="section-icon">📅</span> Pengiriman Mulai Dari:</h2>
+                <h2><img src="images/icon_calendar.png" alt="Calendar" class="section-icon"> Pengiriman Mulai Dari:</h2>
                 <div class="date-group">
                     <button class="date-btn active">
                         <span class="date-day">SEN</span>
@@ -548,22 +567,22 @@
 
             <!-- Metode Pembayaran -->
             <div class="form-section">
-                <h2><span class="section-icon">💳</span> Metode Pembayaran</h2>
+                <h2><img src="images/icon_pay.png" alt="Payment" class="section-icon"> Metode Pembayaran</h2>
                 <div class="payment-methods">
                     <div class="payment-option active">
-                        <div class="payment-icon">🏦</div>
+                        <img src="images/icon_bank.png" alt="Bank" class="payment-icon">
                         <div class="payment-name">Transfer Bank</div>
-                        <div class="payment-desc">Pembayaran melalui virtual account</div>
+                        <div class="payment-desc">Pembayaran melalui virtual account.</div>
                     </div>
                     <div class="payment-option">
-                        <div class="payment-icon">📱</div>
+                        <img src="images/icon_wallet.png" alt="Wallet" class="payment-icon">
                         <div class="payment-name">Dompet Digital</div>
-                        <div class="payment-desc">Pembayaran melalui GCash</div>
+                        <div class="payment-desc">Pembayaran melalui QRIS.</div>
                     </div>
                     <div class="payment-option">
-                        <div class="payment-icon">💳</div>
+                        <img src="images/icon_credit.png" alt="Credit" class="payment-icon">
                         <div class="payment-name">Kartu Kredit</div>
-                        <div class="payment-desc">Pembayaran melalui kartu Visa/Mastercard</div>
+                        <div class="payment-desc">Pembayaran melalui kartu Visa/Mastercard.</div>
                     </div>
                 </div>
             </div>
@@ -656,7 +675,7 @@
         // Add marker for delivery location
         const marker = L.marker([-7.8050, 110.3693], {
             icon: L.icon({
-                iconUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNCIgZmlsbD0iIzFhNmIzYiIvPjwvc3ZnPg==',
+                iconUrl: 'images/icon_location.png',
                 iconSize: [32, 32],
                 iconAnchor: [16, 32]
             })
