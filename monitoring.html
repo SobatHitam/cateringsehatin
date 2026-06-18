@@ -5,508 +5,639 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pantau Nutrisi - Sehatin</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #f5f5f5;
-            color: #333;
-        }
-
-        /* Header */
-        header {
-            background: white;
-            padding: 1.5rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1a6b3b;
-        }
-
-        nav {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #333;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-            position: relative;
-            padding-bottom: 0.5rem;
-        }
-
-        nav a.active {
-            color: #1a6b3b;
-            font-weight: 600;
-        }
-
-        nav a.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: #1a6b3b;
-            border-radius: 2px;
-        }
-
-        nav a:hover {
-            color: #1a6b3b;
-        }
-
-        .nav-icons {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .cart-icon {
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        .profile-avatar {
-            width: 40px;
-            height: 40px;
-            background: #1a6b3b;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 5%;
-        }
-
-        .page-header {
-            padding: 2rem 0 1rem 0;
-        }
-
-        .page-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 0.5rem;
-        }
-
-        .page-subtitle {
-            color: #666;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        /* Content Grid */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 250px;
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        /* Daily Target Section */
-        .daily-target {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .target-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-        }
-
-        .target-title {
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #999;
-            letter-spacing: 0.5px;
-        }
-
-        .target-value {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin: 0.3rem 0;
-        }
-
-        .target-max {
-            font-size: 0.9rem;
-            color: #999;
-        }
-
-        .progress-badge {
-            background: #a4f77f;
-            color: #1a6b3b;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 16px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 2rem 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #1a6b3b 0%, #1a6b3b 50%, #a4f77f 100%);
-            border-radius: 10px;
-            transition: width 0.3s;
-        }
-
-        /* Nutrition Grid */
-        .nutrition-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .nutrition-item {
-            background: transparent;
-            padding: 0;
-            border-radius: 0;
-        }
-
-        .nutrition-label {
-            font-size: 0.75rem;
-            color: #999;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        .nutrition-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 0.3rem;
-        }
-
-        .nutrition-max {
-            font-size: 0.9rem;
-            color: #999;
-            display: inline;
-            margin-left: 0;
-        }
-
-        .nutrition-progress {
-            width: 100%;
-            height: 6px;
-            background: #e0e0e0;
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 1rem;
-        }
-
-        .nutrition-progress-fill {
-            height: 100%;
-            background: #1a6b3b;
-            border-radius: 3px;
-        }
-
-        /* Sidebar Calendar */
-        .sidebar-calendar {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            height: fit-content;
-            position: sticky;
-            top: 100px;
-        }
-
-        .calendar-title {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 1.5rem;
-        }
-
-        .calendar-bars {
-            display: flex;
-            flex-direction: row;
-            gap: 1rem;
-            align-items: flex-end;
-            justify-content: space-between;
-        }
-
-        .calendar-day {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            align-items: center;
-            flex: 1;
-        }
-
-        .day-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #999;
-            order: 2;
-        }
-
-        .day-bar-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            height: 140px;
-            gap: 0.4rem;
-            width: 100%;
-            order: 1;
-        }
-
-        .day-bar {
-            flex: 1;
-            background: #e0e0e0;
-            border-radius: 3px;
-            position: relative;
-            width: 100%;
-            min-height: 6px;
-        }
-
-        .day-bar.filled-1 {
-            background: #d4f77f;
-            height: 25%;
-        }
-
-        .day-bar.filled-2 {
-            background: #a4f77f;
-            height: 50%;
-        }
-
-        .day-bar.filled-3 {
-            background: #74f77f;
-            height: 75%;
-        }
-
-        .day-bar.filled-4 {
-            background: #1a6b3b;
-            height: 100%;
-        }
-
-        /* Meal Journal Section */
-        .meal-journal {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            margin: 2rem 0 3rem 0;
-            grid-column: 1 / -1;
-        }
-
-        .journal-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 1.5rem;
-        }
-
-        .meals-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-        }
-
-        .meal-card {
-            border-radius: 10px;
-            overflow: hidden;
-            background: white;
-            border: 1px solid #f0f0f0;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .meal-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .meal-image {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            position: relative;
-        }
-
-        .meal-type-label {
-            position: absolute;
-            top: 0.75rem;
-            left: 0.75rem;
-            background: rgba(255,255,255,0.9);
-            color: #1a6b3b;
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .meal-content {
-            padding: 1rem;
-        }
-
-        .meal-name {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 0.4rem;
-            line-height: 1.4;
-        }
-
-        .meal-description {
-            font-size: 0.8rem;
-            color: #999;
-            margin-bottom: 0.5rem;
-        }
-
-        .meal-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 0.75rem;
-            border-top: 1px solid #f0f0f0;
-        }
-
-        .meal-calories {
-            font-weight: 700;
-            color: #1a6b3b;
-            font-size: 0.9rem;
-        }
-
-        .meal-time {
-            font-size: 0.75rem;
-            color: #999;
-        }
-
-        /* Footer */
-        footer {
-            background: #f5f5f5;
-            color: #666;
-            padding: 3rem 5%;
-            margin-top: 3rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto 2rem;
-        }
-
-        .footer-column h3 {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            color: #1a6b3b;
-            font-weight: 700;
-        }
-
-        .footer-column a {
-            display: block;
-            color: #666;
-            text-decoration: none;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-column p {
-            font-size: 0.9rem;
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .footer-icons {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-
-        .footer-icons a {
-            color: #1a6b3b;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .footer-icons img {
-            width: 24px;
-            height: 24px;
-            object-fit: contain;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #ddd;
-            padding-top: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            font-size: 0.9rem;
-            color: #999;
-        }
-
-        @media (max-width: 768px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar-calendar {
-                position: static;
-            }
-
-            .nutrition-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .meals-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .day-bar-container {
-                height: 80px;
-            }
-
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+}
+
+/* Header */
+header {
+    background: white;
+    padding: 1.5rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a6b3b;
+}
+
+nav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+nav a.active {
+    color: #1a6b3b;
+    font-weight: 600;
+}
+
+nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #1a6b3b;
+    border-radius: 2px;
+}
+
+nav a:hover {
+    color: #1a6b3b;
+}
+
+.nav-icons {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.cart-icon {
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+}
+
+.cart-icon:hover {
+    transform: scale(1.1);
+}
+
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    background: #1a6b3b;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.profile-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(26, 107, 59, 0.3);
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+.page-header {
+    padding: 2rem 0 1rem 0;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Content Grid */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 250px;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+/* Daily Target Section */
+.daily-target {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: box-shadow 0.3s;
+}
+
+.daily-target:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.target-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.target-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #999;
+    letter-spacing: 0.5px;
+}
+
+.target-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0.3rem 0;
+}
+
+.target-current {
+    display: inline;
+    font-size: 1rem;
+}
+
+.target-max {
+    font-size: 0.9rem;
+    color: #999;
+    display: inline;
+}
+
+.progress-badge {
+    background: #a4f77f;
+    color: #1a6b3b;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: background 0.3s;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 16px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 2rem 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #1a6b3b 0%, #1a6b3b 50%, #a4f77f 100%);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+/* Nutrition Grid */
+.nutrition-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    margin-top: 1.5rem;
+}
+
+.nutrition-item {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    transition: opacity 0.3s;
+}
+
+.nutrition-label {
+    font-size: 0.75rem;
+    color: #999;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.nutrition-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.3rem;
+}
+
+.nutrition-max {
+    font-size: 0.9rem;
+    color: #999;
+    display: inline;
+    margin-left: 0;
+}
+
+.nutrition-progress {
+    width: 100%;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.nutrition-progress-fill {
+    height: 100%;
+    background: #1a6b3b;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+/* Sidebar Calendar */
+.sidebar-calendar {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+    transition: box-shadow 0.3s;
+}
+
+.sidebar-calendar:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.calendar-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 1.25rem;
+}
+
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.day-header {
+    text-align: center;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #999;
+    padding: 0.35rem 0;
+    letter-spacing: 0.3px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.3rem;
+    margin-bottom: 1rem;
+}
+
+.calendar-day {
+    aspect-ratio: 1 / 1;
+    background: #a4f77f;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #1a6b3b;
+    transition: all 0.25s ease;
+    user-select: none;
+}
+
+.calendar-day:hover {
+    background: #8cf068;
+}
+
+.calendar-day.empty {
+    background: transparent;
+    cursor: default;
+}
+
+.calendar-day.empty:hover {
+    background: transparent;
+    transform: none;
+}
+
+.calendar-day.selected {
+    background: #a4f77f;
+    color: #1a6b3b;
+    box-shadow: none;
+    font-weight: 700;
+}
+
+.calendar-day.selected:hover {
+    background: #8cf068;
+    transform: none;
+}
+
+.calendar-day.completed {
+    background: #a4f77f;
+    color: #1a6b3b;
+    font-weight: 700;
+}
+
+.calendar-day.completed:hover {
+    background: #8cf068;
+    transform: none;
+}
+
+.calendar-date-info {
+    font-size: 0.75rem;
+    color: #999;
+    text-align: center;
+    margin-bottom: 1.25rem;
+    min-height: 1.2rem;
+    font-weight: 500;
+}
+
+/* Weight Display Card */
+.weight-card {
+    margin-top: 0.75rem;
+    padding: 1rem;
+    background: #f5f5f5;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.weight-label {
+    font-size: 0.65rem;
+    color: #999;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+}
+
+.weight-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+/* Meal Journal Section */
+.meal-journal {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin: 2rem 0 3rem 0;
+    grid-column: 1 / -1;
+    transition: box-shadow 0.3s;
+}
+
+.meal-journal:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.journal-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+}
+
+.meals-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.meal-card {
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+    border: 1px solid #f0f0f0;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.meal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.meal-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+}
+
+.meal-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.meal-card:hover .meal-image {
+    transform: scale(1.05);
+}
+
+.meal-type-label {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: rgba(255,255,255,0.9);
+    color: #1a6b3b;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.meal-type-label.dark {
+    background: #1a1a1a;
+    color: white;
+}
+
+.meal-content {
+    padding: 1rem;
+}
+
+.meal-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.4rem;
+    line-height: 1.4;
+}
+
+.meal-description {
+    font-size: 0.8rem;
+    color: #999;
+    margin-bottom: 0.5rem;
+}
+
+.meal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.75rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+.meal-calories {
+    font-weight: 700;
+    color: #1a6b3b;
+    font-size: 0.9rem;
+}
+
+.meal-time {
+    font-size: 0.75rem;
+    color: #999;
+}
+
+/* Footer */
+footer {
+    background: #f5f5f5;
+    color: #666;
+    padding: 3rem 5%;
+    margin-top: 3rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+}
+
+.footer-column h3 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: #1a6b3b;
+    font-weight: 700;
+}
+
+.footer-column a {
+    display: block;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    transition: color 0.2s;
+}
+
+.footer-column a:hover {
+    color: #1a6b3b;
+}
+
+.footer-column p {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+.footer-icons {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.footer-icons a {
+    color: #1a6b3b;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.footer-icons a:hover {
+    transform: scale(1.1);
+}
+
+.footer-icons img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.footer-bottom {
+    border-top: 1px solid #ddd;
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-size: 0.9rem;
+    color: #999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar-calendar {
+        position: static;
+    }
+
+    .nutrition-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .meals-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .nutrition-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .meals-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+    nav {
+        gap: 1rem;
+    }
+
+    header {
+        padding: 1rem 5%;
+    }
+}
     </style>
 </head>
 <body>
@@ -540,7 +671,7 @@
                 <div class="target-header">
                     <div>
                         <div class="target-title">Target Harian</div>
-                        <div class="target-value">1,840<span style="font-size: 1rem;">/ 2,400 kcal</span></div>
+                        <div class="target-value">1,840<span class="target-current">/ 2,400 kcal</span></div>
                     </div>
                     <span class="progress-badge">76% Tercapai</span>
                 </div>
@@ -577,48 +708,24 @@
             <!-- Sidebar Calendar -->
             <div class="sidebar-calendar">
                 <div class="calendar-title">Pemantauan Gizi Berlaku</div>
-                <div class="calendar-bars">
-                    <div class="calendar-day">
-                        <div class="day-label">12 Apr</div>
-                        <div class="day-bar-container">
-                            <div class="day-bar filled-4"></div>
-                        </div>
-                    </div>
-                    <div class="calendar-day">
-                        <div class="day-label">13 Apr</div>
-                        <div class="day-bar-container">
-                            <div class="day-bar filled-4"></div>
-                        </div>
-                    </div>
-                    <div class="calendar-day">
-                        <div class="day-label">14 Apr</div>
-                        <div class="day-bar-container">
-                            <div class="day-bar filled-4"></div>
-                        </div>
-                    </div>
-                    <div class="calendar-day">
-                        <div class="day-label">15 Apr</div>
-                        <div class="day-bar-container">
-                            <div class="day-bar filled-4"></div>
-                        </div>
-                    </div>
-                    <div class="calendar-day">
-                        <div class="day-label">16 Apr</div>
-                        <div class="day-bar-container">
-                            <div class="day-bar filled-2"></div>
-                        </div>
-                    </div>
-                    <div class="calendar-day">
-                        <div class="day-label">17 Apr</div>
-                        <div class="day-bar-container">
-                            <div class="day-bar filled-1"></div>
-                        </div>
-                    </div>
+                
+                <div class="calendar-header">
+                    <div class="day-header">Min</div>
+                    <div class="day-header">Sen</div>
+                    <div class="day-header">Sel</div>
+                    <div class="day-header">Rab</div>
+                    <div class="day-header">Kam</div>
+                    <div class="day-header">Jum</div>
+                    <div class="day-header">Sab</div>
                 </div>
+                
+                <div class="calendar-grid" id="calendarGrid"></div>
+                
+                <div class="calendar-date-info" id="selectedDateInfo"></div>
 
-                <div style="margin-top: 1.5rem; padding: 1rem; background: #f5f5f5; border-radius: 8px; text-align: center;">
-                    <div style="font-size: 0.7rem; color: #999; text-transform: uppercase; margin-bottom: 0.3rem;">Perkiran Gerat Saat Ini</div>
-                    <div style="font-size: 1.3rem; font-weight: 700; color: #1a1a1a;">74.2 kg</div>
+                <div class="weight-card">
+                    <div class="weight-label">Perkiran Gerat Saat Ini</div>
+                    <div class="weight-value">74.2 kg</div>
                 </div>
             </div>
         </div>
@@ -629,7 +736,7 @@
             <div class="meals-grid">
                 <!-- Breakfast -->
                 <div class="meal-card">
-                    <div style="position: relative;">
+                    <div class="meal-image-wrapper">
                         <img src="images/meal-breakfast.png" alt="Organic Acai Bowl" class="meal-image">
                         <span class="meal-type-label">Breakfast</span>
                     </div>
@@ -645,7 +752,7 @@
 
                 <!-- Lunch -->
                 <div class="meal-card">
-                    <div style="position: relative;">
+                    <div class="meal-image-wrapper">
                         <img src="images/meal-lunch.png" alt="Mediterranean Power Bowl" class="meal-image">
                         <span class="meal-type-label">Lunch</span>
                     </div>
@@ -661,7 +768,7 @@
 
                 <!-- Snack -->
                 <div class="meal-card">
-                    <div style="position: relative;">
+                    <div class="meal-image-wrapper">
                         <img src="images/meal-lunch.png" alt="Mixed Raw Nuts" class="meal-image">
                         <span class="meal-type-label">Snack</span>
                     </div>
@@ -677,15 +784,15 @@
 
                 <!-- Dinner -->
                 <div class="meal-card">
-                    <div style="position: relative;">
+                    <div class="meal-image-wrapper">
                         <img src="images/meal-dinner.png" alt="Mixed Raw Nuts" class="meal-image">
-                        <span class="meal-type-label" style="background: #1a1a1a; color: white;">Snack</span>
+                        <span class="meal-type-label dark">Dinner</span>
                     </div>
                     <div class="meal-content">
-                        <div class="meal-name">Mixed Raw Nuts</div>
-                        <div class="meal-description">Almonds, Walnuts & Sea Salt</div>
+                        <div class="meal-name">Grilled Fish with Vegetables</div>
+                        <div class="meal-description">Fresh Fish, Brown Rice & Greens</div>
                         <div class="meal-footer">
-                            <span class="meal-calories">210 kcal</span>
+                            <span class="meal-calories">530 kcal</span>
                             <span class="meal-time">19:15</span>
                         </div>
                     </div>
@@ -699,7 +806,7 @@
         <div class="footer-content">
             <div class="footer-column">
                 <h3>Sehatin</h3>
-                <p style="color: #666; font-size: 0.9rem;">Katering sehat premium yang membawa kualitas restoran ke meja makan Anda setiap hari.</p>
+                <p>Katering sehat premium yang membawa kualitas restoran ke meja makan Anda setiap hari.</p>
             </div>
             <div class="footer-column">
                 <h3>Layanan</h3>
@@ -728,5 +835,468 @@
             <span>© 2026 Sehatin Healthy Catering. All rights reserved.</span>
         </div>
     </footer>
+
+    <script>
+/**
+ * Monitoring Page - JavaScript Interactivity
+ */
+
+// Nutrition Data by Date
+const nutritionDataByDate = {
+    '2026-04-12': { calories: 1840, protein: 142, carbs: 210, fat: 48, percentage: 100 },
+    '2026-04-13': { calories: 1840, protein: 142, carbs: 210, fat: 48, percentage: 100 },
+    '2026-04-14': { calories: 1840, protein: 142, carbs: 210, fat: 48, percentage: 100 },
+    '2026-04-15': { calories: 1840, protein: 142, carbs: 210, fat: 48, percentage: 100 },
+    '2026-04-16': { calories: 920, protein: 71, carbs: 105, fat: 24, percentage: 50 },
+    '2026-04-17': { calories: 460, protein: 36, carbs: 53, fat: 12, percentage: 25 }
+};
+
+// Nutrition Data Management
+class NutritionData {
+    constructor() {
+        this.dailyTarget = {
+            calories: 2400,
+            protein: 180,
+            carbs: 300,
+            fat: 80
+        };
+
+        this.currentIntake = {
+            calories: 1840,
+            protein: 142,
+            carbs: 210,
+            fat: 48
+        };
+
+        this.weeklyData = [
+            { date: '12 Apr', percentage: 100 },
+            { date: '13 Apr', percentage: 100 },
+            { date: '14 Apr', percentage: 100 },
+            { date: '15 Apr', percentage: 100 },
+            { date: '16 Apr', percentage: 50 },
+            { date: '17 Apr', percentage: 25 }
+        ];
+
+        this.weight = 74.2;
+    }
+
+    getProgress() {
+        return Math.round((this.currentIntake.calories / this.dailyTarget.calories) * 100);
+    }
+
+    getNutritionProgress(nutrient) {
+        const current = this.currentIntake[nutrient];
+        const target = this.dailyTarget[nutrient];
+        return Math.round((current / target) * 100);
+    }
+
+    updateNutrition(nutrient, amount) {
+        if (this.currentIntake.hasOwnProperty(nutrient)) {
+            this.currentIntake[nutrient] = Math.min(
+                amount,
+                this.dailyTarget[nutrient]
+            );
+            this.saveToLocalStorage();
+            this.updateUI();
+        }
+    }
+
+    saveToLocalStorage() {
+        localStorage.setItem('nutritionData', JSON.stringify({
+            currentIntake: this.currentIntake,
+            weight: this.weight,
+            lastUpdated: new Date().toISOString()
+        }));
+    }
+
+    loadFromLocalStorage() {
+        const stored = localStorage.getItem('nutritionData');
+        if (stored) {
+            const data = JSON.parse(stored);
+            this.currentIntake = data.currentIntake;
+            this.weight = data.weight;
+        }
+    }
+
+    updateUI() {
+        updateProgressDisplay();
+        updateNutritionDisplay();
+        updateWeightDisplay();
+    }
+}
+
+// Initialize nutrition data
+const nutritionData = new NutritionData();
+nutritionData.loadFromLocalStorage();
+
+/**
+ * Update main progress bar and badge
+ */
+function updateProgressDisplay() {
+    const progress = nutritionData.getProgress();
+    const progressFill = document.querySelector('.progress-fill');
+    const progressBadge = document.querySelector('.progress-badge');
+    const targetValue = document.querySelector('.target-value');
+
+    if (progressFill) {
+        progressFill.style.width = progress + '%';
+    }
+
+    if (progressBadge) {
+        progressBadge.textContent = progress + '% Tercapai';
+        // Change color based on progress
+        if (progress >= 100) {
+            progressBadge.style.background = '#74f77f';
+        } else if (progress >= 80) {
+            progressBadge.style.background = '#a4f77f';
+        } else {
+            progressBadge.style.background = '#d4f77f';
+        }
+    }
+
+    if (targetValue) {
+        targetValue.innerHTML = `${nutritionData.currentIntake.calories.toLocaleString('id-ID')}<span class="target-current">/ ${nutritionData.dailyTarget.calories.toLocaleString('id-ID')} kcal</span>`;
+    }
+}
+
+/**
+ * Update nutrition items (Protein, Carbs, Fat)
+ */
+function updateNutritionDisplay() {
+    const nutritionItems = document.querySelectorAll('.nutrition-item');
+    const nutrients = ['protein', 'carbs', 'fat'];
+    const labels = ['Protein', 'Karbohidrat', 'Lemak'];
+    const units = ['g', 'g', 'g'];
+
+    nutritionItems.forEach((item, index) => {
+        const nutrient = nutrients[index];
+        const progress = nutritionData.getNutritionProgress(nutrient);
+        const current = nutritionData.currentIntake[nutrient];
+        const target = nutritionData.dailyTarget[nutrient];
+
+        // Update value and progress
+        const valueElement = item.querySelector('.nutrition-value');
+        if (valueElement) {
+            valueElement.innerHTML = `${current}${units[index]}<span class="nutrition-max">/${target}${units[index]}</span>`;
+        }
+
+        // Update progress bar
+        const progressFill = item.querySelector('.nutrition-progress-fill');
+        if (progressFill) {
+            progressFill.style.width = progress + '%';
+        }
+    });
+}
+
+/**
+ * Update weight display
+ */
+function updateWeightDisplay() {
+    const weightValue = document.querySelector('.weight-value');
+    if (weightValue) {
+        weightValue.textContent = nutritionData.weight.toFixed(1) + ' kg';
+    }
+}
+
+/**
+ * Generate calendar grid for April 2026
+ */
+function generateCalendarGrid() {
+    const calendarGrid = document.getElementById('calendarGrid');
+    if (!calendarGrid) return;
+
+    calendarGrid.innerHTML = '';
+
+    // April 2026 starts on Friday (April 3)
+    // Need to fill empty cells for Sunday-Thursday of first week
+    const firstDayOfWeek = 5; // Friday is index 5 (0=Sunday, 1=Monday, etc.)
+    const daysInMonth = 30; // April has 30 days
+
+    // Add empty cells for days before April 1
+    for (let i = 0; i < firstDayOfWeek; i++) {
+        const emptyDay = document.createElement('div');
+        emptyDay.className = 'calendar-day empty';
+        calendarGrid.appendChild(emptyDay);
+    }
+
+    // Add days of April
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `2026-04-${String(day).padStart(2, '0')}`;
+        const dayElement = document.createElement('div');
+        dayElement.className = 'calendar-day';
+        dayElement.textContent = day;
+        dayElement.dataset.date = dateStr;
+
+        // Check if this date has data
+        if (nutritionDataByDate[dateStr]) {
+            dayElement.classList.add('completed');
+            
+            // Set as selected if it's April 12
+            if (day === 12) {
+                dayElement.classList.add('selected');
+                updateSelectedDate(dateStr);
+            }
+        }
+
+        // Add click handler
+        dayElement.addEventListener('click', () => {
+            handleCalendarDateClick(dateStr, dayElement);
+        });
+
+        calendarGrid.appendChild(dayElement);
+    }
+}
+
+/**
+ * Handle calendar date click
+ */
+function handleCalendarDateClick(dateStr, dayElement) {
+    // Check if date has data
+    if (!nutritionDataByDate[dateStr]) {
+        showNotification('Tidak ada data untuk tanggal ini');
+        return;
+    }
+
+    // Remove selected class from all days
+    document.querySelectorAll('.calendar-day.selected').forEach(day => {
+        day.classList.remove('selected');
+    });
+
+    // Add selected class to clicked day
+    dayElement.classList.add('selected');
+
+    // Update nutrition data
+    const data = nutritionDataByDate[dateStr];
+    nutritionData.currentIntake.calories = data.calories;
+    nutritionData.currentIntake.protein = data.protein;
+    nutritionData.currentIntake.carbs = data.carbs;
+    nutritionData.currentIntake.fat = data.fat;
+
+    // Update displays
+    updateSelectedDate(dateStr);
+    updateProgressDisplay();
+    updateNutritionDisplay();
+
+    showNotification(`Data untuk ${formatDate(dateStr)} dimuat`);
+}
+
+/**
+ * Update selected date info
+ */
+function updateSelectedDate(dateStr) {
+    const selectedDateInfo = document.getElementById('selectedDateInfo');
+    if (selectedDateInfo) {
+        selectedDateInfo.textContent = `Dipilih: ${formatDate(dateStr)}`;
+    }
+}
+
+/**
+ * Format date for display
+ */
+function formatDate(dateStr) {
+    const date = new Date(dateStr + 'T00:00:00');
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('id-ID', options);
+}
+
+/**
+ * Initialize calendar
+ */
+function initializeCalendar() {
+    generateCalendarGrid();
+}
+
+/**
+ * Add interactivity to meal cards
+ */
+function initializeMealCards() {
+    const mealCards = document.querySelectorAll('.meal-card');
+
+    mealCards.forEach(card => {
+        card.addEventListener('click', () => {
+            handleMealCardClick(card);
+        });
+
+        // Add animation on hover
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-5px)';
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0)';
+        });
+    });
+}
+
+/**
+ * Handle meal card click
+ */
+function handleMealCardClick(card) {
+    const mealName = card.querySelector('.meal-name');
+    const mealCalories = card.querySelector('.meal-calories');
+
+    if (mealName && mealCalories) {
+        console.log(`Meal selected: ${mealName.textContent} - ${mealCalories.textContent}`);
+        showNotification(`${mealName.textContent} dipilih`);
+    }
+}
+
+/**
+ * Show notification toast
+ */
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #1a6b3b;
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        font-size: 0.95rem;
+        z-index: 1000;
+        animation: slideIn 0.3s ease;
+    `;
+    notification.textContent = message;
+
+    // Add animation style
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+    `;
+    if (!document.querySelector('style[data-notification]')) {
+        style.setAttribute('data-notification', 'true');
+        document.head.appendChild(style);
+    }
+
+    document.body.appendChild(notification);
+
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
+}
+
+/**
+ * Initialize profile avatar with user initial
+ */
+function initializeProfileAvatar() {
+    const avatar = document.querySelector('.profile-avatar');
+    if (avatar) {
+        // Get initials from localStorage or use default
+        const userInitials = localStorage.getItem('userInitials') || 'JD';
+        avatar.textContent = userInitials;
+
+        avatar.addEventListener('click', () => {
+            console.log('Profile clicked');
+            // Could redirect to profile page
+        });
+    }
+}
+
+/**
+ * Initialize cart icon with click handler
+ */
+function initializeCartIcon() {
+    const cartIcon = document.querySelector('.cart-icon');
+    if (cartIcon) {
+        cartIcon.addEventListener('click', () => {
+            console.log('Cart clicked');
+            showNotification('Keranjang dibuka');
+        });
+    }
+}
+
+/**
+ * Real-time progress update simulation
+ */
+function initializeRealtimeUpdates() {
+    // Simulate periodic updates (useful for real-time data)
+    setInterval(() => {
+        // In a real app, you would fetch data from server
+        // For now, we'll just ensure UI is synced
+        updateProgressDisplay();
+    }, 30000); // Update every 30 seconds
+}
+
+/**
+ * Add smooth scroll behavior
+ */
+function initializeSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+}
+
+/**
+ * Initialize all interactive elements
+ */
+function initializeAllInteractions() {
+    // Initialize components
+    initializeCalendar();
+    initializeMealCards();
+    initializeProfileAvatar();
+    initializeCartIcon();
+    initializeRealtimeUpdates();
+    initializeSmoothScroll();
+
+    // Update all displays
+    updateProgressDisplay();
+    updateNutritionDisplay();
+    updateWeightDisplay();
+
+    console.log('All interactions initialized');
+}
+
+/**
+ * DOM Ready Handler
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    initializeAllInteractions();
+});
+
+/**
+ * Export functions for external use
+ */
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        NutritionData,
+        updateProgressDisplay,
+        updateNutritionDisplay,
+        showNotification,
+        nutritionData
+    };
+}
+    </script>
 </body>
 </html>
