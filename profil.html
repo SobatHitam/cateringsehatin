@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Saya - Sehatin</title>
+    <title>Profil - Sehatin</title>
     <style>
         * {
             margin: 0;
@@ -12,745 +12,837 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #f5f5f5;
-            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f9f6f5;
+            color: #2f2f2f;
         }
 
-        /* Header */
-        header {
-            background: white;
-            padding: 1.5rem 5%;
+        .topbar {
+            height: 80px;
+            padding: 0 80px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: rgba(249, 246, 245, 0.8);
+            backdrop-filter: blur(12px);
+            position: relative;
+            z-index: 5;
         }
 
         .logo {
-            font-size: 1.5rem;
+            width: 244px;
+            color: #14532d;
+            font-size: 24px;
             font-weight: 700;
-            color: #1a6b3b;
-        }
-
-        nav {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        nav a {
+            line-height: 32px;
             text-decoration: none;
-            color: #333;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-            position: relative;
-            padding-bottom: 0.5rem;
         }
 
-        nav a.active {
-            color: #1a6b3b;
-            font-weight: 600;
-        }
-
-        nav a.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: #1a6b3b;
-            border-radius: 2px;
-        }
-
-        nav a:hover {
-            color: #1a6b3b;
-        }
-
-        .nav-icons {
+        .nav {
+            flex: 1;
             display: flex;
-            gap: 1.5rem;
-            align-items: center;
+            justify-content: center;
+            gap: 32px;
         }
 
-        .cart-icon, .profile-icon {
-            cursor: pointer;
-            font-size: 1.2rem;
+        .nav a {
+            color: #5c5b5b;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .header-actions {
+            width: 244px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 31px;
+        }
+
+        .cart-link {
+            width: 24px;
+            height: 24px;
+            color: #2f2f2f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .cart-link svg {
+            width: 20px;
+            height: 20px;
         }
 
         .profile-avatar {
             width: 40px;
             height: 40px;
-            background: #1a6b3b;
             border-radius: 50%;
+            background: #006b1b;
+            color: #d1ffc8;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 20px;
+            text-decoration: none;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
-        /* Main Content */
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 5%;
+        .page {
+            max-width: 1120px;
+            margin: 48px auto 0;
         }
 
-        /* Profile Header */
-        .profile-header {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
+        .profile-hero {
+            height: 192px;
             display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 2rem;
+            grid-template-columns: 160px 1fr auto;
             align-items: center;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            gap: 32px;
         }
 
         .profile-photo {
             position: relative;
+            width: 160px;
+            height: 160px;
         }
 
         .profile-photo img {
-            width: 120px;
-            height: 120px;
-            border-radius: 15px;
+            width: 160px;
+            height: 160px;
+            display: block;
             object-fit: cover;
-            border: 3px solid #1a6b3b;
+            object-position: center;
+            border-radius: 24px;
         }
 
-        .online-indicator {
+        .photo-edit {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
-            width: 30px;
-            height: 30px;
-            background: #1a6b3b;
+            right: -12px;
+            bottom: -8px;
+            width: 36px;
+            height: 36px;
+            border: none;
             border-radius: 50%;
-            border: 3px solid white;
+            background: #007a22;
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: bold;
+            box-shadow: 0 8px 18px rgba(0, 122, 34, 0.18);
+            cursor: pointer;
         }
 
-        .profile-info h1 {
-            font-size: 2.5rem;
-            color: #1a1a1a;
-            margin-bottom: 0.5rem;
+        .photo-edit svg {
+            width: 16px;
+            height: 16px;
         }
 
-        .profile-info p {
-            color: #666;
-            font-size: 0.95rem;
+        .profile-name {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 64px;
+            letter-spacing: -1px;
+            margin-bottom: 4px;
+        }
+
+        .profile-meta {
+            color: #5c5b5b;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 24px;
         }
 
         .profile-actions {
             display: flex;
-            gap: 1rem;
+            align-items: center;
+            gap: 16px;
+            padding-top: 64px;
         }
 
         .btn {
-            padding: 0.8rem 2rem;
+            height: 56px;
             border: none;
-            border-radius: 25px;
+            border-radius: 999px;
+            padding: 0 32px;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 24px;
             cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: all 0.3s;
+            white-space: nowrap;
         }
 
         .btn-secondary {
-            background: #e8e8e8;
-            color: #333;
-        }
-
-        .btn-secondary:hover {
-            background: #d0d0d0;
+            background: #ffffff;
+            color: #2f2f2f;
+            box-shadow: inset 0 0 0 1px #e4e2e2;
         }
 
         .btn-primary {
-            background: #1a6b3b;
-            color: white;
+            background: #007a22;
+            color: #ffffff;
+            box-shadow: 0 8px 18px rgba(0, 122, 34, 0.18);
         }
 
-        .btn-primary:hover {
-            background: #135a2f;
-        }
-
-        /* Two Column Layout */
-        .content-wrapper {
+        .layout {
+            margin-top: 80px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            grid-template-columns: 730px 348px;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
         }
 
         .card {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            margin-bottom: 2rem;
+            background: #ffffff;
+            border: 1px solid #e9e7e7;
+            border-radius: 24px;
+            box-shadow: 0 1px 2px rgba(47, 47, 47, 0.03);
         }
 
-        .card h2 {
-            color: #1a1a1a;
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
+        .card-soft {
+            background: #f3f0f0;
+            border-color: transparent;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
+        .section-card {
+            padding: 40px;
         }
 
-        .form-group label {
+        .section-title {
+            color: #14532d;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 32px;
+            margin-bottom: 28px;
+        }
+
+        .section-title.dark {
+            color: #2f2f2f;
+        }
+
+        .profile-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px 32px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .label {
+            color: #5c5b5b;
             display: block;
-            color: #666;
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 800;
+            line-height: 16px;
+            letter-spacing: .6px;
             text-transform: uppercase;
-            margin-bottom: 0.5rem;
+            margin-bottom: 12px;
         }
 
-        .form-group input {
+        .input-pill,
+        .select-pill {
+            height: 56px;
             width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            background: #fafafa;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #1a6b3b;
-            background: white;
-        }
-
-        .data-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .data-row:last-child {
-            border-bottom: none;
-        }
-
-        .data-row label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .data-value {
-            font-weight: 600;
-            color: #1a1a1a;
+            border: none;
+            border-radius: 28px;
+            background: #f3f0f0;
+            color: #3c3a3a;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            padding: 0 18px;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 24px;
+        }
+
+        .metrics-card,
+        .nutrition-card {
+            padding: 32px;
+        }
+
+        .metric-list,
+        .nutrition-list {
+            display: flex;
+            flex-direction: column;
+            gap: 26px;
+        }
+
+        .metric-item,
+        .nutrition-item {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 12px;
+        }
+
+        .metric-label,
+        .nutrition-label {
+            color: #5c5b5b;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: .6px;
+            line-height: 16px;
+            text-transform: uppercase;
+        }
+
+        .metric-value,
+        .nutrition-value {
+            color: #007a22;
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .edit-icon {
-            color: #1a6b3b;
-            cursor: pointer;
-            font-size: 0.9rem;
+            width: 18px;
+            height: 18px;
+            color: #007a22;
         }
 
-        /* Health Goals */
+        .progress-track {
+            grid-column: 1 / -1;
+            height: 8px;
+            border-radius: 999px;
+            background: #e4e2e2;
+            margin-top: 6px;
+        }
+
+        .activity {
+            margin-top: 32px;
+        }
+
+        .select-pill {
+            min-height: 80px;
+            height: auto;
+            justify-content: space-between;
+            padding: 18px;
+        }
+
+        .goals-copy {
+            color: #5c5b5b;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 24px;
+            margin-top: -20px;
+            margin-bottom: 32px;
+        }
+
         .goals-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
         }
 
-        .goal-card {
-            padding: 1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            text-align: center;
+        .goal-tile {
+            height: 100px;
+            border: 1px solid #e9e7e7;
+            border-radius: 22px;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #3c3a3a;
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 20px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s, background 0.2s;
         }
 
-        .goal-card:hover {
-            border-color: #1a6b3b;
-            background: #f9f9f9;
+        .goal-tile svg {
+            width: 30px;
+            height: 30px;
+            color: #5c5b5b;
+            transition: color 0.2s;
         }
 
-        .goal-card.active {
-            border-color: #1a6b3b;
-            background: #e8f5e9;
+        .goal-tile:hover {
+            border-color: #86c795;
+            transform: translateY(-1px);
         }
 
-        .goal-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+        .goal-tile.active {
+            border-color: #007a22;
+            background: #f7fff8;
+            box-shadow: 0 0 0 2px rgba(0, 122, 34, 0.12);
+            color: #007a22;
         }
 
-        .goal-name {
-            font-weight: 600;
-            color: #333;
-            font-size: 0.9rem;
+        .goal-tile.active svg {
+            color: #007a22;
         }
 
-        /* Nutrition Targets */
-        .nutrition-grid {
+        .diet-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px 60px;
         }
 
-        .nutrition-item {
-            background: #f9f9f9;
-            padding: 1rem;
-            border-radius: 10px;
-        }
-
-        .nutrition-label {
-            color: #666;
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .nutrition-value {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #1a6b3b;
-        }
-
-        /* Dietary Preferences */
-        .checkbox-group {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .checkbox-item {
+        .diet-chip {
+            height: 56px;
+            border-radius: 999px;
+            background: #f3f0f0;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            justify-content: center;
+            gap: 12px;
+            color: #3c3a3a;
+            font-size: 16px;
+            font-weight: 800;
+            line-height: 24px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
         }
 
-        .checkbox-item input[type="checkbox"] {
+        .diet-chip:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px rgba(47, 47, 47, 0.06);
+        }
+
+        .check-box {
             width: 20px;
             height: 20px;
-            cursor: pointer;
-            accent-color: #1a6b3b;
+            border-radius: 4px;
+            border: 1px solid #b9b7b7;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            flex-shrink: 0;
         }
 
-        .checkbox-item label {
-            cursor: pointer;
-            margin: 0;
-            font-size: 0.9rem;
+        .diet-chip.checked .check-box {
+            border-color: #007a22;
+            background: #007a22;
         }
 
-        /* Meal Schedule */
-        .meal-schedule {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
+        .diet-chip.checked {
+            box-shadow: inset 0 0 0 1px rgba(0, 122, 34, 0.08);
+        }
+
+        .nutrition-card .section-title {
+            margin-bottom: 28px;
         }
 
         .meal-card {
-            border-radius: 15px;
+            height: 256px;
+            border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             position: relative;
-            height: 180px;
+            box-shadow: 0 18px 28px rgba(47, 47, 47, 0.18);
+            background: #2f2f2f;
         }
 
-        .meal-image {
+        .meal-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
 
-        .meal-info {
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 1rem;
+        .meal-card::after {
+            content: '';
             position: absolute;
-            bottom: 0;
-            width: 100%;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, .78) 100%);
+        }
+
+        .meal-text {
+            position: absolute;
+            left: 24px;
+            right: 24px;
+            bottom: 24px;
+            color: #ffffff;
+            z-index: 1;
         }
 
         .meal-title {
-            font-weight: 600;
-            margin-bottom: 0.3rem;
+            font-size: 20px;
+            font-weight: 800;
+            line-height: 24px;
         }
 
-        .meal-time {
-            font-size: 0.85rem;
-            color: #ccc;
-        }
-
-        /* Exercise Recommendations */
-        .exercise-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
+        .meal-meta {
+            color: rgba(255, 255, 255, .85);
+            font-size: 14px;
+            line-height: 20px;
+            margin-top: 2px;
         }
 
         .exercise-card {
-            border-radius: 15px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 40px 32px 34px;
         }
 
-        .exercise-card:hover {
-            transform: translateY(-5px);
+        .exercise-card .section-title {
+            margin-bottom: 32px;
+        }
+
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
         }
 
         .exercise-image {
-            width: 100%;
-            height: 150px;
+            width: 150px;
+            height: 192px;
+            border-radius: 14px;
             object-fit: cover;
-        }
-
-        .exercise-info {
-            padding: 1rem;
-            background: white;
-            text-align: center;
+            display: block;
+            margin-bottom: 16px;
         }
 
         .exercise-name {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 0.3rem;
+            color: #3c3a3a;
+            font-size: 16px;
+            font-weight: 800;
+            line-height: 24px;
         }
 
         .exercise-desc {
-            font-size: 0.8rem;
-            color: #999;
+            color: #767474;
+            font-size: 13px;
+            font-style: italic;
+            font-weight: 600;
+            line-height: 18px;
+            margin-top: 2px;
         }
 
-        /* Footer */
         footer {
-            background: #f5f5f5;
-            color: #666;
-            padding: 3rem 5%;
-            margin-top: 3rem;
+            margin-top: 48px;
+            background: #f3f0f0;
         }
 
         .footer-content {
+            max-width: 1120px;
+            margin: 0 auto;
+            height: 336px;
+            padding: 96px 0;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto 2rem;
+            gap: 48px;
         }
 
         .footer-column h3 {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            color: #1a6b3b;
-            font-weight: 700;
+            color: #14532d;
+            font-size: 20px;
+            line-height: 28px;
+            margin-bottom: 22px;
         }
 
+        .footer-column p,
         .footer-column a {
+            color: #5c5b5b;
             display: block;
-            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 24px;
             text-decoration: none;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            transition: color 0.3s;
-        }
-
-        .footer-column a:hover {
-            color: #1a6b3b;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #ddd;
-            padding-top: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            font-size: 0.9rem;
-            color: #999;
+            margin-bottom: 10px;
         }
 
         .footer-icons {
             display: flex;
-            gap: 1.5rem;
-        }
-
-        .footer-icons a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            gap: 16px;
+            margin-top: 16px;
         }
 
         .footer-icons img {
             width: 24px;
             height: 24px;
-            object-fit: contain;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .profile-header {
+        .footer-bottom {
+            max-width: 1120px;
+            margin: 0 auto;
+            border-top: 1px solid #e4e2e2;
+            padding: 32px 0;
+            color: #767474;
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+        @media (max-width: 1180px) {
+            .topbar,
+            .page {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+
+            .page,
+            .footer-content,
+            .footer-bottom {
+                max-width: 100%;
+            }
+
+            .layout {
+                grid-template-columns: minmax(0, 1fr) 348px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .topbar {
+                height: auto;
+                padding: 18px 24px;
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+
+            .logo,
+            .header-actions {
+                width: auto;
+            }
+
+            .header-actions {
+                margin-left: auto;
+            }
+
+            .nav {
+                order: 3;
+                width: 100%;
+                justify-content: flex-start;
+                overflow-x: auto;
+            }
+
+            .page {
+                margin-top: 32px;
+            }
+
+            .profile-hero,
+            .layout {
                 grid-template-columns: 1fr;
             }
 
-            .content-wrapper {
+            .profile-actions {
+                padding-top: 0;
+                flex-wrap: wrap;
+            }
+
+            .profile-name {
+                font-size: 42px;
+                line-height: 48px;
+            }
+
+            .profile-form,
+            .diet-grid,
+            .goals-grid,
+            .exercise-grid,
+            .footer-content {
                 grid-template-columns: 1fr;
             }
 
-            .goals-grid, .checkbox-group {
-                grid-template-columns: 1fr;
-            }
-
-            .exercise-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .exercise-image {
+                width: 100%;
+                height: 220px;
             }
 
             .footer-content {
-                grid-template-columns: repeat(2, 1fr);
+                height: auto;
+                padding: 48px 24px;
             }
 
-            .profile-info h1 {
-                font-size: 1.8rem;
+            .footer-bottom {
+                padding-left: 24px;
+                padding-right: 24px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="logo">Sehatin</div>
-        <nav>
+    <header class="topbar">
+        <a class="logo" href="landingpage.html">Sehatin</a>
+        <nav class="nav" aria-label="Navigasi utama">
             <a href="landingpage.html">Beranda</a>
             <a href="paketcatering.html">Paket</a>
             <a href="monitoring.html">Pantau Nutrisi</a>
             <a href="riwayat.html">Pesanan</a>
-            <div class="nav-icons">
-                <a href="keranjang.html"><span class="cart-icon">🛒</span></a>
-                <a href="profil.html"><div class="profile-avatar">JD</div></a>
-            </div>
         </nav>
+        <div class="header-actions">
+            <a class="cart-link" href="keranjang.html" aria-label="Keranjang">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M3.75 4.75h2.1l1.65 9.05a2 2 0 0 0 1.97 1.64h6.92a2 2 0 0 0 1.92-1.43l1.37-4.64H7.07M9.25 19.25h.01M17.25 19.25h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+            <a class="profile-avatar" href="profil.html" aria-label="Profil JD">JD</a>
+        </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Profile Header -->
-        <div class="profile-header">
+    <main class="page">
+        <section class="profile-hero">
             <div class="profile-photo">
-                <img src="images/profile.png" alt="Foto Profil">
-                <div class="online-indicator">✓</div>
+                <img src="images/profile.png" alt="Foto profil Mas Arif">
+                <button class="photo-edit" aria-label="Edit foto profil">
+                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                        <path d="M4 14.75 5 11l7.8-7.8a1.7 1.7 0 0 1 2.4 2.4L7.4 13.4 4 14.75Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                    </svg>
+                </button>
             </div>
-            <div class="profile-info">
-                <h1>MAS ARIF</h1>
-                <p>Bergabung sejak Oktober 2023 • 124 Makanan Dilacak</p>
+
+            <div>
+                <h1 class="profile-name">MAS ARIF</h1>
+                <p class="profile-meta">Bergabung sejak Oktober 2023 &bull; 124 Makanan Dilacak</p>
             </div>
+
             <div class="profile-actions">
                 <button class="btn btn-secondary">Batalkan Perubahan</button>
                 <button class="btn btn-primary">Simpan Profil</button>
             </div>
-        </div>
+        </section>
 
-        <!-- Two Column Content -->
-        <div class="content-wrapper">
-            <!-- Left Column -->
-            <div>
-                <!-- Informasi Pribadi -->
-                <div class="card">
-                    <h2>Informasi Pribadi</h2>
-                    <div class="form-group">
-                        <label>Nama Lengkap</label>
-                        <input type="text" value="Mas Arif" readonly>
+        <section class="layout">
+            <div class="column">
+                <section class="card section-card">
+                    <h2 class="section-title">Informasi Pribadi</h2>
+                    <div class="profile-form">
+                        <div class="field">
+                            <span class="label">Nama Lengkap</span>
+                            <div class="input-pill">Mas Arif</div>
+                        </div>
+                        <div class="field">
+                            <span class="label">Alamat Email</span>
+                            <div class="input-pill">wise@email.com</div>
+                        </div>
+                        <div class="field full">
+                            <span class="label">Nomor Telepon</span>
+                            <div class="input-pill">+62 81342453267547</div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Alamat Email</label>
-                        <input type="email" value="wise@email.com" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>Nomor Telepon</label>
-                        <input type="tel" value="+62 813424532875447" readonly>
-                    </div>
-                </div>
+                </section>
 
-                <!-- Tujuan Kesehatan -->
-                <div class="card">
-                    <h2>Tujuan Kesehatan</h2>
-                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;">Pilih tujuan utama Anda untuk mempersonalisasi rekomendasi makanan.</p>
+                <section class="card card-soft section-card">
+                    <h2 class="section-title">Tujuan Kesehatan</h2>
+                    <p class="goals-copy">Pilih tujuan utama Anda untuk mempersonalisasi rekomendasi makanan.</p>
                     <div class="goals-grid">
-                        <div class="goal-card">
-                            <div class="goal-icon">💪</div>
-                            <div class="goal-name">Muscle Gain</div>
+                        <div class="goal-tile" tabindex="0" role="button" aria-pressed="false">
+                            <svg viewBox="0 0 32 32" fill="none"><path d="M6 20c5 1 7-2 7-7 4 2 6 6 6 10 2-1 4-2 7-2 1 0 2 1 2 2 0 4-4 6-9 6H8c-3 0-5-2-5-5 0-2 1-4 3-4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span>Muscle Gain</span>
                         </div>
-                        <div class="goal-card active">
-                            <div class="goal-icon">⚖️</div>
-                            <div class="goal-name">Weight Loss</div>
+                        <div class="goal-tile active" tabindex="0" role="button" aria-pressed="true">
+                            <svg viewBox="0 0 32 32" fill="none"><path d="M9 7h14v18H9V7ZM16 11h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span>Weight Loss</span>
                         </div>
-                        <div class="goal-card">
-                            <div class="goal-icon">🥗</div>
-                            <div class="goal-name">Keto Diet</div>
+                        <div class="goal-tile" tabindex="0" role="button" aria-pressed="false">
+                            <svg viewBox="0 0 32 32" fill="none"><path d="M12 6v20M20 6v20M8 6v8c0 3 2 5 4 5M24 6v20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                            <span>Keto Diet</span>
                         </div>
-                        <div class="goal-card">
-                            <div class="goal-icon">⚡</div>
-                            <div class="goal-name">Balanced</div>
+                        <div class="goal-tile" tabindex="0" role="button" aria-pressed="false">
+                            <svg viewBox="0 0 32 32" fill="none"><path d="M25 7c-9 1-15 6-15 13 0 3 2 5 5 5 7 0 11-8 10-18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span>Balanced</span>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                <!-- Pantangan Makanan -->
-                <div class="card">
-                    <h2>Pantangan Makanan</h2>
-                    <div class="checkbox-group">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="gluten" checked>
-                            <label for="gluten">Gluten-Free</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="nut">
-                            <label for="nut">Nut-Free</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="sodium" checked>
-                            <label for="sodium">Low Sodium</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="dairy">
-                            <label for="dairy">Dairy-Free</label>
-                        </div>
+                <section class="card section-card">
+                    <h2 class="section-title">Pantangan Makanan</h2>
+                    <div class="diet-grid">
+                        <div class="diet-chip checked" tabindex="0" role="checkbox" aria-checked="true"><span class="check-box">✓</span>Gluten-Free</div>
+                        <div class="diet-chip" tabindex="0" role="checkbox" aria-checked="false"><span class="check-box"></span>Nut-Free</div>
+                        <div class="diet-chip checked" tabindex="0" role="checkbox" aria-checked="true"><span class="check-box">✓</span>Low Sodium</div>
+                        <div class="diet-chip" tabindex="0" role="checkbox" aria-checked="false"><span class="check-box"></span>Dairy-Free</div>
                     </div>
-                </div>
+                </section>
+
+                <section class="card exercise-card">
+                    <h2 class="section-title">Rekomendasi Olahraga</h2>
+                    <div class="exercise-grid">
+                        <article>
+                            <img class="exercise-image" src="images/exercise-running.png" alt="Jalan 5K">
+                            <div class="exercise-name">Jalan 5K</div>
+                            <p class="exercise-desc">Jalan kaki 5K di pagi/sore hari bisa bakar 350cal</p>
+                        </article>
+                        <article>
+                            <img class="exercise-image" src="images/exercise-golf.png" alt="Golf">
+                            <div class="exercise-name">Golf</div>
+                            <p class="exercise-desc">Golf 16 hole bisa bakar 150cal dan buat kaki encok</p>
+                        </article>
+                        <article>
+                            <img class="exercise-image" src="images/exercise-badminton.png" alt="Badminton">
+                            <div class="exercise-name">Badminton</div>
+                            <p class="exercise-desc">Badminton 1 set bisa bakar 250 calt</p>
+                        </article>
+                        <article>
+                            <img class="exercise-image" src="images/exercise-yoga.png" alt="Yoga">
+                            <div class="exercise-name">Yoga</div>
+                            <p class="exercise-desc">Yoga 30-60 menit persesi bisa bakar 200kal</p>
+                        </article>
+                    </div>
+                </section>
             </div>
 
-            <!-- Right Column -->
-            <div>
-                <!-- Data Fisik -->
-                <div class="card">
-                    <h2>Data Fisik</h2>
-                    <div class="data-row">
-                        <label>Berat Saat Ini</label>
-                        <div class="data-value">
-                            82 kg
-                            <span class="edit-icon">✏️</span>
+            <aside class="column">
+                <section class="card metrics-card">
+                    <h2 class="section-title dark">Data Fisik</h2>
+                    <div class="metric-list">
+                        <div class="metric-item">
+                            <span class="metric-label">Berat Saat Ini</span>
+                            <span class="metric-value">82 kg <svg class="edit-icon" viewBox="0 0 20 20" fill="none"><path d="M4 15.5 5 12l8-8a1.6 1.6 0 0 1 2.3 2.3l-8 8-3.3 1.2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+                            <span class="progress-track"></span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Berat Target</span>
+                            <span class="metric-value">65 kg <svg class="edit-icon" viewBox="0 0 20 20" fill="none"><path d="M4 15.5 5 12l8-8a1.6 1.6 0 0 1 2.3 2.3l-8 8-3.3 1.2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+                            <span class="progress-track"></span>
                         </div>
                     </div>
-                    <div class="data-row">
-                        <label>Berat Target</label>
-                        <div class="data-value">
-                            65 kg
-                            <span class="edit-icon">✏️</span>
-                        </div>
+                    <div class="activity">
+                        <span class="label">Tingkat Aktivitas</span>
+                        <div class="select-pill">Cukup Aktif (1-3 kali olahraga/minggu)<span>⌄</span></div>
                     </div>
-                    <div class="data-row">
-                        <label>Tingkat Aktivitas</label>
-                        <div class="data-value">
-                            Cukup Aktif (1-3 kali olahraga/minggu)
-                            <span class="edit-icon">✏️</span>
-                        </div>
-                    </div>
-                </div>
+                </section>
 
-                <!-- Target Gizi Harian -->
-                <div class="card">
-                    <h2>Target Gizi Harian</h2>
-                    <div class="nutrition-grid">
-                        <div class="nutrition-item">
-                            <div class="nutrition-label">KALORI (KCAL)</div>
-                            <div class="nutrition-value">0 kcal</div>
-                        </div>
-                        <div class="nutrition-item">
-                            <div class="nutrition-label">PROTEIN (G)</div>
-                            <div class="nutrition-value">0 g</div>
-                        </div>
-                        <div class="nutrition-item">
-                            <div class="nutrition-label">KARBOHIDRAT (G)</div>
-                            <div class="nutrition-value">0 g</div>
-                        </div>
-                        <div class="nutrition-item">
-                            <div class="nutrition-label">LEMAK (G)</div>
-                            <div class="nutrition-value">0 g</div>
-                        </div>
+                <section class="card nutrition-card">
+                    <h2 class="section-title dark">Target Gizi Harian</h2>
+                    <div class="nutrition-list">
+                        <div class="nutrition-item"><span class="nutrition-label">Kalori (kkal)</span><span class="nutrition-value">0 kkal</span><span class="progress-track"></span></div>
+                        <div class="nutrition-item"><span class="nutrition-label">Protein (g)</span><span class="nutrition-value">0 g</span><span class="progress-track"></span></div>
+                        <div class="nutrition-item"><span class="nutrition-label">Karbohidrat (g)</span><span class="nutrition-value">0 g</span><span class="progress-track"></span></div>
+                        <div class="nutrition-item"><span class="nutrition-label">Lemak (g)</span><span class="nutrition-value">0 g</span><span class="progress-track"></span></div>
                     </div>
-                </div>
+                </section>
 
-                <!-- Makanan Terjadwal -->
-                <div class="card">
-                    <h2>Makanan Terjadwal</h2>
-                    <div class="meal-schedule">
-                        <div class="meal-card">
-                            <img src="images/meal-breakfast.png" alt="Breakfast" class="meal-image">
-                            <div class="meal-info">
-                                <div class="meal-title">Makanan selajutnya</div>
-                                <div class="meal-time">Tomorrow, 7:00 AM • Energy: 340kcal</div>
-                            </div>
-                        </div>
-                        <div class="meal-card">
-                            <img src="images/meal-breakfast.png" alt="Lunch" class="meal-image">
-                            <div class="meal-info">
-                                <div class="meal-title">Makanan sebelumnya</div>
-                                <div class="meal-time">Tomorrow, 7:00 AM • Energy: 340kcal</div>
-                            </div>
-                        </div>
+                <article class="meal-card">
+                    <img src="images/meal-breakfast.png" alt="Makanan selajutnya">
+                    <div class="meal-text">
+                        <div class="meal-title">Makanan selajutnya</div>
+                        <div class="meal-meta">Tomorrow, 08:00 AM • Energy+ Bowl</div>
                     </div>
-                </div>
-            </div>
-        </div>
+                </article>
 
-        <!-- Exercise Recommendations -->
-        <div class="card">
-            <h2>Rekomendasi Olahraga</h2>
-            <div class="exercise-grid">
-                <div class="exercise-card">
-                    <img src="images/exercise-running.png" alt="Jalan 5K" class="exercise-image">
-                    <div class="exercise-info">
-                        <div class="exercise-name">Jalan 5K</div>
-                        <div class="exercise-desc">Jalan kaki 5K penuh/hari bakar 250kcal</div>
+                <article class="meal-card">
+                    <img src="images/meal-breakfast.png" alt="Makanan sebelumnya">
+                    <div class="meal-text">
+                        <div class="meal-title">Makanan sebelumnya</div>
+                        <div class="meal-meta">Tomorrow, 08:00 AM • Energy+ Bowl</div>
                     </div>
-                </div>
-                <div class="exercise-card">
-                    <img src="images/exercise-golf.png" alt="Golf" class="exercise-image">
-                    <div class="exercise-info">
-                        <div class="exercise-name">Golf</div>
-                        <div class="exercise-desc">Golf di hole saja bakar lebih dari 250 cal</div>
-                    </div>
-                </div>
-                <div class="exercise-card">
-                    <img src="images/exercise-badminton.png" alt="Badminton" class="exercise-image">
-                    <div class="exercise-info">
-                        <div class="exercise-name">Badminton</div>
-                        <div class="exercise-desc">Badminton 1 set dua 250 kcal</div>
-                    </div>
-                </div>
-                <div class="exercise-card">
-                    <img src="images/exercise-yoga.png" alt="Yoga" class="exercise-image">
-                    <div class="exercise-info">
-                        <div class="exercise-name">Yoga</div>
-                        <div class="exercise-desc">Yoga 20-30 menit personal bakar bakar 200kcal</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                </article>
+            </aside>
+        </section>
+    </main>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-column">
                 <h3>Sehatin</h3>
-                <p style="color: #666; font-size: 0.9rem;">Katering sehat premium yang membawa kualitas restoran ke meja makan Anda setiap hari.</p>
+                <p>Katering sehat premium yang membawa kualitas restoran ke meja makan Anda setiap hari.</p>
             </div>
             <div class="footer-column">
                 <h3>Layanan</h3>
@@ -775,31 +867,41 @@
                 </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <span>© 2026 Sehatin Healthy Catering. All rights reserved.</span>
-        </div>
+        <div class="footer-bottom">© 2026 Sehatin Healthy Catering. All rights reserved.</div>
     </footer>
-
     <script>
-        // Goal selection
-        document.querySelectorAll('.goal-card').forEach(card => {
-            card.addEventListener('click', function() {
-                document.querySelectorAll('.goal-card').forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
+        document.querySelectorAll('.goal-tile').forEach(tile => {
+            const selectGoal = () => {
+                document.querySelectorAll('.goal-tile').forEach(item => {
+                    item.classList.remove('active');
+                    item.setAttribute('aria-pressed', 'false');
+                });
+                tile.classList.add('active');
+                tile.setAttribute('aria-pressed', 'true');
+            };
+
+            tile.addEventListener('click', selectGoal);
+            tile.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    selectGoal();
+                }
             });
         });
 
-        // Exercise card click
-        document.querySelectorAll('.exercise-card').forEach(card => {
-            card.addEventListener('click', function() {
-                alert('Pilih olahraga: ' + this.querySelector('.exercise-name').textContent);
-            });
-        });
+        document.querySelectorAll('.diet-chip').forEach(chip => {
+            const toggleChip = () => {
+                const isChecked = chip.classList.toggle('checked');
+                chip.setAttribute('aria-checked', String(isChecked));
+                chip.querySelector('.check-box').textContent = isChecked ? '✓' : '';
+            };
 
-        // Edit icon click
-        document.querySelectorAll('.edit-icon').forEach(icon => {
-            icon.addEventListener('click', function() {
-                alert('Edit data fisik');
+            chip.addEventListener('click', toggleChip);
+            chip.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    toggleChip();
+                }
             });
         });
     </script>
