@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembayaran Berhasil - Sehatin</title>
+    <title>Masuk - Sehatin</title>
     <style>
         * {
             margin: 0;
@@ -12,366 +12,420 @@
         }
 
         body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #e8f5f0 0%, #f5f0e8 100%);
             min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: #f9f6f5;
-            color: #2f2f2f;
-        }
-
-        .page {
-            min-height: 720px;
-            background: #f9f6f5;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .topbar {
-            height: 80px;
-            padding: 0 80px;
-            display: flex;
-            align-items: center;
-            background: rgba(249, 246, 245, 0.8);
-            backdrop-filter: blur(12px);
-            position: relative;
-            z-index: 5;
-        }
-
-        .logo {
-            width: 244px;
-            color: #14532d;
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 32px;
-            text-decoration: none;
-        }
-
-        .nav {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-        }
-
-        .nav a {
-            color: #5c5b5b;
-            font-size: 14px;
-            line-height: 20px;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-
-        .header-actions {
-            width: 244px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 31px;
-        }
-
-        .cart-link {
-            width: 24px;
-            height: 24px;
-            color: #2f2f2f;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-decoration: none;
+            padding: 2rem;
+            position: relative;
         }
 
-        .cart-link svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        .profile-avatar {
-            width: 40px;
-            height: 40px;
+        .left-circle {
+            position: fixed;
+            left: -80px;
+            top: 35%;
+            width: 350px;
+            height: 350px;
+            background: url('images/background.jpg') center/cover no-repeat;
             border-radius: 50%;
-            background: #006b1b;
-            color: #d1ffc8;
+            box-shadow: inset 0 0 80px rgba(255, 255, 255, 0.2);
+            z-index: 0;
+        }
+
+        .container {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
-            line-height: 20px;
-            text-decoration: none;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        }
-
-        .main {
-            min-height: 640px;
-            padding-top: 48px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            max-width: 1400px;
+            width: 100%;
             position: relative;
             z-index: 1;
         }
 
-        .glow {
-            position: absolute;
-            border-radius: 999px;
-            pointer-events: none;
-            z-index: 0;
-            filter: blur(64px);
+        .left-section {
+            display: none;
         }
 
-        .glow-left {
-            width: 192px;
-            height: 192px;
-            top: 80px;
-            left: 336px;
-            background: rgba(171, 244, 172, 0.2);
+        .right-section {
+            background: white;
+            border-radius: 30px;
+            padding: 3.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            margin-right: 150px;
         }
 
-        .glow-right {
-            width: 256px;
-            height: 256px;
-            top: 290px;
-            left: 672px;
-            background: rgba(145, 247, 142, 0.2);
+        .plant-card {
+            display: none;
         }
 
-        .success-card {
-            width: 512px;
-            min-height: 387px;
-            border-radius: 24px;
-            background: #ffffff;
-            box-shadow: 0 12px 40px rgba(47, 47, 47, 0.06);
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a6b3b;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.95rem;
+            color: #333;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background: #fafafa;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1a6b3b;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(26, 107, 59, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #bbb;
+        }
+
+        .password-help {
+            text-align: right;
+            margin-bottom: 2rem;
+        }
+
+        .password-help a {
+            color: #1a6b3b;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .password-help a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 1.1rem;
+            background: #1a6b3b;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-login:hover {
+            background: #135a2f;
+            transform: translateY(-2px);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider-text {
+            color: #999;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .social-login {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .social-btn {
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            color: #333;
+        }
+
+        .social-btn:hover {
+            border-color: #1a6b3b;
+            background: #f9f9f9;
+            transform: translateY(-2px);
+        }
+
+        .social-icon {
+            font-size: 1.2rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-icon.google {
+            width: 24px;
+            height: 24px;
+            background: url('images/google.png') center/contain no-repeat;
+        }
+
+        .social-icon.facebook {
+            width: 24px;
+            height: 24px;
+            background: url('images/facebook.png') center/contain no-repeat;
+        }
+
+        .signup-link {
+            text-align: center;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .signup-link a {
+            color: #1a6b3b;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Illustration Styles */
+        .illustration {
+            text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
-            padding: 32px 24px 31px;
-            position: relative;
-            z-index: 2;
+            gap: 2rem;
         }
 
-        .success-icon {
-            width: 128px;
-            height: 128px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #006b1b 0%, #91f78e 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 24px;
+        .plant-illustration {
+            display: none;
         }
 
-        .success-icon-inner {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #43ad56;
-        }
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
 
-        .success-icon-inner svg {
-            width: 28px;
-            height: 28px;
-        }
+            .left-section {
+                display: none;
+            }
 
-        .success-title {
-            max-width: 320px;
-            color: #006b1b;
-            font-size: 48px;
-            font-weight: 700;
-            line-height: 48px;
-            letter-spacing: 0;
-            margin-bottom: 16px;
-        }
+            .right-section {
+                max-width: 100%;
+                padding: 2.5rem;
+                margin-right: 0;
+            }
 
-        .success-message {
-            max-width: 475px;
-            color: #5c5b5b;
-            font-size: 18px;
-            line-height: 29.25px;
-        }
+            .plant-card {
+                display: none;
+            }
 
-        .actions {
-            margin-top: 48px;
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .action-btn {
-            width: 216px;
-            height: 56px;
-            border-radius: 999px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 24px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-1px);
-        }
-
-        .action-primary {
-            background: #006b1b;
-            color: #d1ffc8;
-        }
-
-        .action-primary:hover {
-            box-shadow: 0 10px 22px rgba(0, 107, 27, 0.18);
-        }
-
-        .action-secondary {
-            background: #e4e2e2;
-            color: #2f2f2f;
-        }
-
-        .receipt-note {
-            margin-top: 47px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            color: #5c5b5b;
-            font-size: 14px;
-            line-height: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .receipt-note svg {
-            width: 16px;
-            height: 16px;
-            color: #006b1b;
-            flex-shrink: 0;
+            .left-circle {
+                display: none;
+            }
         }
 
         @media (max-width: 768px) {
-            .page {
-                min-height: 100vh;
+            .right-section {
+                padding: 2rem;
             }
 
-            .topbar {
-                height: auto;
-                padding: 18px 24px;
-                flex-wrap: wrap;
-                gap: 16px;
+            .title {
+                font-size: 1.5rem;
             }
 
-            .logo,
-            .header-actions {
-                width: auto;
+            .social-login {
+                grid-template-columns: 1fr;
             }
+        }
 
-            .nav {
-                order: 3;
-                width: 100%;
-                justify-content: flex-start;
-                overflow-x: auto;
-                gap: 24px;
-                padding-bottom: 2px;
-            }
+        /* Eye icon for password toggle */
+        .password-toggle {
+            position: relative;
+        }
 
-            .header-actions {
-                margin-left: auto;
-            }
+        .password-toggle input {
+            padding-right: 3rem;
+        }
 
-            .main {
-                padding: 36px 24px 48px;
-                min-height: auto;
-            }
+        .toggle-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-image: url('images/eye-closed.png');
+        }
 
-            .success-card {
-                width: min(100%, 512px);
-                min-height: auto;
-            }
-
-            .success-title {
-                font-size: 38px;
-                line-height: 40px;
-            }
-
-            .success-message {
-                font-size: 16px;
-                line-height: 26px;
-            }
-
-            .actions {
-                width: min(100%, 512px);
-                flex-direction: column;
-                margin-top: 32px;
-            }
-
-            .action-btn {
-                width: 100%;
-            }
-
-            .receipt-note {
-                width: min(100%, 512px);
-                align-items: flex-start;
-                margin-top: 32px;
-            }
+        .toggle-icon.visible {
+            background-image: url('images/eye-open.png');
         }
     </style>
 </head>
 <body>
-    <div class="page">
-        <header class="topbar">
-            <a class="logo" href="landingpage.html">Sehatin</a>
-
-            <nav class="nav" aria-label="Navigasi utama">
-                <a href="landingpage.html">Beranda</a>
-                <a href="paketcatering.html">Paket</a>
-                <a href="monitoring.html">Pantau Nutrisi</a>
-                <a href="riwayat.html">Pesanan</a>
-            </nav>
-
-            <div class="header-actions">
-                <a class="cart-link" href="keranjang.html" aria-label="Keranjang">
-                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M3.75 4.75h2.1l1.65 9.05a2 2 0 0 0 1.97 1.64h6.92a2 2 0 0 0 1.92-1.43l1.37-4.64H7.07M9.25 19.25h.01M17.25 19.25h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </a>
-                <a class="profile-avatar" href="profil.html" aria-label="Profil JD">JD</a>
+    <div class="left-circle"></div>
+    <div class="container">
+        <!-- Left Section with Illustration -->
+        <div class="left-section">
+            <div class="illustration">
+                <div class="plant-illustration"></div>
             </div>
-        </header>
+        </div>
 
-        <main class="main">
-            <div class="glow glow-left"></div>
-            <div class="glow glow-right"></div>
+        <!-- Right Section with Form -->
+        <div class="right-section">
+            <div class="plant-card"></div>
+            <h1 class="title">Sehatin</h1>
+            <p class="subtitle">Selamat datang kembali ke sehatin</p>
 
-            <section class="success-card" aria-labelledby="payment-success-title">
-                <div class="success-icon" aria-hidden="true">
-                    <div class="success-icon-inner">
-                        <svg viewBox="0 0 32 32" fill="none">
-                            <path d="M8 16.8 13.2 22 24.5 10.5" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Alamat Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="name@example.com"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Kata sandi</label>
+                    <div class="password-toggle">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="••••••••"
+                            required
+                        >
+                        <span class="toggle-icon" onclick="togglePassword('password')"></span>
                     </div>
                 </div>
 
-                <h1 class="success-title" id="payment-success-title">Pembayaran Berhasil!</h1>
-                <p class="success-message">Pesanan Anda telah kami terima dan tim kami.<br>kali segera menyiapkan menu sehat terbaik untuk Anda.</p>
-            </section>
+                <div class="password-help">
+                    <a href="#">Lupa kata sandi?</a>
+                </div>
 
-            <div class="actions">
-                <a class="action-btn action-primary" href="riwayat.html">Lihat Riwayat Pesanan</a>
-                <a class="action-btn action-secondary" href="landingpage.html">Kembali ke Beranda</a>
+                <button type="submit" class="btn-login">
+                    Masuk →
+                </button>
+            </form>
+
+            <div class="divider">
+                <div class="divider-line"></div>
+                <div class="divider-text">ATAU LANJUTKAN DENGAN</div>
+                <div class="divider-line"></div>
             </div>
 
-            <div class="receipt-note">
-                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M8 14.5A6.5 6.5 0 1 0 8 1.5a6.5 6.5 0 0 0 0 13ZM8 7.25v4M8 4.75h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-                </svg>
-                <span>E-receipt telah dikirimkan ke email terdaftar Anda.</span>
+            <div class="social-login">
+                <button class="social-btn" onclick="loginWithGoogle()">
+                    <span class="social-icon google"></span>
+                    Google
+                </button>
+                <button class="social-btn" onclick="loginWithFacebook()">
+                    <span class="social-icon facebook"></span>
+                    Facebook
+                </button>
             </div>
-        </main>
+
+            <p class="signup-link">
+                Baru mengenal Sehatin? <a href="registrasi.html">Daftar Sekarang</a>
+            </p>
+        </div>
     </div>
+
+    <script>
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = event.currentTarget;
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.add('visible');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('visible');
+            }
+        }
+
+        function loginWithGoogle() {
+            alert('Login dengan Google dimulai...');
+            // Implementasi Google login
+        }
+
+        function loginWithFacebook() {
+            alert('Login dengan Facebook dimulai...');
+            // Implementasi Facebook login
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (email && password) {
+                // Redirect to profile page on successful login
+                window.location.href = 'profil.html';
+            }
+        });
+    </script>
 </body>
 </html>
