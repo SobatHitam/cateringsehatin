@@ -16,84 +16,108 @@
             background: #f5f5f5;
             color: #333;
         }
-
         /* Header */
-        header {
-            background: white;
-            padding: 1.5rem 5%;
+        .topbar {
+            height: 80px;
+            padding: 0 80px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: rgba(249, 246, 245, 0.8);
+            backdrop-filter: blur(12px);
+            position: relative;
+            z-index: 5;
         }
 
         .logo {
-            font-size: 1.5rem;
+            width: 244px;
+            color: #14532d;
+            font-size: 24px;
             font-weight: 700;
-            color: #1a6b3b;
-        }
-
-        nav {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        nav a {
+            line-height: 32px;
             text-decoration: none;
-            color: #333;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-            position: relative;
-            padding-bottom: 0.5rem;
         }
 
-        nav a.active {
-            color: #1a6b3b;
-            font-weight: 600;
-        }
-
-        nav a.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: #1a6b3b;
-            border-radius: 2px;
-        }
-
-        nav a:hover {
-            color: #1a6b3b;
-        }
-
-        .nav-icons {
+        .nav {
+            flex: 1;
             display: flex;
-            gap: 1.5rem;
-            align-items: center;
+            justify-content: center;
+            gap: 32px;
         }
 
-        .cart-icon {
-            cursor: pointer;
-            font-size: 1.2rem;
+        .nav a {
+            color: #5c5b5b;
+            font-size: 14px;
+            line-height: 20px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .header-actions {
+            width: 244px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 31px;
+        }
+
+        .cart-link {
+            width: 24px;
+            height: 24px;
+            color: #2f2f2f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .cart-link svg {
+            width: 20px;
+            height: 20px;
         }
 
         .profile-avatar {
             width: 40px;
             height: 40px;
-            background: #1a6b3b;
             border-radius: 50%;
+            background: #006b1b;
+            color: #d1ffc8;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 20px;
+            text-decoration: none;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
+
+        @media (max-width: 768px) {
+            .topbar {
+                height: auto;
+                padding: 18px 24px;
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+
+            .logo,
+            .header-actions {
+                width: auto;
+            }
+
+            .nav {
+                order: 3;
+                width: 100%;
+                justify-content: flex-start;
+                overflow-x: auto;
+                gap: 24px;
+                padding-bottom: 2px;
+            }
+
+            .header-actions {
+                margin-left: auto;
+            }
+        }
+
 
         /* Container */
         .container {
@@ -392,18 +416,24 @@
 </head>
 <body>
     <!-- Header -->
-    <header>
-        <div class="logo">Sehatin</div>
-        <nav>
+    <header class="topbar">
+        <a class="logo" href="landingpage.html">Sehatin</a>
+
+        <nav class="nav" aria-label="Navigasi utama">
             <a href="landingpage.html">Beranda</a>
             <a href="paketcatering.html">Paket</a>
             <a href="monitoring.html">Pantau Nutrisi</a>
-            <a href="riwayat.html" class="active">Pesanan</a>
-            <div class="nav-icons">
-                <a href="keranjang.html"><span class="cart-icon">🛒</span></a>
-                <a href="profil.html"><div class="profile-avatar">JD</div></a>
-            </div>
+            <a href="riwayat.html">Pesanan</a>
         </nav>
+
+        <div class="header-actions">
+            <a class="cart-link" href="keranjang.html" aria-label="Keranjang">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M3.75 4.75h2.1l1.65 9.05a2 2 0 0 0 1.97 1.64h6.92a2 2 0 0 0 1.92-1.43l1.37-4.64H7.07M9.25 19.25h.01M17.25 19.25h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+            <a class="profile-avatar" href="profil.html" aria-label="Profil JD">JD</a>
+        </div>
     </header>
 
     <!-- Container -->
@@ -530,6 +560,94 @@
                 window.location.href = 'paketcatering.html';
             });
         });
+    </script>
+    <script>
+        const ordersList = document.querySelector('.orders-list');
+        const ORDERS_KEY = 'sehatinOrders';
+
+        function formatOrderRupiah(value) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                maximumFractionDigits: 0
+            }).format(value).replace('Rp', 'Rp ');
+        }
+
+        function readOrders() {
+            try {
+                return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function formatOrderDate(value) {
+            const date = value ? new Date(value) : new Date();
+            return date.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        function renderOrders() {
+            const orders = readOrders();
+            if (!orders.length) {
+                ordersList.innerHTML = `
+                    <div class="order-card" style="grid-template-columns: 1fr; text-align: center;">
+                        <div class="order-info">
+                            <h3>Belum ada riwayat pesanan</h3>
+                            <div class="order-detail">Pesanan yang sudah dibayar akan muncul di sini.</div>
+                        </div>
+                        <div class="action-buttons" style="justify-content: center;">
+                            <button class="btn-order" type="button">Pilih Paket</button>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            ordersList.innerHTML = orders.map((order) => {
+                const first = order.items && order.items[0] ? order.items[0] : {};
+                const itemCount = (order.items || []).reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+                return `
+                    <div class="order-card" data-id="${order.id}">
+                        <img src="${first.image || 'images/order-history-1.png'}" alt="${first.name || 'Pesanan Sehatin'}" class="order-image">
+                        <div class="order-info">
+                            <h3>${first.name || 'Pesanan Sehatin'}</h3>
+                            <div class="order-detail">${first.durationDays || 7} hari &bull; ${first.packageType || 'Paket Sehat'} &bull; ${itemCount} item</div>
+                            <div class="order-id">ID: ${order.id}</div>
+                            <div class="order-price">${formatOrderRupiah(order.total || 0)}</div>
+                        </div>
+                        <div class="order-actions">
+                            <div class="order-date">${formatOrderDate(order.createdAt)}</div>
+                            <span class="status-badge status-active">${order.status || 'Selesai'}</span>
+                            <div class="action-buttons">
+                                <button class="btn-detail" type="button">Lihat Detail</button>
+                                <button class="btn-order" type="button">Pesan Lagi</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        ordersList.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-order')) {
+                window.location.href = 'detailpaket.html';
+            }
+
+            if (e.target.classList.contains('btn-detail')) {
+                const card = e.target.closest('.order-card');
+                const order = readOrders().find((entry) => entry.id === card.dataset.id);
+                if (!order) return;
+
+                const itemNames = (order.items || []).map((item) => `${item.name} x${item.quantity}`).join(', ');
+                alert(`ID Pesanan: ${order.id}\nStatus: ${order.status}\nMetode: ${order.paymentMethod}\nTanggal mulai: ${order.deliveryDate || '-'}\nItem: ${itemNames}\nTotal: ${formatOrderRupiah(order.total || 0)}`);
+            }
+        });
+
+        renderOrders();
     </script>
 </body>
 </html>
