@@ -17,84 +17,108 @@
             background: #f5f5f5;
             color: #333;
         }
-
         /* Header */
-        header {
-            background: white;
-            padding: 1.5rem 5%;
+        .topbar {
+            height: 80px;
+            padding: 0 80px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: rgba(249, 246, 245, 0.8);
+            backdrop-filter: blur(12px);
+            position: relative;
+            z-index: 5;
         }
 
         .logo {
-            font-size: 1.5rem;
+            width: 244px;
+            color: #14532d;
+            font-size: 24px;
             font-weight: 700;
-            color: #1a6b3b;
-        }
-
-        nav {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        nav a {
+            line-height: 32px;
             text-decoration: none;
-            color: #333;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-            position: relative;
-            padding-bottom: 0.5rem;
         }
 
-        nav a.active {
-            color: #1a6b3b;
-            font-weight: 600;
-        }
-
-        nav a.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: #1a6b3b;
-            border-radius: 2px;
-        }
-
-        nav a:hover {
-            color: #1a6b3b;
-        }
-
-        .nav-icons {
+        .nav {
+            flex: 1;
             display: flex;
-            gap: 1.5rem;
-            align-items: center;
+            justify-content: center;
+            gap: 32px;
         }
 
-        .cart-icon {
-            cursor: pointer;
-            font-size: 1.2rem;
+        .nav a {
+            color: #5c5b5b;
+            font-size: 14px;
+            line-height: 20px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .header-actions {
+            width: 244px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 31px;
+        }
+
+        .cart-link {
+            width: 24px;
+            height: 24px;
+            color: #2f2f2f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .cart-link svg {
+            width: 20px;
+            height: 20px;
         }
 
         .profile-avatar {
             width: 40px;
             height: 40px;
-            background: #1a6b3b;
             border-radius: 50%;
+            background: #006b1b;
+            color: #d1ffc8;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 20px;
+            text-decoration: none;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
+
+        @media (max-width: 768px) {
+            .topbar {
+                height: auto;
+                padding: 18px 24px;
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+
+            .logo,
+            .header-actions {
+                width: auto;
+            }
+
+            .nav {
+                order: 3;
+                width: 100%;
+                justify-content: flex-start;
+                overflow-x: auto;
+                gap: 24px;
+                padding-bottom: 2px;
+            }
+
+            .header-actions {
+                margin-left: auto;
+            }
+        }
+
 
         /* Container */
         .container {
@@ -1237,18 +1261,24 @@
 </head>
 <body>
     <!-- Header -->
-    <header>
-        <div class="logo">Sehatin</div>
-        <nav>
+    <header class="topbar">
+        <a class="logo" href="landingpage.html">Sehatin</a>
+
+        <nav class="nav" aria-label="Navigasi utama">
             <a href="landingpage.html">Beranda</a>
             <a href="paketcatering.html">Paket</a>
             <a href="monitoring.html">Pantau Nutrisi</a>
             <a href="riwayat.html">Pesanan</a>
-            <div class="nav-icons">
-                <a href="keranjang.html"><span class="cart-icon">🛒</span></a>
-                <a href="profil.html"><div class="profile-avatar">JD</div></a>
-            </div>
         </nav>
+
+        <div class="header-actions">
+            <a class="cart-link" href="keranjang.html" aria-label="Keranjang">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M3.75 4.75h2.1l1.65 9.05a2 2 0 0 0 1.97 1.64h6.92a2 2 0 0 0 1.92-1.43l1.37-4.64H7.07M9.25 19.25h.01M17.25 19.25h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+            <a class="profile-avatar" href="profil.html" aria-label="Profil JD">JD</a>
+        </div>
     </header>
 
     <!-- Container -->
@@ -1919,6 +1949,160 @@
                 closeCreditModal();
             }
         });
+    </script>
+    <script>
+        const CHECKOUT_KEY = 'sehatinCheckout';
+        const CART_KEY = 'sehatinCart';
+        const ORDERS_KEY = 'sehatinOrders';
+
+        function trxFormatRupiah(value) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                maximumFractionDigits: 0
+            }).format(value).replace('Rp', 'Rp ');
+        }
+
+        function trxRead(key, fallback) {
+            try {
+                return JSON.parse(localStorage.getItem(key)) || fallback;
+            } catch (error) {
+                return fallback;
+            }
+        }
+
+        function trxGetCheckout() {
+            const saved = trxRead(CHECKOUT_KEY, null);
+            if (saved && Array.isArray(saved.items) && saved.items.length) return saved;
+
+            const cart = trxRead(CART_KEY, []);
+            const subtotal = cart.reduce((sum, item) => sum + Number(item.unitPrice) * Number(item.quantity), 0);
+            return {
+                items: cart,
+                subtotal,
+                shipping: 0,
+                discount: 0,
+                total: subtotal,
+                createdAt: new Date().toISOString()
+            };
+        }
+
+        function trxOrderId() {
+            const checkout = trxGetCheckout();
+            if (checkout.orderId) return checkout.orderId;
+            const id = `SH-${Date.now().toString().slice(-6)}`;
+            checkout.orderId = id;
+            localStorage.setItem(CHECKOUT_KEY, JSON.stringify(checkout));
+            return id;
+        }
+
+        function trxRenderCheckout() {
+            const checkout = trxGetCheckout();
+            const items = checkout.items || [];
+            const summaryBox = document.querySelector('.summary');
+            const summaryItem = summaryBox ? summaryBox.querySelector('.summary-item') : null;
+            const totalRows = document.querySelectorAll('.summary-totals .total-row');
+
+            if (summaryItem) {
+                if (!items.length) {
+                    summaryItem.innerHTML = `
+                        <div class="item-details">
+                            <div class="item-name">Belum ada pesanan</div>
+                            <div class="item-desc">Silakan pilih paket terlebih dahulu</div>
+                            <div class="item-price">${trxFormatRupiah(0)}</div>
+                        </div>
+                    `;
+                } else {
+                    const first = items[0];
+                    summaryItem.innerHTML = `
+                        <img src="${first.image || 'images/cart-item-1.png'}" alt="${first.name}" class="item-image-small">
+                        <div class="item-details">
+                            <div class="item-name">${first.name}</div>
+                            <div class="item-desc">${first.packageType || ''} &bull; ${first.durationDays} Hari &bull; Qty ${first.quantity}</div>
+                            <div class="item-price">${trxFormatRupiah(Number(first.unitPrice) * Number(first.quantity))}</div>
+                        </div>
+                    `;
+                }
+            }
+
+            if (totalRows.length >= 4) {
+                totalRows[0].querySelector('span:last-child').textContent = trxFormatRupiah(checkout.subtotal || 0);
+                totalRows[1].querySelector('span:last-child').textContent = checkout.shipping ? trxFormatRupiah(checkout.shipping) : 'GRATIS';
+                totalRows[2].querySelector('span:last-child').textContent = trxFormatRupiah(checkout.discount || 0);
+                totalRows[3].querySelector('span:last-child').textContent = trxFormatRupiah(checkout.total || 0);
+            }
+
+            const amount = trxFormatRupiah(checkout.total || 0);
+            const firstName = items[0]?.name || 'Weekly Vitality Plan';
+            const modalAmount = document.getElementById('modalAmountDisplay');
+            if (modalAmount) modalAmount.textContent = amount;
+            document.querySelectorAll('.qris-summary__amount, .credit-amount').forEach((el) => {
+                el.textContent = amount;
+            });
+            const qrisId = document.querySelector('.qris-summary__id');
+            if (qrisId) qrisId.textContent = `#${trxOrderId()}`;
+            const creditPlan = document.querySelector('.credit-plan');
+            if (creditPlan) creditPlan.textContent = firstName;
+            const creditPayButton = document.querySelector('.credit-pay-btn');
+            if (creditPayButton) {
+                const svg = creditPayButton.querySelector('svg');
+                creditPayButton.innerHTML = '';
+                if (svg) creditPayButton.appendChild(svg);
+                creditPayButton.append(` ${amount}`);
+            }
+        }
+
+        function trxSelectedDeliveryDate() {
+            const active = document.querySelector('.date-btn.active');
+            if (!active) return '';
+            const day = active.querySelector('.date-day')?.textContent.trim() || '';
+            const date = active.querySelector('.date-number')?.textContent.trim() || '';
+            const month = active.querySelector('.date-month')?.textContent.trim() || '';
+            return `${day} ${date} ${month}`.trim();
+        }
+
+        function trxSaveCompletedOrder() {
+            const checkout = trxGetCheckout();
+            if (!checkout.items || !checkout.items.length) return null;
+
+            const orderId = trxOrderId();
+            const existing = trxRead(ORDERS_KEY, []);
+            const alreadySaved = existing.some((order) => order.id === orderId);
+            if (alreadySaved) return orderId;
+
+            const notes = document.querySelectorAll('.address-input');
+            const order = {
+                id: orderId,
+                items: checkout.items,
+                subtotal: checkout.subtotal || 0,
+                shipping: checkout.shipping || 0,
+                discount: checkout.discount || 0,
+                total: checkout.total || 0,
+                paymentMethod: selectedPaymentMethod || 'bank',
+                status: 'Selesai',
+                deliveryDate: trxSelectedDeliveryDate(),
+                address: notes[0]?.value || 'Yogyakarta',
+                note: notes[1]?.value || '',
+                createdAt: new Date().toISOString()
+            };
+
+            localStorage.setItem(ORDERS_KEY, JSON.stringify([order, ...existing]));
+            localStorage.removeItem(CART_KEY);
+            localStorage.removeItem(CHECKOUT_KEY);
+            return orderId;
+        }
+
+        function completePayment() {
+            closePaymentModal();
+            closeQrisModal();
+            closeCreditModal();
+            trxSaveCompletedOrder();
+            setTimeout(() => {
+                window.location.href = 'pembayaran.html';
+            }, 500);
+        }
+
+        trxRenderCheckout();
     </script>
 </body>
 </html>
