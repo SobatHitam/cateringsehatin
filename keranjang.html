@@ -16,84 +16,108 @@
             background: #f5f5f5;
             color: #333;
         }
-
         /* Header */
-        header {
-            background: white;
-            padding: 1.5rem 5%;
+        .topbar {
+            height: 80px;
+            padding: 0 80px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: rgba(249, 246, 245, 0.8);
+            backdrop-filter: blur(12px);
+            position: relative;
+            z-index: 5;
         }
 
         .logo {
-            font-size: 1.5rem;
+            width: 244px;
+            color: #14532d;
+            font-size: 24px;
             font-weight: 700;
-            color: #1a6b3b;
-        }
-
-        nav {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        nav a {
+            line-height: 32px;
             text-decoration: none;
-            color: #333;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-            position: relative;
-            padding-bottom: 0.5rem;
         }
 
-        nav a.active {
-            color: #1a6b3b;
-            font-weight: 600;
-        }
-
-        nav a.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: #1a6b3b;
-            border-radius: 2px;
-        }
-
-        nav a:hover {
-            color: #1a6b3b;
-        }
-
-        .nav-icons {
+        .nav {
+            flex: 1;
             display: flex;
-            gap: 1.5rem;
-            align-items: center;
+            justify-content: center;
+            gap: 32px;
         }
 
-        .cart-icon {
-            cursor: pointer;
-            font-size: 1.2rem;
+        .nav a {
+            color: #5c5b5b;
+            font-size: 14px;
+            line-height: 20px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .header-actions {
+            width: 244px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 31px;
+        }
+
+        .cart-link {
+            width: 24px;
+            height: 24px;
+            color: #2f2f2f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .cart-link svg {
+            width: 20px;
+            height: 20px;
         }
 
         .profile-avatar {
             width: 40px;
             height: 40px;
-            background: #1a6b3b;
             border-radius: 50%;
+            background: #006b1b;
+            color: #d1ffc8;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 20px;
+            text-decoration: none;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
+
+        @media (max-width: 768px) {
+            .topbar {
+                height: auto;
+                padding: 18px 24px;
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+
+            .logo,
+            .header-actions {
+                width: auto;
+            }
+
+            .nav {
+                order: 3;
+                width: 100%;
+                justify-content: flex-start;
+                overflow-x: auto;
+                gap: 24px;
+                padding-bottom: 2px;
+            }
+
+            .header-actions {
+                margin-left: auto;
+            }
+        }
+
 
         /* Container */
         .container {
@@ -405,18 +429,24 @@
 </head>
 <body>
     <!-- Header -->
-    <header>
-        <div class="logo">Sehatin</div>
-        <nav>
+    <header class="topbar">
+        <a class="logo" href="landingpage.html">Sehatin</a>
+
+        <nav class="nav" aria-label="Navigasi utama">
             <a href="landingpage.html">Beranda</a>
             <a href="paketcatering.html">Paket</a>
             <a href="monitoring.html">Pantau Nutrisi</a>
             <a href="riwayat.html">Pesanan</a>
-            <div class="nav-icons">
-                <a href="keranjang.html"><span class="cart-icon">🛒</span></a>
-                <a href="profil.html"><div class="profile-avatar">JD</div></a>
-            </div>
         </nav>
+
+        <div class="header-actions">
+            <a class="cart-link" href="keranjang.html" aria-label="Keranjang">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M3.75 4.75h2.1l1.65 9.05a2 2 0 0 0 1.97 1.64h6.92a2 2 0 0 0 1.92-1.43l1.37-4.64H7.07M9.25 19.25h.01M17.25 19.25h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+            <a class="profile-avatar" href="profil.html" aria-label="Profil JD">JD</a>
+        </div>
     </header>
 
     <!-- Container -->
@@ -538,6 +568,139 @@
         document.querySelector('.checkout-btn').addEventListener('click', function() {
             window.location.href = 'checkout.html';
         });
+    </script>
+    <script>
+        const cartContainer = document.querySelector('.cart-items');
+        const summaryRows = document.querySelectorAll('.summary-row');
+        const voucherInput = document.querySelector('.voucher-input');
+        const voucherButton = document.querySelector('.voucher-btn');
+        const checkoutButton = document.querySelector('.checkout-btn');
+        let discount = 0;
+
+        function formatRupiah(value) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                maximumFractionDigits: 0
+            }).format(value).replace('Rp', 'Rp ');
+        }
+
+        function readCart() {
+            try {
+                return JSON.parse(localStorage.getItem('sehatinCart')) || [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('sehatinCart', JSON.stringify(cart));
+        }
+
+        function getSubtotal(cart) {
+            return cart.reduce((sum, item) => sum + (Number(item.unitPrice) * Number(item.quantity)), 0);
+        }
+
+        function renderCart() {
+            const cart = readCart();
+            const subtotal = getSubtotal(cart);
+            const appliedDiscount = Math.min(discount, subtotal);
+            const total = subtotal - appliedDiscount;
+
+            if (!cart.length) {
+                cartContainer.innerHTML = `
+                    <div style="padding: 2rem; text-align: center; color: #777;">
+                        Keranjang masih kosong.
+                        <br>
+                        <a href="detailpaket.html" style="color: #1a6b3b; font-weight: 700;">Pilih paket catering</a>
+                    </div>
+                `;
+                checkoutButton.disabled = true;
+                checkoutButton.style.opacity = '0.55';
+                checkoutButton.style.cursor = 'not-allowed';
+            } else {
+                cartContainer.innerHTML = cart.map((item) => `
+                    <div class="cart-item" data-id="${item.id}">
+                        <img src="${item.image || 'images/cart-item-1.png'}" alt="${item.name}" class="item-image">
+                        <div class="item-info">
+                            <span class="item-badge">${item.badge || 'PAKET SEHAT'}</span>
+                            <h3>${item.name}</h3>
+                            <div class="item-detail">${item.durationDays} Hari &bull; ${item.meals || item.packageType}</div>
+                            <a href="#" class="hapus-btn">Hapus</a>
+                        </div>
+                        <div>
+                            <div class="item-price">${formatRupiah(item.unitPrice)}</div>
+                            <div class="quantity-control">
+                                <button class="qty-btn" data-action="decrease" type="button">&minus;</button>
+                                <div class="qty-value">${String(item.quantity).padStart(2, '0')}</div>
+                                <button class="qty-btn" data-action="increase" type="button">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                checkoutButton.disabled = false;
+                checkoutButton.style.opacity = '';
+                checkoutButton.style.cursor = '';
+            }
+
+            summaryRows[0].querySelector('.summary-value').textContent = formatRupiah(subtotal);
+            summaryRows[2].querySelector('.summary-value').textContent = formatRupiah(appliedDiscount);
+            summaryRows[3].querySelector('span:last-child').textContent = formatRupiah(total);
+        }
+
+        cartContainer.addEventListener('click', function(e) {
+            const itemEl = e.target.closest('.cart-item');
+            if (!itemEl) return;
+
+            const cart = readCart();
+            const item = cart.find((entry) => entry.id === itemEl.dataset.id);
+            if (!item) return;
+
+            if (e.target.classList.contains('qty-btn')) {
+                if (e.target.dataset.action === 'increase') {
+                    item.quantity += 1;
+                } else {
+                    item.quantity = Math.max(1, item.quantity - 1);
+                }
+                saveCart(cart);
+                renderCart();
+            }
+
+            if (e.target.classList.contains('hapus-btn')) {
+                e.preventDefault();
+                saveCart(cart.filter((entry) => entry.id !== item.id));
+                renderCart();
+            }
+        });
+
+        voucherButton.addEventListener('click', function() {
+            const cart = readCart();
+            const code = voucherInput.value.trim().toUpperCase();
+            const subtotal = getSubtotal(cart);
+            discount = ['SEHATIN10', 'HEMAT10'].includes(code) ? Math.round(subtotal * 0.1) : 0;
+            renderCart();
+        });
+
+        checkoutButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            const cart = readCart();
+            if (!cart.length) return;
+
+            const subtotal = getSubtotal(cart);
+            const appliedDiscount = Math.min(discount, subtotal);
+            localStorage.setItem('sehatinCheckout', JSON.stringify({
+                items: cart,
+                subtotal,
+                shipping: 0,
+                discount: appliedDiscount,
+                total: subtotal - appliedDiscount,
+                createdAt: new Date().toISOString()
+            }));
+            window.location.href = 'checkout.html';
+        }, true);
+
+        renderCart();
     </script>
 </body>
 </html>
