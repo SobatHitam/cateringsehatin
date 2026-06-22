@@ -1,909 +1,950 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil - Sehatin</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: #f9f6f5;
-            color: #2f2f2f;
-        }
-
-        .topbar {
-            height: 80px;
-            padding: 0 80px;
-            display: flex;
-            align-items: center;
-            background: rgba(249, 246, 245, 0.8);
-            backdrop-filter: blur(12px);
-            position: relative;
-            z-index: 5;
-        }
-
-        .logo {
-            width: 244px;
-            color: #14532d;
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 32px;
-            text-decoration: none;
-        }
-
-        .nav {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-        }
-
-        .nav a {
-            color: #5c5b5b;
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 20px;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-
-        .header-actions {
-            width: 244px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 31px;
-        }
-
-        .cart-link {
-            width: 24px;
-            height: 24px;
-            color: #2f2f2f;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-        }
-
-        .cart-link svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        .profile-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #006b1b;
-            color: #d1ffc8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
-            line-height: 20px;
-            text-decoration: none;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        }
-
-        .page {
-            max-width: 1120px;
-            margin: 48px auto 0;
-        }
-
-        .profile-hero {
-            height: 192px;
-            display: grid;
-            grid-template-columns: 160px 1fr auto;
-            align-items: center;
-            gap: 32px;
-        }
-
-        .profile-photo {
-            position: relative;
-            width: 160px;
-            height: 160px;
-        }
-
-        .profile-photo img {
-            width: 160px;
-            height: 160px;
-            display: block;
-            object-fit: cover;
-            object-position: center;
-            border-radius: 24px;
-        }
-
-        .photo-edit {
-            position: absolute;
-            right: -12px;
-            bottom: -8px;
-            width: 36px;
-            height: 36px;
-            border: none;
-            border-radius: 50%;
-            background: #007a22;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 18px rgba(0, 122, 34, 0.18);
-            cursor: pointer;
-        }
-
-        .photo-edit svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .profile-name {
-            font-size: 56px;
-            font-weight: 800;
-            line-height: 64px;
-            letter-spacing: -1px;
-            margin-bottom: 4px;
-        }
-
-        .profile-meta {
-            color: #5c5b5b;
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 24px;
-        }
-
-        .profile-actions {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding-top: 64px;
-        }
-
-        .btn {
-            height: 56px;
-            border: none;
-            border-radius: 999px;
-            padding: 0 32px;
-            font-size: 16px;
-            font-weight: 700;
-            line-height: 24px;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .btn-secondary {
-            background: #ffffff;
-            color: #2f2f2f;
-            box-shadow: inset 0 0 0 1px #e4e2e2;
-        }
-
-        .btn-primary {
-            background: #007a22;
-            color: #ffffff;
-            box-shadow: 0 8px 18px rgba(0, 122, 34, 0.18);
-        }
-
-        .layout {
-            margin-top: 80px;
-            display: grid;
-            grid-template-columns: 730px 348px;
-            gap: 32px;
-            align-items: start;
-        }
-
-        .column {
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-        }
-
-        .card {
-            background: #ffffff;
-            border: 1px solid #e9e7e7;
-            border-radius: 24px;
-            box-shadow: 0 1px 2px rgba(47, 47, 47, 0.03);
-        }
-
-        .card-soft {
-            background: #f3f0f0;
-            border-color: transparent;
-        }
-
-        .section-card {
-            padding: 40px;
-        }
-
-        .section-title {
-            color: #14532d;
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 32px;
-            margin-bottom: 28px;
-        }
-
-        .section-title.dark {
-            color: #2f2f2f;
-        }
-
-        .profile-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 28px 32px;
-        }
-
-        .field.full {
-            grid-column: 1 / -1;
-        }
-
-        .label {
-            color: #5c5b5b;
-            display: block;
-            font-size: 12px;
-            font-weight: 800;
-            line-height: 16px;
-            letter-spacing: .6px;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
-
-        .input-pill,
-        .select-pill {
-            height: 56px;
-            width: 100%;
-            border: none;
-            border-radius: 28px;
-            background: #f3f0f0;
-            color: #3c3a3a;
-            display: flex;
-            align-items: center;
-            padding: 0 18px;
-            font-size: 16px;
-            font-weight: 700;
-            line-height: 24px;
-        }
-
-        .metrics-card,
-        .nutrition-card {
-            padding: 32px;
-        }
-
-        .metric-list,
-        .nutrition-list {
-            display: flex;
-            flex-direction: column;
-            gap: 26px;
-        }
-
-        .metric-item,
-        .nutrition-item {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: end;
-            gap: 12px;
-        }
-
-        .metric-label,
-        .nutrition-label {
-            color: #5c5b5b;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: .6px;
-            line-height: 16px;
-            text-transform: uppercase;
-        }
-
-        .metric-value,
-        .nutrition-value {
-            color: #007a22;
-            font-size: 14px;
-            font-weight: 800;
-            line-height: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .edit-icon {
-            width: 18px;
-            height: 18px;
-            color: #007a22;
-        }
-
-        .progress-track {
-            grid-column: 1 / -1;
-            height: 8px;
-            border-radius: 999px;
-            background: #e4e2e2;
-            margin-top: 6px;
-        }
-
-        .activity {
-            margin-top: 32px;
-        }
-
-        .select-pill {
-            min-height: 80px;
-            height: auto;
-            justify-content: space-between;
-            padding: 18px;
-        }
-
-        .goals-copy {
-            color: #5c5b5b;
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 24px;
-            margin-top: -20px;
-            margin-bottom: 32px;
-        }
-
-        .goals-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-        }
-
-        .goal-tile {
-            height: 100px;
-            border: 1px solid #e9e7e7;
-            border-radius: 22px;
-            background: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            color: #3c3a3a;
-            font-size: 14px;
-            font-weight: 800;
-            line-height: 20px;
-            cursor: pointer;
-            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s, background 0.2s;
-        }
-
-        .goal-tile svg {
-            width: 30px;
-            height: 30px;
-            color: #5c5b5b;
-            transition: color 0.2s;
-        }
-
-        .goal-tile:hover {
-            border-color: #86c795;
-            transform: translateY(-1px);
-        }
-
-        .goal-tile.active {
-            border-color: #007a22;
-            background: #f7fff8;
-            box-shadow: 0 0 0 2px rgba(0, 122, 34, 0.12);
-            color: #007a22;
-        }
-
-        .goal-tile.active svg {
-            color: #007a22;
-        }
-
-        .diet-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px 60px;
-        }
-
-        .diet-chip {
-            height: 56px;
-            border-radius: 999px;
-            background: #f3f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            color: #3c3a3a;
-            font-size: 16px;
-            font-weight: 800;
-            line-height: 24px;
-            cursor: pointer;
-            user-select: none;
-            transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
-        }
-
-        .diet-chip:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 16px rgba(47, 47, 47, 0.06);
-        }
-
-        .check-box {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            border: 1px solid #b9b7b7;
-            background: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            flex-shrink: 0;
-        }
-
-        .diet-chip.checked .check-box {
-            border-color: #007a22;
-            background: #007a22;
-        }
-
-        .diet-chip.checked {
-            box-shadow: inset 0 0 0 1px rgba(0, 122, 34, 0.08);
-        }
-
-        .nutrition-card .section-title {
-            margin-bottom: 28px;
-        }
-
-        .meal-card {
-            height: 256px;
-            border-radius: 18px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 18px 28px rgba(47, 47, 47, 0.18);
-            background: #2f2f2f;
-        }
-
-        .meal-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .meal-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, .78) 100%);
-        }
-
-        .meal-text {
-            position: absolute;
-            left: 24px;
-            right: 24px;
-            bottom: 24px;
-            color: #ffffff;
-            z-index: 1;
-        }
-
-        .meal-title {
-            font-size: 20px;
-            font-weight: 800;
-            line-height: 24px;
-        }
-
-        .meal-meta {
-            color: rgba(255, 255, 255, .85);
-            font-size: 14px;
-            line-height: 20px;
-            margin-top: 2px;
-        }
-
-        .exercise-card {
-            padding: 40px 32px 34px;
-        }
-
-        .exercise-card .section-title {
-            margin-bottom: 32px;
-        }
-
-        .exercise-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-        }
-
-        .exercise-image {
-            width: 150px;
-            height: 192px;
-            border-radius: 14px;
-            object-fit: cover;
-            display: block;
-            margin-bottom: 16px;
-        }
-
-        .exercise-name {
-            color: #3c3a3a;
-            font-size: 16px;
-            font-weight: 800;
-            line-height: 24px;
-        }
-
-        .exercise-desc {
-            color: #767474;
-            font-size: 13px;
-            font-style: italic;
-            font-weight: 600;
-            line-height: 18px;
-            margin-top: 2px;
-        }
-
-        footer {
-            margin-top: 48px;
-            background: #f3f0f0;
-        }
-
-        .footer-content {
-            max-width: 1120px;
-            margin: 0 auto;
-            height: 336px;
-            padding: 96px 0;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 48px;
-        }
-
-        .footer-column h3 {
-            color: #14532d;
-            font-size: 20px;
-            line-height: 28px;
-            margin-bottom: 22px;
-        }
-
-        .footer-column p,
-        .footer-column a {
-            color: #5c5b5b;
-            display: block;
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 24px;
-            text-decoration: none;
-            margin-bottom: 10px;
-        }
-
-        .footer-icons {
-            display: flex;
-            gap: 16px;
-            margin-top: 16px;
-        }
-
-        .footer-icons img {
-            width: 24px;
-            height: 24px;
-        }
-
-        .footer-bottom {
-            max-width: 1120px;
-            margin: 0 auto;
-            border-top: 1px solid #e4e2e2;
-            padding: 32px 0;
-            color: #767474;
-            font-size: 14px;
-            line-height: 20px;
-        }
-
-        @media (max-width: 1180px) {
-            .topbar,
-            .page {
-                padding-left: 24px;
-                padding-right: 24px;
-            }
-
-            .page,
-            .footer-content,
-            .footer-bottom {
-                max-width: 100%;
-            }
-
-            .layout {
-                grid-template-columns: minmax(0, 1fr) 348px;
-            }
-        }
-
-        @media (max-width: 900px) {
-            .topbar {
-                height: auto;
-                padding: 18px 24px;
-                flex-wrap: wrap;
-                gap: 16px;
-            }
-
-            .logo,
-            .header-actions {
-                width: auto;
-            }
-
-            .header-actions {
-                margin-left: auto;
-            }
-
-            .nav {
-                order: 3;
-                width: 100%;
-                justify-content: flex-start;
-                overflow-x: auto;
-            }
-
-            .page {
-                margin-top: 32px;
-            }
-
-            .profile-hero,
-            .layout {
-                grid-template-columns: 1fr;
-            }
-
-            .profile-actions {
-                padding-top: 0;
-                flex-wrap: wrap;
-            }
-
-            .profile-name {
-                font-size: 42px;
-                line-height: 48px;
-            }
-
-            .profile-form,
-            .diet-grid,
-            .goals-grid,
-            .exercise-grid,
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-
-            .exercise-image {
-                width: 100%;
-                height: 220px;
-            }
-
-            .footer-content {
-                height: auto;
-                padding: 48px 24px;
-            }
-
-            .footer-bottom {
-                padding-left: 24px;
-                padding-right: 24px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profil - Sehatin</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+
+    :root{
+      --bg: #f9f6f5;
+      --text: #303030;
+      --muted: #6a6a6a;
+      --green: #0f7a23;
+      --green-dark: #1a6b3b;
+      --green-soft: #d8f4dc;
+      --card: #ffffff;
+      --border: #ece7e5;
+      --shadow: 0 2px 10px rgba(0,0,0,.06);
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html{ scroll-behavior:smooth; }
+    body{
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    a{ color: inherit; text-decoration: none; }
+    img{ display:block; max-width:100%; }
+
+    /* Header - same as paketcatering */
+    .topbar{
+      height:80px;
+      padding: 0 80px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background: rgba(249, 246, 245, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,.04);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .logo{
+      width: 244px;
+      color: #14532d;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 32px;
+      font-family: "Plus Jakarta Sans", Inter, sans-serif;
+      letter-spacing:-0.02em;
+    }
+    .nav{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      gap: 32px;
+    }
+    .nav a{
+      color: #5c5b5b;
+      font-size: 14px;
+      line-height: 20px;
+      position:relative;
+      white-space:nowrap;
+      padding: 2px 0;
+    }
+    .nav a.active{
+      color: #1a6b3b;
+      font-weight: 600;
+    }
+    .nav a.active::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:-2px;
+      height:2px;
+      border-radius:999px;
+      background:#1a6b3b;
+    }
+    .header-actions{
+      width: 244px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap: 31px;
+    }
+    .cart-link{
+      width: 24px;
+      height: 24px;
+      color: #2f2f2f;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .cart-link svg{
+      width: 20px;
+      height: 20px;
+    }
+    .profile-avatar{
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #006b1b;
+      color: #d1ffc8;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 20px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .page{
+      max-width: 1120px;
+      margin: 48px auto 0;
+      padding: 0;
+    }
+
+    .profile-hero {
+      height: 192px;
+      display: grid;
+      grid-template-columns: 160px 1fr auto;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .profile-photo {
+      position: relative;
+      width: 160px;
+      height: 160px;
+    }
+
+    .profile-photo img {
+      width: 160px;
+      height: 160px;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 24px;
+    }
+
+    .photo-edit {
+      position: absolute;
+      right: -12px;
+      bottom: -8px;
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 50%;
+      background: #007a22;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 18px rgba(0, 122, 34, 0.18);
+      cursor: pointer;
+    }
+
+    .photo-edit svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .profile-name {
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 64px;
+      letter-spacing: -1px;
+      margin-bottom: 4px;
+    }
+
+    .profile-meta {
+      color: #5c5b5b;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+    }
+
+    .profile-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-top: 64px;
+    }
+
+    .btn {
+      height: 56px;
+      border: none;
+      border-radius: 999px;
+      padding: 0 32px;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 24px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: #2f2f2f;
+      box-shadow: inset 0 0 0 1px #e4e2e2;
+    }
+
+    .btn-primary {
+      background: #007a22;
+      color: #ffffff;
+      box-shadow: 0 8px 18px rgba(0, 122, 34, 0.18);
+    }
+
+    .layout {
+      margin-top: 80px;
+      display: grid;
+      grid-template-columns: 730px 348px;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid #e9e7e7;
+      border-radius: 24px;
+      box-shadow: 0 1px 2px rgba(47, 47, 47, 0.03);
+    }
+
+    .card-soft {
+      background: #f3f0f0;
+      border-color: transparent;
+    }
+
+    .section-card {
+      padding: 40px;
+    }
+
+    .section-title {
+      color: #14532d;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 32px;
+      margin-bottom: 28px;
+    }
+
+    .section-title.dark {
+      color: #2f2f2f;
+    }
+
+    .profile-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px 32px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .label {
+      color: #5c5b5b;
+      display: block;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 16px;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .input-pill,
+    .select-pill {
+      height: 56px;
+      width: 100%;
+      border: none;
+      border-radius: 28px;
+      background: #f3f0f0;
+      color: #3c3a3a;
+      display: flex;
+      align-items: center;
+      padding: 0 18px;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 24px;
+    }
+
+    .metrics-card,
+    .nutrition-card {
+      padding: 32px;
+    }
+
+    .metric-list,
+    .nutrition-list {
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+    }
+
+    .metric-item,
+    .nutrition-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 12px;
+    }
+
+    .metric-label,
+    .nutrition-label {
+      color: #5c5b5b;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      line-height: 16px;
+      text-transform: uppercase;
+    }
+
+    .metric-value,
+    .nutrition-value {
+      color: #007a22;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .edit-icon {
+      width: 18px;
+      height: 18px;
+      color: #007a22;
+    }
+
+    .progress-track {
+      grid-column: 1 / -1;
+      height: 8px;
+      border-radius: 999px;
+      background: #e4e2e2;
+      margin-top: 6px;
+    }
+
+    .activity {
+      margin-top: 32px;
+    }
+
+    .select-pill {
+      min-height: 80px;
+      height: auto;
+      justify-content: space-between;
+      padding: 18px;
+    }
+
+    .goals-copy {
+      color: #5c5b5b;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 24px;
+      margin-top: -20px;
+      margin-bottom: 32px;
+    }
+
+    .goals-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .goal-tile {
+      height: 100px;
+      border: 1px solid #e9e7e7;
+      border-radius: 22px;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #3c3a3a;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 20px;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s, background 0.2s;
+    }
+
+    .goal-tile svg {
+      width: 30px;
+      height: 30px;
+      color: #5c5b5b;
+      transition: color 0.2s;
+    }
+
+    .goal-tile:hover {
+      border-color: #86c795;
+      transform: translateY(-1px);
+    }
+
+    .goal-tile.active {
+      border-color: #007a22;
+      background: #f7fff8;
+      box-shadow: 0 0 0 2px rgba(0, 122, 34, 0.12);
+      color: #007a22;
+    }
+
+    .goal-tile.active svg {
+      color: #007a22;
+    }
+
+    .diet-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px 60px;
+    }
+
+    .diet-chip {
+      height: 56px;
+      border-radius: 999px;
+      background: #f3f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #3c3a3a;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 24px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+
+    .diet-chip:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(47, 47, 47, 0.06);
+    }
+
+    .check-box {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: 1px solid #b9b7b7;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .diet-chip.checked .check-box {
+      border-color: #007a22;
+      background: #007a22;
+    }
+
+    .diet-chip.checked {
+      box-shadow: inset 0 0 0 1px rgba(0, 122, 34, 0.08);
+    }
+
+    .nutrition-card .section-title {
+      margin-bottom: 28px;
+    }
+
+    .meal-card {
+      height: 256px;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 18px 28px rgba(47, 47, 47, 0.18);
+      background: #2f2f2f;
+    }
+
+    .meal-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .meal-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, .78) 100%);
+    }
+
+    .meal-text {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+      color: #ffffff;
+      z-index: 1;
+    }
+
+    .meal-title {
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 24px;
+    }
+
+    .meal-meta {
+      color: rgba(255, 255, 255, .85);
+      font-size: 14px;
+      line-height: 20px;
+      margin-top: 2px;
+    }
+
+    .exercise-card {
+      padding: 40px 32px 34px;
+    }
+
+    .exercise-card .section-title {
+      margin-bottom: 32px;
+    }
+
+    .exercise-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .exercise-image {
+      width: 150px;
+      height: 192px;
+      border-radius: 14px;
+      object-fit: cover;
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .exercise-name {
+      color: #3c3a3a;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 24px;
+    }
+
+    .exercise-desc {
+      color: #767474;
+      font-size: 13px;
+      font-style: italic;
+      font-weight: 600;
+      line-height: 18px;
+      margin-top: 2px;
+    }
+
+    /* Footer - same as paketcatering */
+    footer {
+      background: #f5f5f5;
+      color: #666;
+      padding: 3rem 5%;
+      margin-top: 48px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto 2rem;
+    }
+
+    .footer-column h3 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: #1a6b3b;
+      font-weight: 700;
+    }
+
+    .footer-column a {
+      display: block;
+      color: #666;
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      transition: color 0.3s;
+    }
+
+    .footer-column a:hover {
+      color: #1a6b3b;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #ddd;
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      font-size: 0.9rem;
+      color: #999;
+    }
+
+    .footer-icons {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-icons a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-icons img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    @media (max-width: 1180px) {
+      .topbar,
+      .page {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .page {
+        max-width: 100%;
+      }
+
+      .layout {
+        grid-template-columns: minmax(0, 1fr) 348px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .topbar {
+        height: auto;
+        padding: 18px 24px;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .logo,
+      .header-actions {
+        width: auto;
+      }
+
+      .header-actions {
+        margin-left: auto;
+      }
+
+      .nav {
+        order: 3;
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: auto;
+      }
+
+      .page {
+        margin-top: 32px;
+      }
+
+      .profile-hero,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-actions {
+        padding-top: 0;
+        flex-wrap: wrap;
+      }
+
+      .profile-name {
+        font-size: 42px;
+        line-height: 48px;
+      }
+
+      .profile-form,
+      .diet-grid,
+      .goals-grid,
+      .exercise-grid,
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+
+      .exercise-image {
+        width: 100%;
+        height: 220px;
+      }
+
+      .footer-content {
+        height: auto;
+        padding: 48px 0 0;
+      }
+
+      .footer-bottom {
+        padding-left: 0;
+        padding-right: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header class="topbar">
-        <a class="logo" href="landingpage.html">Sehatin</a>
-        <nav class="nav" aria-label="Navigasi utama">
-            <a href="landingpage.html">Beranda</a>
-            <a href="paketcatering.html">Paket</a>
-            <a href="monitoring.html">Pantau Nutrisi</a>
-            <a href="riwayat.html">Pesanan</a>
-        </nav>
-        <div class="header-actions">
-            <a class="cart-link" href="keranjang.html" aria-label="Keranjang">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M3.75 4.75h2.1l1.65 9.05a2 2 0 0 0 1.97 1.64h6.92a2 2 0 0 0 1.92-1.43l1.37-4.64H7.07M9.25 19.25h.01M17.25 19.25h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </a>
-            <a class="profile-avatar" href="profil.html" aria-label="Profil JD">JD</a>
-        </div>
-    </header>
+  <header class="topbar">
+    <a class="logo" href="index.html">Sehatin</a>
 
-    <main class="page">
-        <section class="profile-hero">
-            <div class="profile-photo">
-                <img src="images/profile.png" alt="Foto profil Mas Arif">
-                <button class="photo-edit" aria-label="Edit foto profil">
-                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                        <path d="M4 14.75 5 11l7.8-7.8a1.7 1.7 0 0 1 2.4 2.4L7.4 13.4 4 14.75Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-            </div>
+    <nav class="nav" aria-label="Navigasi utama">
+      <a href="index.html">Beranda</a>
+      <a href="paketcatering.html">Paket</a>
+      <a href="monitoring.html">Pantau Nutrisi</a>
+      <a href="riwayat.html">Pesanan</a>
+    </nav>
 
-            <div>
-                <h1 class="profile-name">MAS ARIF</h1>
-                <p class="profile-meta">Bergabung sejak Oktober 2023 &bull; 124 Makanan Dilacak</p>
-            </div>
+    <div class="header-actions">
+      <a class="cart-link" href="keranjang.html" aria-label="Keranjang">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M3.75 4.75h2.1l1.65 9.05a2 2 0 0 0 1.97 1.64h6.92a2 2 0 0 0 1.92-1.43l1.37-4.64H7.07M9.25 19.25h.01M17.25 19.25h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a class="profile-avatar" href="profil.html" aria-label="Profil JD">JD</a>
+    </div>
+  </header>
 
-            <div class="profile-actions">
-                <button class="btn btn-secondary">Batalkan Perubahan</button>
-                <button class="btn btn-primary">Simpan Profil</button>
+  <main class="page">
+    <section class="profile-hero">
+      <div class="profile-photo">
+        <img src="images/profile.png" alt="Foto profil Mas Arif">
+        <button class="photo-edit" aria-label="Edit foto profil">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M4 14.75 5 11l7.8-7.8a1.7 1.7 0 0 1 2.4 2.4L7.4 13.4 4 14.75Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div>
+        <h1 class="profile-name">MAS ARIF</h1>
+        <p class="profile-meta">Bergabung sejak Oktober 2023 &bull; 124 Makanan Dilacak</p>
+      </div>
+
+      <div class="profile-actions">
+        <button class="btn btn-secondary">Batalkan Perubahan</button>
+        <button class="btn btn-primary">Simpan Profil</button>
+      </div>
+    </section>
+
+    <section class="layout">
+      <div class="column">
+        <section class="card section-card">
+          <h2 class="section-title">Informasi Pribadi</h2>
+          <div class="profile-form">
+            <div class="field">
+              <span class="label">Nama Lengkap</span>
+              <div class="input-pill">Mas Arif</div>
             </div>
+            <div class="field">
+              <span class="label">Alamat Email</span>
+              <div class="input-pill">wise@email.com</div>
+            </div>
+            <div class="field full">
+              <span class="label">Nomor Telepon</span>
+              <div class="input-pill">+62 81342453267547</div>
+            </div>
+          </div>
         </section>
 
-        <section class="layout">
-            <div class="column">
-                <section class="card section-card">
-                    <h2 class="section-title">Informasi Pribadi</h2>
-                    <div class="profile-form">
-                        <div class="field">
-                            <span class="label">Nama Lengkap</span>
-                            <div class="input-pill">Mas Arif</div>
-                        </div>
-                        <div class="field">
-                            <span class="label">Alamat Email</span>
-                            <div class="input-pill">wise@email.com</div>
-                        </div>
-                        <div class="field full">
-                            <span class="label">Nomor Telepon</span>
-                            <div class="input-pill">+62 81342453267547</div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="card card-soft section-card">
-                    <h2 class="section-title">Tujuan Kesehatan</h2>
-                    <p class="goals-copy">Pilih tujuan utama Anda untuk mempersonalisasi rekomendasi makanan.</p>
-                    <div class="goals-grid">
-                        <div class="goal-tile" tabindex="0" role="button" aria-pressed="false">
-                            <svg viewBox="0 0 32 32" fill="none"><path d="M6 20c5 1 7-2 7-7 4 2 6 6 6 10 2-1 4-2 7-2 1 0 2 1 2 2 0 4-4 6-9 6H8c-3 0-5-2-5-5 0-2 1-4 3-4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            <span>Muscle Gain</span>
-                        </div>
-                        <div class="goal-tile active" tabindex="0" role="button" aria-pressed="true">
-                            <svg viewBox="0 0 32 32" fill="none"><path d="M9 7h14v18H9V7ZM16 11h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            <span>Weight Loss</span>
-                        </div>
-                        <div class="goal-tile" tabindex="0" role="button" aria-pressed="false">
-                            <svg viewBox="0 0 32 32" fill="none"><path d="M12 6v20M20 6v20M8 6v8c0 3 2 5 4 5M24 6v20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                            <span>Keto Diet</span>
-                        </div>
-                        <div class="goal-tile" tabindex="0" role="button" aria-pressed="false">
-                            <svg viewBox="0 0 32 32" fill="none"><path d="M25 7c-9 1-15 6-15 13 0 3 2 5 5 5 7 0 11-8 10-18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            <span>Balanced</span>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="card section-card">
-                    <h2 class="section-title">Pantangan Makanan</h2>
-                    <div class="diet-grid">
-                        <div class="diet-chip checked" tabindex="0" role="checkbox" aria-checked="true"><span class="check-box">✓</span>Gluten-Free</div>
-                        <div class="diet-chip" tabindex="0" role="checkbox" aria-checked="false"><span class="check-box"></span>Nut-Free</div>
-                        <div class="diet-chip checked" tabindex="0" role="checkbox" aria-checked="true"><span class="check-box">✓</span>Low Sodium</div>
-                        <div class="diet-chip" tabindex="0" role="checkbox" aria-checked="false"><span class="check-box"></span>Dairy-Free</div>
-                    </div>
-                </section>
-
-                <section class="card exercise-card">
-                    <h2 class="section-title">Rekomendasi Olahraga</h2>
-                    <div class="exercise-grid">
-                        <article>
-                            <img class="exercise-image" src="images/exercise-running.png" alt="Jalan 5K">
-                            <div class="exercise-name">Jalan 5K</div>
-                            <p class="exercise-desc">Jalan kaki 5K di pagi/sore hari bisa bakar 350cal</p>
-                        </article>
-                        <article>
-                            <img class="exercise-image" src="images/exercise-golf.png" alt="Golf">
-                            <div class="exercise-name">Golf</div>
-                            <p class="exercise-desc">Golf 16 hole bisa bakar 150cal dan buat kaki encok</p>
-                        </article>
-                        <article>
-                            <img class="exercise-image" src="images/exercise-badminton.png" alt="Badminton">
-                            <div class="exercise-name">Badminton</div>
-                            <p class="exercise-desc">Badminton 1 set bisa bakar 250 calt</p>
-                        </article>
-                        <article>
-                            <img class="exercise-image" src="images/exercise-yoga.png" alt="Yoga">
-                            <div class="exercise-name">Yoga</div>
-                            <p class="exercise-desc">Yoga 30-60 menit persesi bisa bakar 200kal</p>
-                        </article>
-                    </div>
-                </section>
+        <section class="card card-soft section-card">
+          <h2 class="section-title">Tujuan Kesehatan</h2>
+          <p class="goals-copy">Pilih tujuan utama Anda untuk mempersonalisasi rekomendasi makanan.</p>
+          <div class="goals-grid">
+            <div class="goal-tile" tabindex="0" role="button" aria-pressed="false">
+              <svg viewBox="0 0 32 32" fill="none"><path d="M6 20c5 1 7-2 7-7 4 2 6 6 6 10 2-1 4-2 7-2 1 0 2 1 2 2 0 4-4 6-9 6H8c-3 0-5-2-5-5 0-2 1-4 3-4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Muscle Gain</span>
             </div>
-
-            <aside class="column">
-                <section class="card metrics-card">
-                    <h2 class="section-title dark">Data Fisik</h2>
-                    <div class="metric-list">
-                        <div class="metric-item">
-                            <span class="metric-label">Berat Saat Ini</span>
-                            <span class="metric-value">82 kg <svg class="edit-icon" viewBox="0 0 20 20" fill="none"><path d="M4 15.5 5 12l8-8a1.6 1.6 0 0 1 2.3 2.3l-8 8-3.3 1.2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
-                            <span class="progress-track"></span>
-                        </div>
-                        <div class="metric-item">
-                            <span class="metric-label">Berat Target</span>
-                            <span class="metric-value">65 kg <svg class="edit-icon" viewBox="0 0 20 20" fill="none"><path d="M4 15.5 5 12l8-8a1.6 1.6 0 0 1 2.3 2.3l-8 8-3.3 1.2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
-                            <span class="progress-track"></span>
-                        </div>
-                    </div>
-                    <div class="activity">
-                        <span class="label">Tingkat Aktivitas</span>
-                        <div class="select-pill">Cukup Aktif (1-3 kali olahraga/minggu)<span>⌄</span></div>
-                    </div>
-                </section>
-
-                <section class="card nutrition-card">
-                    <h2 class="section-title dark">Target Gizi Harian</h2>
-                    <div class="nutrition-list">
-                        <div class="nutrition-item"><span class="nutrition-label">Kalori (kkal)</span><span class="nutrition-value">0 kkal</span><span class="progress-track"></span></div>
-                        <div class="nutrition-item"><span class="nutrition-label">Protein (g)</span><span class="nutrition-value">0 g</span><span class="progress-track"></span></div>
-                        <div class="nutrition-item"><span class="nutrition-label">Karbohidrat (g)</span><span class="nutrition-value">0 g</span><span class="progress-track"></span></div>
-                        <div class="nutrition-item"><span class="nutrition-label">Lemak (g)</span><span class="nutrition-value">0 g</span><span class="progress-track"></span></div>
-                    </div>
-                </section>
-
-                <article class="meal-card">
-                    <img src="images/meal-breakfast.png" alt="Makanan selajutnya">
-                    <div class="meal-text">
-                        <div class="meal-title">Makanan selajutnya</div>
-                        <div class="meal-meta">Tomorrow, 08:00 AM • Energy+ Bowl</div>
-                    </div>
-                </article>
-
-                <article class="meal-card">
-                    <img src="images/meal-breakfast.png" alt="Makanan sebelumnya">
-                    <div class="meal-text">
-                        <div class="meal-title">Makanan sebelumnya</div>
-                        <div class="meal-meta">Tomorrow, 08:00 AM • Energy+ Bowl</div>
-                    </div>
-                </article>
-            </aside>
+            <div class="goal-tile active" tabindex="0" role="button" aria-pressed="true">
+              <svg viewBox="0 0 32 32" fill="none"><path d="M9 7h14v18H9V7ZM16 11h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Weight Loss</span>
+            </div>
+            <div class="goal-tile" tabindex="0" role="button" aria-pressed="false">
+              <svg viewBox="0 0 32 32" fill="none"><path d="M12 6v20M20 6v20M8 6v8c0 3 2 5 4 5M24 6v20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>Keto Diet</span>
+            </div>
+            <div class="goal-tile" tabindex="0" role="button" aria-pressed="false">
+              <svg viewBox="0 0 32 32" fill="none"><path d="M25 7c-9 1-15 6-15 13 0 3 2 5 5 5 7 0 11-8 10-18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>Balanced</span>
+            </div>
+          </div>
         </section>
-    </main>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>Sehatin</h3>
-                <p>Katering sehat premium yang membawa kualitas restoran ke meja makan Anda setiap hari.</p>
+        <section class="card section-card">
+          <h2 class="section-title">Pantangan Makanan</h2>
+          <div class="diet-grid">
+            <div class="diet-chip checked" tabindex="0" role="checkbox" aria-checked="true"><span class="check-box">✓</span>Gluten-Free</div>
+            <div class="diet-chip" tabindex="0" role="checkbox" aria-checked="false"><span class="check-box"></span>Nut-Free</div>
+            <div class="diet-chip checked" tabindex="0" role="checkbox" aria-checked="true"><span class="check-box">✓</span>Low Sodium</div>
+            <div class="diet-chip" tabindex="0" role="checkbox" aria-checked="false"><span class="check-box"></span>Dairy-Free</div>
+          </div>
+        </section>
+
+        <section class="card exercise-card">
+          <h2 class="section-title">Rekomendasi Olahraga</h2>
+          <div class="exercise-grid">
+            <article>
+              <img class="exercise-image" src="images/exercise-running.png" alt="Jalan 5K">
+              <div class="exercise-name">Jalan 5K</div>
+              <p class="exercise-desc">Jalan kaki 5K di pagi/sore hari bisa bakar 350cal</p>
+            </article>
+            <article>
+              <img class="exercise-image" src="images/exercise-golf.png" alt="Golf">
+              <div class="exercise-name">Golf</div>
+              <p class="exercise-desc">Golf 16 hole bisa bakar 150cal dan buat kaki encok</p>
+            </article>
+            <article>
+              <img class="exercise-image" src="images/exercise-badminton.png" alt="Badminton">
+              <div class="exercise-name">Badminton</div>
+              <p class="exercise-desc">Badminton 1 set bisa bakar 250 calt</p>
+            </article>
+            <article>
+              <img class="exercise-image" src="images/exercise-yoga.png" alt="Yoga">
+              <div class="exercise-name">Yoga</div>
+              <p class="exercise-desc">Yoga 30-60 menit persesi bisa bakar 200kal</p>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <aside class="column">
+        <section class="card metrics-card">
+          <h2 class="section-title dark">Data Fisik</h2>
+          <div class="metric-list">
+            <div class="metric-item">
+              <span class="metric-label">Berat Saat Ini</span>
+              <span class="metric-value">82 kg <svg class="edit-icon" viewBox="0 0 20 20" fill="none"><path d="M4 15.5 5 12l8-8a1.6 1.6 0 0 1 2.3 2.3l-8 8-3.3 1.2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+              <span class="progress-track"></span>
             </div>
-            <div class="footer-column">
-                <h3>Layanan</h3>
-                <a href="#">Paket Diet</a>
-                <a href="#">Makanan Pesanan Khusus</a>
-                <a href="#">Katering Perusahaan</a>
+            <div class="metric-item">
+              <span class="metric-label">Berat Target</span>
+              <span class="metric-value">65 kg <svg class="edit-icon" viewBox="0 0 20 20" fill="none"><path d="M4 15.5 5 12l8-8a1.6 1.6 0 0 1 2.3 2.3l-8 8-3.3 1.2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+              <span class="progress-track"></span>
             </div>
-            <div class="footer-column">
-                <h3>Perusahaan</h3>
-                <a href="#">Karier</a>
-                <a href="#">Kebijakan Privasi</a>
-                <a href="#">Syarat Layanan</a>
-            </div>
-            <div class="footer-column">
-                <h3>Bantuan</h3>
-                <a href="#">Tanya Jawab</a>
-                <a href="#">Hubungi Kami</a>
-                <div class="footer-icons">
-                    <a href="#"><img src="images/icon_share.png" alt="Share"></a>
-                    <a href="#"><img src="images/icon_mail.png" alt="Email"></a>
-                    <a href="#"><img src="images/icon_call.png" alt="Telepon"></a>
-                </div>
-            </div>
+          </div>
+          <div class="activity">
+            <span class="label">Tingkat Aktivitas</span>
+            <div class="select-pill">Cukup Aktif (1-3 kali olahraga/minggu)<span>⌄</span></div>
+          </div>
+        </section>
+
+        <section class="card nutrition-card">
+          <h2 class="section-title dark">Target Gizi Harian</h2>
+          <div class="nutrition-list">
+            <div class="nutrition-item"><span class="nutrition-label">Kalori (kkal)</span><span class="nutrition-value">0 kkal</span><span class="progress-track"></span></div>
+            <div class="nutrition-item"><span class="nutrition-label">Protein (g)</span><span class="nutrition-value">0 g</span><span class="progress-track"></span></div>
+            <div class="nutrition-item"><span class="nutrition-label">Karbohidrat (g)</span><span class="nutrition-value">0 g</span><span class="progress-track"></span></div>
+            <div class="nutrition-item"><span class="nutrition-label">Lemak (g)</span><span class="nutrition-value">0 g</span><span class="progress-track"></span></div>
+          </div>
+        </section>
+
+        <article class="meal-card">
+          <img src="images/meal-breakfast.png" alt="Makanan selajutnya">
+          <div class="meal-text">
+            <div class="meal-title">Makanan selajutnya</div>
+            <div class="meal-meta">Tomorrow, 08:00 AM • Energy+ Bowl</div>
+          </div>
+        </article>
+
+        <article class="meal-card">
+          <img src="images/meal-breakfast.png" alt="Makanan sebelumnya">
+          <div class="meal-text">
+            <div class="meal-title">Makanan sebelumnya</div>
+            <div class="meal-meta">Tomorrow, 08:00 AM • Energy+ Bowl</div>
+          </div>
+        </article>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-column">
+        <h3>Sehatin</h3>
+        <p>Katering sehat premium yang membawa kualitas restoran ke meja makan Anda setiap hari.</p>
+      </div>
+      <div class="footer-column">
+        <h3>Layanan</h3>
+        <a href="#">Paket Diet</a>
+        <a href="#">Makanan Pesanan Khusus</a>
+        <a href="#">Katering Perusahaan</a>
+      </div>
+      <div class="footer-column">
+        <h3>Perusahaan</h3>
+        <a href="#">Karier</a>
+        <a href="#">Kebijakan Privasi</a>
+        <a href="#">Syarat Layanan</a>
+      </div>
+      <div class="footer-column">
+        <h3>Bantuan</h3>
+        <a href="#">Tanya Jawab</a>
+        <a href="#">Hubungi Kami</a>
+        <div class="footer-icons">
+          <a href="#"><img src="images/icon_share.png" alt="Share"></a>
+          <a href="#"><img src="images/icon_mail.png" alt="Email"></a>
+          <a href="#"><img src="images/icon_call.png" alt="Telepon"></a>
         </div>
-        <div class="footer-bottom">© 2026 Sehatin Healthy Catering. All rights reserved.</div>
-    </footer>
-    <script>
-        document.querySelectorAll('.goal-tile').forEach(tile => {
-            const selectGoal = () => {
-                document.querySelectorAll('.goal-tile').forEach(item => {
-                    item.classList.remove('active');
-                    item.setAttribute('aria-pressed', 'false');
-                });
-                tile.classList.add('active');
-                tile.setAttribute('aria-pressed', 'true');
-            };
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Sehatin Healthy Catering. All rights reserved.</span>
+    </div>
+  </footer>
 
-            tile.addEventListener('click', selectGoal);
-            tile.addEventListener('keydown', event => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    selectGoal();
-                }
-            });
+  <script>
+    document.querySelectorAll('.goal-tile').forEach(tile => {
+      const selectGoal = () => {
+        document.querySelectorAll('.goal-tile').forEach(item => {
+          item.classList.remove('active');
+          item.setAttribute('aria-pressed', 'false');
         });
+        tile.classList.add('active');
+        tile.setAttribute('aria-pressed', 'true');
+      };
 
-        document.querySelectorAll('.diet-chip').forEach(chip => {
-            const toggleChip = () => {
-                const isChecked = chip.classList.toggle('checked');
-                chip.setAttribute('aria-checked', String(isChecked));
-                chip.querySelector('.check-box').textContent = isChecked ? '✓' : '';
-            };
+      tile.addEventListener('click', selectGoal);
+      tile.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          selectGoal();
+        }
+      });
+    });
 
-            chip.addEventListener('click', toggleChip);
-            chip.addEventListener('keydown', event => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    toggleChip();
-                }
-            });
-        });
-    </script>
+    document.querySelectorAll('.diet-chip').forEach(chip => {
+      const toggleChip = () => {
+        const isChecked = chip.classList.toggle('checked');
+        chip.setAttribute('aria-checked', String(isChecked));
+        chip.querySelector('.check-box').textContent = isChecked ? '✓' : '';
+      };
+
+      chip.addEventListener('click', toggleChip);
+      chip.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          toggleChip();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
