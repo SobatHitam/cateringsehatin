@@ -17,108 +17,144 @@ body {
     background: #f5f5f5;
     color: #333;
 }
-        /* Header */
-        .topbar {
-            height: 80px;
-            padding: 0 80px;
-            display: flex;
-            align-items: center;
-            background: rgba(249, 246, 245, 0.8);
-            backdrop-filter: blur(12px);
-            position: relative;
-            z-index: 5;
-        }
 
-        .logo {
-            width: 244px;
-            color: #14532d;
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 32px;
-            text-decoration: none;
-        }
+a {
+    color: inherit;
+    text-decoration: none;
+}
 
-        .nav {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-        }
+button {
+    border: 0;
+    background: none;
+    font: inherit;
+    cursor: pointer;
+}
 
-        .nav a {
-            color: #5c5b5b;
-            font-size: 14px;
-            line-height: 20px;
-            text-decoration: none;
-            white-space: nowrap;
-        }
+img {
+    display: block;
+    width: 100%;
+}
 
-        .header-actions {
-            width: 244px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 31px;
-        }
+/* Header - disamakan dengan halaman sebelumnya */
+.topbar {
+    height: 80px;
+    padding: 0 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(249, 246, 245, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,.04);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
 
-        .cart-link {
-            width: 24px;
-            height: 24px;
-            color: #2f2f2f;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-        }
+.logo {
+    width: 244px;
+    color: #14532d;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32px;
+    font-family: "Plus Jakarta Sans", Inter, sans-serif;
+    letter-spacing: -0.02em;
+}
 
-        .cart-link svg {
-            width: 20px;
-            height: 20px;
-        }
+.nav {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+}
 
-        .profile-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #006b1b;
-            color: #d1ffc8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
-            line-height: 20px;
-            text-decoration: none;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        }
+.nav a {
+    color: #5c5b5b;
+    font-size: 14px;
+    line-height: 20px;
+    position: relative;
+    white-space: nowrap;
+    padding: 2px 0;
+}
 
-        @media (max-width: 768px) {
-            .topbar {
-                height: auto;
-                padding: 18px 24px;
-                flex-wrap: wrap;
-                gap: 16px;
-            }
+.nav a.active {
+    color: #1a6b3b;
+    font-weight: 600;
+}
 
-            .logo,
-            .header-actions {
-                width: auto;
-            }
+.nav a.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    border-radius: 999px;
+    background: #1a6b3b;
+}
 
-            .nav {
-                order: 3;
-                width: 100%;
-                justify-content: flex-start;
-                overflow-x: auto;
-                gap: 24px;
-                padding-bottom: 2px;
-            }
+.header-actions {
+    width: 244px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 31px;
+}
 
-            .header-actions {
-                margin-left: auto;
-            }
-        }
+.cart-link {
+    width: 24px;
+    height: 24px;
+    color: #2f2f2f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.cart-link svg {
+    width: 20px;
+    height: 20px;
+}
+
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #006b1b;
+    color: #d1ffc8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+    .topbar {
+        height: auto;
+        padding: 18px 24px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .logo,
+    .header-actions {
+        width: auto;
+    }
+
+    .nav {
+        order: 3;
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: auto;
+        gap: 24px;
+        padding-bottom: 2px;
+    }
+
+    .header-actions {
+        margin-left: auto;
+    }
+}
 
 /* Container */
 .container {
@@ -298,7 +334,40 @@ body {
     font-size: 1rem;
     font-weight: 700;
     color: #1a1a1a;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.calendar-nav button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    background: #f3f4f6;
+    color: #2f2f2f;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    flex: 0 0 auto;
+}
+
+.calendar-nav button:hover {
+    background: #e5e7eb;
+}
+
+.calendar-month {
+    flex: 1;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a1a1a;
 }
 
 .calendar-header {
@@ -327,7 +396,8 @@ body {
 
 .calendar-day {
     aspect-ratio: 1 / 1;
-    background: #a4f77f;
+    background: #ffffff;
+    border: 1px solid #e7e7e7;
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -335,17 +405,18 @@ body {
     cursor: pointer;
     font-size: 0.8rem;
     font-weight: 600;
-    color: #1a6b3b;
+    color: #1a1a1a;
     transition: all 0.25s ease;
     user-select: none;
 }
 
 .calendar-day:hover {
-    background: #8cf068;
+    background: #f7f7f7;
 }
 
 .calendar-day.empty {
     background: transparent;
+    border-color: transparent;
     cursor: default;
 }
 
@@ -354,26 +425,25 @@ body {
     transform: none;
 }
 
-.calendar-day.selected {
-    background: #a4f77f;
-    color: #1a6b3b;
-    box-shadow: none;
-    font-weight: 700;
-}
-
-.calendar-day.selected:hover {
-    background: #8cf068;
-    transform: none;
-}
-
 .calendar-day.completed {
     background: #a4f77f;
+    border-color: #a4f77f;
     color: #1a6b3b;
     font-weight: 700;
 }
 
 .calendar-day.completed:hover {
     background: #8cf068;
+    transform: none;
+}
+
+.calendar-day.selected {
+    outline: 2px solid #1a6b3b;
+    outline-offset: 1px;
+    font-weight: 700;
+}
+
+.calendar-day.selected:hover {
     transform: none;
 }
 
@@ -642,26 +712,18 @@ footer {
     .footer-content {
         grid-template-columns: 1fr;
     }
-
-    nav {
-        gap: 1rem;
-    }
-
-    header {
-        padding: 1rem 5%;
-    }
 }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header class="topbar">
-        <a class="logo" href="landingpage.html">Sehatin</a>
+        <a class="logo" href="index.html">Sehatin</a>
 
         <nav class="nav" aria-label="Navigasi utama">
-            <a href="landingpage.html">Beranda</a>
+            <a href="index.html">Beranda</a>
             <a href="paketcatering.html">Paket</a>
-            <a href="monitoring.html">Pantau Nutrisi</a>
+            <a class="active" href="monitoring.html">Pantau Nutrisi</a>
             <a href="riwayat.html">Pesanan</a>
         </nav>
 
@@ -727,7 +789,12 @@ footer {
             <!-- Sidebar Calendar -->
             <div class="sidebar-calendar">
                 <div class="calendar-title">Pemantauan Gizi Berlaku</div>
-                
+                <div class="calendar-nav">
+                    <button type="button" id="prevMonth" aria-label="Bulan sebelumnya">‹</button>
+                    <div class="calendar-month" id="monthYear"></div>
+                    <button type="button" id="nextMonth" aria-label="Bulan berikutnya">›</button>
+                </div>
+
                 <div class="calendar-header">
                     <div class="day-header">Min</div>
                     <div class="day-header">Sen</div>
@@ -737,9 +804,9 @@ footer {
                     <div class="day-header">Jum</div>
                     <div class="day-header">Sab</div>
                 </div>
-                
+
                 <div class="calendar-grid" id="calendarGrid"></div>
-                
+
                 <div class="calendar-date-info" id="selectedDateInfo"></div>
 
                 <div class="weight-card">
@@ -860,7 +927,6 @@ footer {
  * Monitoring Page - JavaScript Interactivity
  */
 
-// Nutrition Data by Date
 const nutritionDataByDate = {
     '2026-04-12': { calories: 1840, protein: 142, carbs: 210, fat: 48, percentage: 100 },
     '2026-04-13': { calories: 1840, protein: 142, carbs: 210, fat: 48, percentage: 100 },
@@ -870,7 +936,6 @@ const nutritionDataByDate = {
     '2026-04-17': { calories: 460, protein: 36, carbs: 53, fat: 12, percentage: 25 }
 };
 
-// Nutrition Data Management
 class NutritionData {
     constructor() {
         this.dailyTarget = {
@@ -887,15 +952,6 @@ class NutritionData {
             fat: 48
         };
 
-        this.weeklyData = [
-            { date: '12 Apr', percentage: 100 },
-            { date: '13 Apr', percentage: 100 },
-            { date: '14 Apr', percentage: 100 },
-            { date: '15 Apr', percentage: 100 },
-            { date: '16 Apr', percentage: 50 },
-            { date: '17 Apr', percentage: 25 }
-        ];
-
         this.weight = 74.2;
     }
 
@@ -909,25 +965,6 @@ class NutritionData {
         return Math.round((current / target) * 100);
     }
 
-    updateNutrition(nutrient, amount) {
-        if (this.currentIntake.hasOwnProperty(nutrient)) {
-            this.currentIntake[nutrient] = Math.min(
-                amount,
-                this.dailyTarget[nutrient]
-            );
-            this.saveToLocalStorage();
-            this.updateUI();
-        }
-    }
-
-    saveToLocalStorage() {
-        localStorage.setItem('nutritionData', JSON.stringify({
-            currentIntake: this.currentIntake,
-            weight: this.weight,
-            lastUpdated: new Date().toISOString()
-        }));
-    }
-
     loadFromLocalStorage() {
         const stored = localStorage.getItem('nutritionData');
         if (stored) {
@@ -936,21 +973,11 @@ class NutritionData {
             this.weight = data.weight;
         }
     }
-
-    updateUI() {
-        updateProgressDisplay();
-        updateNutritionDisplay();
-        updateWeightDisplay();
-    }
 }
 
-// Initialize nutrition data
 const nutritionData = new NutritionData();
 nutritionData.loadFromLocalStorage();
 
-/**
- * Update main progress bar and badge
- */
 function updateProgressDisplay() {
     const progress = nutritionData.getProgress();
     const progressFill = document.querySelector('.progress-fill');
@@ -963,7 +990,6 @@ function updateProgressDisplay() {
 
     if (progressBadge) {
         progressBadge.textContent = progress + '% Tercapai';
-        // Change color based on progress
         if (progress >= 100) {
             progressBadge.style.background = '#74f77f';
         } else if (progress >= 80) {
@@ -978,13 +1004,9 @@ function updateProgressDisplay() {
     }
 }
 
-/**
- * Update nutrition items (Protein, Carbs, Fat)
- */
 function updateNutritionDisplay() {
     const nutritionItems = document.querySelectorAll('.nutrition-item');
     const nutrients = ['protein', 'carbs', 'fat'];
-    const labels = ['Protein', 'Karbohidrat', 'Lemak'];
     const units = ['g', 'g', 'g'];
 
     nutritionItems.forEach((item, index) => {
@@ -993,13 +1015,11 @@ function updateNutritionDisplay() {
         const current = nutritionData.currentIntake[nutrient];
         const target = nutritionData.dailyTarget[nutrient];
 
-        // Update value and progress
         const valueElement = item.querySelector('.nutrition-value');
         if (valueElement) {
             valueElement.innerHTML = `${current}${units[index]}<span class="nutrition-max">/${target}${units[index]}</span>`;
         }
 
-        // Update progress bar
         const progressFill = item.querySelector('.nutrition-progress-fill');
         if (progressFill) {
             progressFill.style.width = progress + '%';
@@ -1007,9 +1027,6 @@ function updateNutritionDisplay() {
     });
 }
 
-/**
- * Update weight display
- */
 function updateWeightDisplay() {
     const weightValue = document.querySelector('.weight-value');
     if (weightValue) {
@@ -1017,91 +1034,19 @@ function updateWeightDisplay() {
     }
 }
 
-/**
- * Generate calendar grid for April 2026
- */
-function generateCalendarGrid() {
-    const calendarGrid = document.getElementById('calendarGrid');
-    if (!calendarGrid) return;
+let currentCalendarMonth = new Date(2026, 3, 1); // April 2026
+let selectedDateStr = '2026-04-12';
 
-    calendarGrid.innerHTML = '';
-
-    // April 2026 starts on Friday (April 3)
-    // Need to fill empty cells for Sunday-Thursday of first week
-    const firstDayOfWeek = 5; // Friday is index 5 (0=Sunday, 1=Monday, etc.)
-    const daysInMonth = 30; // April has 30 days
-
-    // Add empty cells for days before April 1
-    for (let i = 0; i < firstDayOfWeek; i++) {
-        const emptyDay = document.createElement('div');
-        emptyDay.className = 'calendar-day empty';
-        calendarGrid.appendChild(emptyDay);
-    }
-
-    // Add days of April
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dateStr = `2026-04-${String(day).padStart(2, '0')}`;
-        const dayElement = document.createElement('div');
-        dayElement.className = 'calendar-day';
-        dayElement.textContent = day;
-        dayElement.dataset.date = dateStr;
-
-        // Check if this date has data
-        if (nutritionDataByDate[dateStr]) {
-            dayElement.classList.add('completed');
-            
-            // Set as selected if it's April 12
-            if (day === 12) {
-                dayElement.classList.add('selected');
-                updateSelectedDate(dateStr);
-            }
-        }
-
-        // Add click handler
-        dayElement.addEventListener('click', () => {
-            handleCalendarDateClick(dateStr, dayElement);
-        });
-
-        calendarGrid.appendChild(dayElement);
-    }
-}
-
-/**
- * Handle calendar date click
- */
-function handleCalendarDateClick(dateStr, dayElement) {
-    // Check if date has data
-    if (!nutritionDataByDate[dateStr]) {
-        showNotification('Tidak ada data untuk tanggal ini');
-        return;
-    }
-
-    // Remove selected class from all days
-    document.querySelectorAll('.calendar-day.selected').forEach(day => {
-        day.classList.remove('selected');
+function formatDate(dateStr) {
+    const date = new Date(dateStr + 'T00:00:00');
+    return date.toLocaleDateString('id-ID', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
     });
-
-    // Add selected class to clicked day
-    dayElement.classList.add('selected');
-
-    // Update nutrition data
-    const data = nutritionDataByDate[dateStr];
-    nutritionData.currentIntake.calories = data.calories;
-    nutritionData.currentIntake.protein = data.protein;
-    nutritionData.currentIntake.carbs = data.carbs;
-    nutritionData.currentIntake.fat = data.fat;
-
-    // Update displays
-    updateSelectedDate(dateStr);
-    updateProgressDisplay();
-    updateNutritionDisplay();
-
-    showNotification(`Data untuk ${formatDate(dateStr)} dimuat`);
 }
 
-/**
- * Update selected date info
- */
 function updateSelectedDate(dateStr) {
     const selectedDateInfo = document.getElementById('selectedDateInfo');
     if (selectedDateInfo) {
@@ -1109,34 +1054,102 @@ function updateSelectedDate(dateStr) {
     }
 }
 
-/**
- * Format date for display
- */
-function formatDate(dateStr) {
-    const date = new Date(dateStr + 'T00:00:00');
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    return date.toLocaleDateString('id-ID', options);
+function renderCalendar() {
+    const calendarGrid = document.getElementById('calendarGrid');
+    const monthYear = document.getElementById('monthYear');
+    if (!calendarGrid || !monthYear) return;
+
+    calendarGrid.innerHTML = '';
+
+    const year = currentCalendarMonth.getFullYear();
+    const month = currentCalendarMonth.getMonth();
+
+    monthYear.textContent = currentCalendarMonth.toLocaleDateString('id-ID', {
+        month: 'long',
+        year: 'numeric'
+    });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+        const emptyDay = document.createElement('div');
+        emptyDay.className = 'calendar-day empty';
+        calendarGrid.appendChild(emptyDay);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const dayElement = document.createElement('div');
+        dayElement.className = 'calendar-day';
+        dayElement.textContent = day;
+        dayElement.dataset.date = dateStr;
+
+        if (nutritionDataByDate[dateStr]) {
+            dayElement.classList.add('completed');
+        }
+
+        if (selectedDateStr === dateStr) {
+            dayElement.classList.add('selected');
+        }
+
+        dayElement.addEventListener('click', () => handleCalendarDateClick(dateStr, dayElement));
+        calendarGrid.appendChild(dayElement);
+    }
 }
 
-/**
- * Initialize calendar
- */
+function handleCalendarDateClick(dateStr, dayElement) {
+    document.querySelectorAll('.calendar-day.selected').forEach(day => {
+        day.classList.remove('selected');
+    });
+
+    selectedDateStr = dateStr;
+    dayElement.classList.add('selected');
+
+    if (!nutritionDataByDate[dateStr]) {
+        updateSelectedDate(dateStr);
+        showNotification('Tidak ada data untuk tanggal ini');
+        return;
+    }
+
+    const data = nutritionDataByDate[dateStr];
+    nutritionData.currentIntake.calories = data.calories;
+    nutritionData.currentIntake.protein = data.protein;
+    nutritionData.currentIntake.carbs = data.carbs;
+    nutritionData.currentIntake.fat = data.fat;
+
+    updateSelectedDate(dateStr);
+    updateProgressDisplay();
+    updateNutritionDisplay();
+    showNotification(`Data untuk ${formatDate(dateStr)} dimuat`);
+}
+
 function initializeCalendar() {
-    generateCalendarGrid();
+    const prevBtn = document.getElementById('prevMonth');
+    const nextBtn = document.getElementById('nextMonth');
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            currentCalendarMonth = new Date(currentCalendarMonth.getFullYear(), currentCalendarMonth.getMonth() - 1, 1);
+            renderCalendar();
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            currentCalendarMonth = new Date(currentCalendarMonth.getFullYear(), currentCalendarMonth.getMonth() + 1, 1);
+            renderCalendar();
+        });
+    }
+
+    renderCalendar();
+    updateSelectedDate(selectedDateStr);
 }
 
-/**
- * Add interactivity to meal cards
- */
 function initializeMealCards() {
     const mealCards = document.querySelectorAll('.meal-card');
 
     mealCards.forEach(card => {
-        card.addEventListener('click', () => {
-            handleMealCardClick(card);
-        });
-
-        // Add animation on hover
         card.addEventListener('mouseenter', () => {
             card.style.transform = 'translateY(-5px)';
         });
@@ -1147,22 +1160,15 @@ function initializeMealCards() {
     });
 }
 
-/**
- * Handle meal card click
- */
 function handleMealCardClick(card) {
     const mealName = card.querySelector('.meal-name');
     const mealCalories = card.querySelector('.meal-calories');
 
     if (mealName && mealCalories) {
-        console.log(`Meal selected: ${mealName.textContent} - ${mealCalories.textContent}`);
         showNotification(`${mealName.textContent} dipilih`);
     }
 }
 
-/**
- * Show notification toast
- */
 function showNotification(message) {
     const notification = document.createElement('div');
     notification.style.cssText = `
@@ -1180,7 +1186,6 @@ function showNotification(message) {
     `;
     notification.textContent = message;
 
-    // Add animation style
     const style = document.createElement('style');
     style.textContent = `
         @keyframes slideIn {
@@ -1211,7 +1216,6 @@ function showNotification(message) {
 
     document.body.appendChild(notification);
 
-    // Remove notification after 3 seconds
     setTimeout(() => {
         notification.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => {
@@ -1220,51 +1224,29 @@ function showNotification(message) {
     }, 3000);
 }
 
-/**
- * Initialize profile avatar with user initial
- */
 function initializeProfileAvatar() {
     const avatar = document.querySelector('.profile-avatar');
     if (avatar) {
-        // Get initials from localStorage or use default
         const userInitials = localStorage.getItem('userInitials') || 'JD';
         avatar.textContent = userInitials;
-
-        avatar.addEventListener('click', () => {
-            console.log('Profile clicked');
-            // Could redirect to profile page
-        });
     }
 }
 
-/**
- * Initialize cart icon with click handler
- */
 function initializeCartIcon() {
     const cartIcon = document.querySelector('.cart-link');
     if (cartIcon) {
         cartIcon.addEventListener('click', () => {
-            console.log('Cart clicked');
             showNotification('Keranjang dibuka');
         });
     }
 }
 
-/**
- * Real-time progress update simulation
- */
 function initializeRealtimeUpdates() {
-    // Simulate periodic updates (useful for real-time data)
     setInterval(() => {
-        // In a real app, you would fetch data from server
-        // For now, we'll just ensure UI is synced
         updateProgressDisplay();
-    }, 30000); // Update every 30 seconds
+    }, 30000);
 }
 
-/**
- * Add smooth scroll behavior
- */
 function initializeSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -1277,11 +1259,7 @@ function initializeSmoothScroll() {
     });
 }
 
-/**
- * Initialize all interactive elements
- */
 function initializeAllInteractions() {
-    // Initialize components
     initializeCalendar();
     initializeMealCards();
     initializeProfileAvatar();
@@ -1289,33 +1267,14 @@ function initializeAllInteractions() {
     initializeRealtimeUpdates();
     initializeSmoothScroll();
 
-    // Update all displays
     updateProgressDisplay();
     updateNutritionDisplay();
     updateWeightDisplay();
-
-    console.log('All interactions initialized');
 }
 
-/**
- * DOM Ready Handler
- */
 document.addEventListener('DOMContentLoaded', () => {
     initializeAllInteractions();
 });
-
-/**
- * Export functions for external use
- */
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        NutritionData,
-        updateProgressDisplay,
-        updateNutritionDisplay,
-        showNotification,
-        nutritionData
-    };
-}
     </script>
 </body>
 </html>
