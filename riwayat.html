@@ -4,67 +4,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riwayat Pesanan - Sehatin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #f9f6f5;
+            --surface: #ffffff;
+            --surface-soft: #fbf8f7;
+            --surface-muted: #f6f2f0;
+            --border: #ece7e4;
+            --border-strong: #e4dedb;
+            --text: #2f2f2f;
+            --text-soft: #5c5b5b;
+            --text-muted: #8d8a88;
+            --green: #007a22;
+            --green-deep: #006b1b;
+            --green-soft: #d8f4d5;
+            --shadow: 0 18px 50px rgba(47, 47, 47, 0.06);
+            --shadow-soft: 0 10px 30px rgba(47, 47, 47, 0.04);
+            --radius-xl: 24px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --radius-pill: 999px;
+            --content-width: 1120px;
+            --page-pad: 80px;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #f5f5f5;
-            color: #333;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
         }
+
+        a { color: inherit; }
+
         /* Header */
         .topbar {
             height: 80px;
-            padding: 0 80px;
+            padding: 0 var(--page-pad);
             display: flex;
             align-items: center;
-            background: rgba(249, 246, 245, 0.8);
+            justify-content: space-between;
+            background: rgba(249, 246, 245, 0.84);
             backdrop-filter: blur(12px);
-            position: relative;
-            z-index: 5;
+            position: sticky;
+            top: 0;
+            z-index: 20;
         }
 
         .logo {
-            width: 244px;
-            color: #14532d;
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 32px;
+            width: 88px;
+            color: #1d6b3b;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.2px;
             text-decoration: none;
         }
 
         .nav {
-            flex: 1;
             display: flex;
+            align-items: center;
             justify-content: center;
             gap: 32px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .nav a {
-            color: #5c5b5b;
+            position: relative;
+            color: var(--text-soft);
             font-size: 14px;
-            line-height: 20px;
+            font-weight: 500;
+            line-height: 1.2;
             text-decoration: none;
-            white-space: nowrap;
+            padding: 8px 2px 13px;
+            transition: color .2s ease;
+        }
+
+        .nav a:hover { color: var(--text); }
+
+        .nav a.active {
+            color: #1d6b3b;
+            font-weight: 600;
+        }
+
+        .nav a.active::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            background: #1d6b3b;
+            border-radius: 999px;
         }
 
         .header-actions {
-            width: 244px;
+            width: 88px;
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            gap: 31px;
+            gap: 18px;
         }
 
         .cart-link {
             width: 24px;
             height: 24px;
-            color: #2f2f2f;
-            display: flex;
+            color: var(--text);
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
@@ -76,243 +133,337 @@
         }
 
         .profile-avatar {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: #006b1b;
-            color: #d1ffc8;
+            background: #177b2d;
+            color: #ebffee;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
-            line-height: 20px;
+            line-height: 1;
             text-decoration: none;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
         }
 
-        @media (max-width: 768px) {
-            .topbar {
-                height: auto;
-                padding: 18px 24px;
-                flex-wrap: wrap;
-                gap: 16px;
-            }
-
-            .logo,
-            .header-actions {
-                width: auto;
-            }
-
-            .nav {
-                order: 3;
-                width: 100%;
-                justify-content: flex-start;
-                overflow-x: auto;
-                gap: 24px;
-                padding-bottom: 2px;
-            }
-
-            .header-actions {
-                margin-left: auto;
-            }
-        }
-
-
-        /* Container */
+        /* Layout */
         .container {
-            max-width: 1200px;
+            width: min(var(--content-width), calc(100vw - (var(--page-pad) * 2)));
             margin: 0 auto;
-            padding: 0 5%;
+        }
+
+        .main {
+            padding: 48px 0 96px;
         }
 
         .page-header {
-            padding: 2rem 0 1rem 0;
+            width: 100%;
+            margin-bottom: 44px;
         }
 
         .page-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 0.5rem;
+            max-width: 760px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 60px;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -1.5px;
+            color: var(--text);
+            margin-bottom: 12px;
         }
 
         .page-subtitle {
-            color: #666;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            max-width: 640px;
+            color: var(--text-soft);
+            font-size: 18px;
+            line-height: 1.55;
+            font-weight: 400;
         }
 
-        /* Filter Section */
+        /* Filters */
         .filter-section {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin: 2rem 0;
+            width: 100%;
+            background: var(--surface);
+            border: 1px solid rgba(236, 231, 228, 0.86);
+            border-radius: 24px;
+            padding: 20px 24px;
+            box-shadow: var(--shadow-soft);
             display: flex;
-            gap: 1rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            flex-wrap: wrap;
             align-items: center;
+            gap: 16px;
+            margin-bottom: 36px;
         }
 
         .search-box {
-            flex: 1;
-            min-width: 250px;
+            flex: 1 1 392px;
+            min-width: 0;
+            height: 46px;
             display: flex;
             align-items: center;
-            background: #f5f5f5;
-            border-radius: 10px;
-            padding: 0.75rem 1rem;
-            gap: 0.5rem;
+            gap: 10px;
+            background: var(--surface-soft);
+            border: 1px solid #eee8e5;
+            border-radius: 12px;
+            padding: 0 14px;
         }
 
         .search-icon {
-            color: #999;
-            font-size: 1.1rem;
+            width: 18px;
+            height: 18px;
+            color: #7b7775;
+            flex: 0 0 auto;
         }
 
         .search-input {
+            width: 100%;
             border: none;
             background: transparent;
             outline: none;
-            font-size: 0.9rem;
-            width: 100%;
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.3;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .search-input::placeholder {
+            color: #8f8b88;
         }
 
         .filter-select {
-            padding: 0.75rem 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            font-size: 0.9rem;
             min-width: 150px;
+            height: 46px;
+            padding: 0 16px;
+            border: 1px solid #eee8e5;
+            border-radius: 12px;
+            background: var(--surface-soft);
+            color: var(--text-soft);
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            appearance: none;
+            cursor: pointer;
+            background-image:
+                linear-gradient(45deg, transparent 50%, #8a8684 50%),
+                linear-gradient(135deg, #8a8684 50%, transparent 50%);
+            background-position:
+                calc(100% - 18px) 19px,
+                calc(100% - 12px) 19px;
+            background-size: 6px 6px, 6px 6px;
+            background-repeat: no-repeat;
+            padding-right: 36px;
         }
 
-        /* Order Cards */
+        .filter-select:focus,
+        .search-box:focus-within {
+            border-color: rgba(0, 122, 34, 0.25);
+            box-shadow: 0 0 0 3px rgba(0, 122, 34, 0.08);
+        }
+
+        /* Orders */
         .orders-list {
-            margin: 2rem 0 3rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 0;
         }
 
         .order-card {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: var(--surface);
+            border: 1px solid rgba(236, 231, 228, 0.92);
+            border-radius: 24px;
+            padding: 25px 24px 24px 24px;
+            box-shadow: var(--shadow-soft);
             display: grid;
-            grid-template-columns: 120px 1fr auto;
-            gap: 1.5rem;
-            align-items: center;
+            grid-template-columns: 256px 1fr;
+            gap: 24px;
+            align-items: stretch;
+            min-height: 306px;
+        }
+
+        .order-image-wrap {
+            width: 256px;
+            height: 256px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #d7c2b0;
+            flex-shrink: 0;
         }
 
         .order-image {
-            width: 120px;
-            height: 120px;
-            border-radius: 10px;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+            display: block;
         }
 
-        .order-info h3 {
-            font-size: 1.05rem;
-            color: #1a1a1a;
-            margin-bottom: 0.3rem;
+        .order-content {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
         }
 
-        .order-detail {
-            color: #666;
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .order-id {
-            color: #999;
-            font-size: 0.75rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .order-price {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #1a1a1a;
-        }
-
-        .order-actions {
-            text-align: right;
-        }
-
-        .order-date {
-            color: #999;
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
+        .order-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
         }
 
         .status-badge {
-            display: inline-block;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            height: 24px;
+            padding: 0 10px;
+            border-radius: 999px;
+            font-size: 12px;
             font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 0.75rem;
+            line-height: 1;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
         }
 
         .status-active {
-            background: #a4f77f;
-            color: #1a6b3b;
+            background: #c6f4c6;
+            color: #2d7a32;
         }
 
         .status-completed {
-            background: #a4f77f;
-            color: #1a6b3b;
+            background: #c6f4c6;
+            color: #2d7a32;
         }
 
         .status-cancelled {
-            background: #ffcdd2;
-            color: #c62828;
+            background: #ffd9d3;
+            color: #d6644c;
+        }
+
+        .order-date {
+            color: var(--text-soft);
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.4;
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        .order-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 32px;
+            line-height: 1.1;
+            font-weight: 700;
+            letter-spacing: -0.6px;
+            color: var(--text);
+            margin-top: 12px;
+            margin-bottom: 8px;
+        }
+
+        .order-detail {
+            color: #76716f;
+            font-size: 14px;
+            line-height: 1.45;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+
+        .order-id {
+            color: #9a9592;
+            font-size: 14px;
+            line-height: 1.45;
+            font-weight: 400;
+        }
+
+        .order-divider {
+            height: 1px;
+            background: #ece7e4;
+            width: 100%;
+            margin: 22px 0 18px;
+        }
+
+        .order-bottom {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: auto;
+        }
+
+        .payment-block {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .payment-label {
+            color: #8d8a88;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .payment-value {
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.2px;
         }
 
         .action-buttons {
             display: flex;
-            gap: 0.75rem;
-            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
             flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .btn-detail,
+        .btn-order {
+            height: 42px;
+            min-width: 106px;
+            padding: 0 20px;
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1;
+            transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease, color .15s ease;
         }
 
         .btn-detail {
-            padding: 0.6rem 1.2rem;
-            background: #e0e0e0;
-            color: #333;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-
-        .btn-detail:hover {
-            background: #d0d0d0;
+            background: #e7e3e1;
+            color: #4c4947;
         }
 
         .btn-order {
-            padding: 0.6rem 1.2rem;
-            background: #1a6b3b;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: background 0.3s;
+            background: #0f7b2a;
+            color: #ffffff;
+        }
+
+        .btn-detail:hover,
+        .btn-order:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(15, 123, 42, 0.12);
         }
 
         .btn-order:hover {
-            background: #135a2f;
+            background: #0c6823;
         }
 
-        /* Footer */
+        .empty-state {
+            background: var(--surface);
+            border: 1px solid rgba(236, 231, 228, 0.92);
+            border-radius: 24px;
+            box-shadow: var(--shadow-soft);
+            padding: 42px 24px;
+            text-align: center;
+            color: var(--text-soft);
+            font-size: 16px;
+        }
+
+        /* Footer (kept structurally the same) */
         footer {
             background: #f5f5f5;
             color: #666;
@@ -380,42 +531,145 @@
             color: #999;
         }
 
-        @media (max-width: 768px) {
-            .order-card {
-                grid-template-columns: 100px 1fr;
+        /* Responsive */
+        @media (max-width: 1180px) {
+            :root { --page-pad: 32px; }
+            .container { width: min(var(--content-width), calc(100vw - (var(--page-pad) * 2))); }
+            .order-card { grid-template-columns: 220px 1fr; }
+            .order-image-wrap { width: 220px; height: 220px; }
+        }
+
+        @media (max-width: 920px) {
+            .topbar {
+                padding: 0 20px;
             }
 
-            .order-actions {
-                grid-column: 1 / -1;
-                text-align: left;
+            .nav {
+                gap: 18px;
             }
 
-            .order-image {
-                width: 100px;
-                height: 100px;
+            .page-title {
+                font-size: 42px;
+                line-height: 1.05;
+            }
+
+            .page-subtitle {
+                font-size: 16px;
             }
 
             .filter-section {
-                flex-direction: column;
-                align-items: stretch;
+                flex-wrap: wrap;
+                padding: 16px;
             }
 
             .search-box {
-                flex: 1;
+                flex-basis: 100%;
             }
 
             .filter-select {
+                flex: 1 1 180px;
+            }
+
+            .order-card {
+                grid-template-columns: 1fr;
+            }
+
+            .order-image-wrap {
                 width: 100%;
+                height: 260px;
+            }
+
+            .order-top,
+            .order-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .order-date {
+                margin-left: 0;
+            }
+
+            .action-buttons {
+                justify-content: flex-start;
             }
 
             .footer-content {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+
+        @media (max-width: 640px) {
+            .topbar {
+                height: auto;
+                padding: 18px 16px;
+                flex-wrap: wrap;
+                gap: 14px;
+            }
+
+            .logo,
+            .header-actions {
+                width: auto;
+            }
+
+            .nav {
+                order: 3;
+                width: 100%;
+                justify-content: flex-start;
+                overflow-x: auto;
+                gap: 22px;
+                padding-bottom: 2px;
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .main {
+                padding: 32px 0 72px;
+            }
+
+            .page-header {
+                margin-bottom: 28px;
+            }
+
+            .page-title {
+                font-size: 34px;
+                letter-spacing: -0.8px;
+            }
+
+            .filter-section {
+                margin-bottom: 24px;
+            }
+
+            .orders-list {
+                gap: 16px;
+            }
+
+            .order-card {
+                padding: 18px;
+                border-radius: 20px;
+                min-height: unset;
+            }
+
+            .order-image-wrap {
+                height: 220px;
+            }
+
+            .order-title {
+                font-size: 26px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="topbar">
         <a class="logo" href="index.html">Sehatin</a>
 
@@ -423,7 +677,7 @@
             <a href="index.html">Beranda</a>
             <a href="paketcatering.html">Paket</a>
             <a href="monitoring.html">Pantau Nutrisi</a>
-            <a href="riwayat.html">Pesanan</a>
+            <a class="active" href="riwayat.html">Pesanan</a>
         </nav>
 
         <div class="header-actions">
@@ -436,58 +690,41 @@
         </div>
     </header>
 
-    <!-- Container -->
-    <div class="container">
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1 class="page-title">Riwayat Pesanan</h1>
-            <p class="page-subtitle">Lacak status pesanan catering sehat Anda dan pesan kembali menu favorit dengan mudah.</p>
-        </div>
+    <main class="main">
+        <div class="container">
+            <section class="page-header" aria-labelledby="page-title">
+                <h1 id="page-title" class="page-title">Riwayat Pesanan</h1>
+                <p class="page-subtitle">Lacak status pesanan catering sehat Anda dan pesan kembali menu favorit dengan mudah.</p>
+            </section>
 
-        <!-- Filter Section -->
-        <div class="filter-section">
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" placeholder="Cari ID Pesanan atau Menu...">
-            </div>
-            <select class="filter-select">
-                <option>Semua Status</option>
-                <option>Masih Berlaku</option>
-                <option>Selesai</option>
-                <option>Dibatalkan</option>
-            </select>
-            <select class="filter-select">
-                <option>Semua Waktu</option>
-                <option>Bulan Ini</option>
-                <option>3 Bulan Lalu</option>
-                <option>Tahun Ini</option>
-            </select>
-        </div>
+            <section class="filter-section" aria-label="Pencarian dan filter">
+                <label class="search-box" aria-label="Cari ID Pesanan atau Menu">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <input type="text" class="search-input" placeholder="Cari ID Pesanan atau Menu..." />
+                </label>
 
-        <!-- Orders List -->
-        <div class="orders-list">
-            <!-- Order 1 -->
-            <div class="order-card">
-                <img src="images/order-history-1.png" alt="Weekly Zen Vitality Plan" class="order-image">
-                <div class="order-info">
-                    <h3>Weekly Zen Vitality Plan</h3>
-                    <div class="order-detail">Paket catering 7 hari • 2x Makanan/hari • 1200 Kal</div>
-                    <div class="order-id">ID: ORD-20231026-01</div>
-                    <div class order-price>Rp 850.000</div>
-                </div>
-                <div class="order-actions">
-                    <div class="order-date">24 Okt 2023</div>
-                    <span class="status-badge status-active">Selesai</span>
-                    <div class="action-buttons">
-                        <button class="btn-detail">Lihat Detail</button>
-                        <button class="btn-order">Pesan Lagi</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                <select class="filter-select" data-filter="status" aria-label="Filter status">
+                    <option value="Semua Status">Semua Status</option>
+                    <option value="Masih Berlaku">Masih Berlaku</option>
+                    <option value="Selesai">Selesai</option>
+                    <option value="Dibatalkan">Dibatalkan</option>
+                </select>
 
-    <!-- Footer -->
+                <select class="filter-select" data-filter="time" aria-label="Filter waktu">
+                    <option value="Semua Waktu">Semua Waktu</option>
+                    <option value="Bulan Ini">Bulan Ini</option>
+                    <option value="3 Bulan Lalu">3 Bulan Lalu</option>
+                    <option value="Tahun Ini">Tahun Ini</option>
+                </select>
+            </section>
+
+            <section class="orders-list" aria-label="Daftar riwayat pesanan"></section>
+        </div>
+    </main>
+
     <footer>
         <div class="footer-content">
             <div class="footer-column">
@@ -523,47 +760,47 @@
     </footer>
 
     <script>
-        // Search functionality
-        document.querySelector('.search-input').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            document.querySelectorAll('.order-card').forEach(card => {
-                const text = card.textContent.toLowerCase();
-                card.style.display = text.includes(searchTerm) ? '' : 'none';
-            });
-        });
-
-        // Filter by status
-        document.querySelectorAll('.filter-select')[0].addEventListener('change', function(e) {
-            const status = e.target.value;
-            document.querySelectorAll('.order-card').forEach(card => {
-                if (status === 'Semua Status') {
-                    card.style.display = '';
-                } else {
-                    const cardStatus = card.querySelector('.status-badge').textContent.trim();
-                    card.style.display = cardStatus === status ? '' : 'none';
-                }
-            });
-        });
-
-        // Detail button
-        document.querySelectorAll('.btn-detail').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const orderCard = this.closest('.order-card');
-                const orderName = orderCard.querySelector('h3').textContent;
-                alert('Detail untuk: ' + orderName);
-            });
-        });
-
-        // Order again button
-        document.querySelectorAll('.btn-order').forEach(btn => {
-            btn.addEventListener('click', function() {
-                window.location.href = 'paketcatering.html';
-            });
-        });
-    </script>
-    <script>
-        const ordersList = document.querySelector('.orders-list');
         const ORDERS_KEY = 'sehatinOrders';
+        const ordersList = document.querySelector('.orders-list');
+        const searchInput = document.querySelector('.search-input');
+        const statusSelect = document.querySelector('[data-filter="status"]');
+        const timeSelect = document.querySelector('[data-filter="time"]');
+
+        const defaultOrders = [
+            {
+                id: 'ORD-20231024-01',
+                status: 'Masih Berlaku',
+                date: '2023-10-24',
+                total: 850000,
+                image: 'images/order-history-1.png',
+                title: 'Weekly Zen Vitality Plan',
+                detail: 'Paket catering 7 Hari • 2x Makan/hari • 1200 Kcal',
+                paymentLabel: 'Total Pembayaran',
+                showRepeat: false
+            },
+            {
+                id: 'ORD-20231010-42',
+                status: 'Selesai',
+                date: '2023-10-10',
+                total: 2100000,
+                image: 'images/order-history-1.png',
+                title: 'Muscle Builder Pro',
+                detail: 'Paket catering 14 Hari • 3x Makan/hari • High Protein',
+                paymentLabel: 'Total Pembayaran',
+                showRepeat: true
+            },
+            {
+                id: 'ORD-20230905-18',
+                status: 'Dibatalkan',
+                date: '2023-09-05',
+                total: 650000,
+                image: 'images/order-history-1.png',
+                title: 'Keto Essential',
+                detail: 'Paket catering 5 Hari • 2x Makan/hari • Low Carb',
+                paymentLabel: 'Total Pembayaran',
+                showRepeat: false
+            }
+        ];
 
         function formatOrderRupiah(value) {
             return new Intl.NumberFormat('id-ID', {
@@ -573,9 +810,10 @@
             }).format(value).replace('Rp', 'Rp ');
         }
 
-        function readOrders() {
+        function safeParseOrders() {
             try {
-                return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+                const stored = JSON.parse(localStorage.getItem(ORDERS_KEY));
+                return Array.isArray(stored) ? stored : [];
             } catch (error) {
                 return [];
             }
@@ -590,60 +828,170 @@
             });
         }
 
+        function normalizeOrder(order) {
+            const first = order.items && order.items[0] ? order.items[0] : {};
+            const total = Number(order.total || 0);
+            const itemCount = (order.items || []).reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+            const title = first.name || order.title || 'Pesanan Sehatin';
+            const detail = `${first.durationDays || 7} Hari • ${first.mealsPerDay || 2}x Makan/hari • ${first.calories || '1200'} Kcal`;
+            return {
+                id: order.id,
+                status: order.status || 'Selesai',
+                date: order.createdAt || order.date || new Date().toISOString(),
+                total: total,
+                image: first.image || order.image || 'images/order-history-1.png',
+                title,
+                detail: order.detail || detail,
+                paymentLabel: 'Total Pembayaran',
+                showRepeat: String(order.status || '').toLowerCase() === 'selesai' || order.showRepeat === true,
+                raw: order,
+                itemCount
+            };
+        }
+
+        function readOrders() {
+            const stored = safeParseOrders();
+
+            if (stored.length) {
+                return [
+                    ...defaultOrders.map(normalizeOrder),
+                    ...stored.map(normalizeOrder)
+                ];
+            }
+
+            return defaultOrders.map(normalizeOrder);
+        }
+
+        function getStatusClass(status) {
+            const normalized = String(status || '').toLowerCase();
+            if (normalized.includes('batal')) return 'status-cancelled';
+            if (normalized.includes('masih') || normalized.includes('berlaku')) return 'status-active';
+            return 'status-completed';
+        }
+
+        function matchesSearch(order, query) {
+            if (!query) return true;
+            const haystack = [
+                order.id,
+                order.title,
+                order.detail,
+                order.status,
+                formatOrderDate(order.date),
+                String(order.total)
+            ].join(' ').toLowerCase();
+            return haystack.includes(query);
+        }
+
+        function matchesStatus(order, status) {
+            if (!status || status === 'Semua Status') return true;
+            return order.status === status;
+        }
+
+        function matchesTime(order, timeFilter) {
+            if (!timeFilter || timeFilter === 'Semua Waktu') return true;
+            const date = new Date(order.date);
+            const now = new Date();
+            const sameYear = date.getFullYear() === now.getFullYear();
+            const sameMonth = sameYear && date.getMonth() === now.getMonth();
+
+            if (timeFilter === 'Tahun Ini') return sameYear;
+            if (timeFilter === 'Bulan Ini') return sameMonth;
+            if (timeFilter === '3 Bulan Lalu') {
+                const diffMonths = (now.getFullYear() - date.getFullYear()) * 12 + (now.getMonth() - date.getMonth());
+                return diffMonths >= 0 && diffMonths <= 3;
+            }
+            return true;
+        }
+
         function renderOrders() {
-            const orders = readOrders();
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const statusFilter = statusSelect.value;
+            const timeFilter = timeSelect.value;
+
+            const orders = readOrders().filter(order =>
+                matchesSearch(order, searchTerm) &&
+                matchesStatus(order, statusFilter) &&
+                matchesTime(order, timeFilter)
+            );
+
             if (!orders.length) {
                 ordersList.innerHTML = `
-                    <div class="order-card" style="grid-template-columns: 1fr; text-align: center;">
-                        <div class="order-info">
-                            <h3>Belum ada riwayat pesanan</h3>
-                            <div class="order-detail">Pesanan yang sudah dibayar akan muncul di sini.</div>
-                        </div>
-                        <div class="action-buttons" style="justify-content: center;">
-                            <button class="btn-order" type="button">Pilih Paket</button>
-                        </div>
+                    <div class="empty-state">
+                        Tidak ada pesanan yang cocok dengan pencarian atau filter saat ini.
                     </div>
                 `;
                 return;
             }
 
-            ordersList.innerHTML = orders.map((order) => {
-                const first = order.items && order.items[0] ? order.items[0] : {};
-                const itemCount = (order.items || []).reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+            ordersList.innerHTML = orders.map(order => {
+                const canRepeat = order.showRepeat || String(order.status).toLowerCase() === 'selesai';
+                const statusClass = getStatusClass(order.status);
+
                 return `
-                    <div class="order-card" data-id="${order.id}">
-                        <img src="${first.image || 'images/order-history-1.png'}" alt="${first.name || 'Pesanan Sehatin'}" class="order-image">
-                        <div class="order-info">
-                            <h3>${first.name || 'Pesanan Sehatin'}</h3>
-                            <div class="order-detail">${first.durationDays || 7} hari &bull; ${first.packageType || 'Paket Sehat'} &bull; ${itemCount} item</div>
-                            <div class="order-id">ID: ${order.id}</div>
-                            <div class="order-price">${formatOrderRupiah(order.total || 0)}</div>
+                    <article class="order-card" data-id="${order.id}">
+                        <div class="order-image-wrap">
+                            <img src="${order.image}" alt="${order.title}" class="order-image">
                         </div>
-                        <div class="order-actions">
-                            <div class="order-date">${formatOrderDate(order.createdAt)}</div>
-                            <span class="status-badge status-active">${order.status || 'Selesai'}</span>
-                            <div class="action-buttons">
-                                <button class="btn-detail" type="button">Lihat Detail</button>
-                                <button class="btn-order" type="button">Pesan Lagi</button>
+
+                        <div class="order-content">
+                            <div class="order-top">
+                                <span class="status-badge ${statusClass}">${order.status}</span>
+                                <time class="order-date">${formatOrderDate(order.date)}</time>
+                            </div>
+
+                            <h2 class="order-title">${order.title}</h2>
+                            <p class="order-detail">${order.detail}</p>
+                            <p class="order-id">ID: ${order.id}</p>
+
+                            <div class="order-divider"></div>
+
+                            <div class="order-bottom">
+                                <div class="payment-block">
+                                    <div class="payment-label">${order.paymentLabel}</div>
+                                    <div class="payment-value">${formatOrderRupiah(order.total)}</div>
+                                </div>
+
+                                <div class="action-buttons">
+                                    <button class="btn-detail" type="button">Lihat Detail</button>
+                                    ${canRepeat ? '<button class="btn-order" type="button">Pesan Lagi</button>' : ''}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </article>
                 `;
             }).join('');
         }
 
+        searchInput.addEventListener('input', renderOrders);
+        statusSelect.addEventListener('change', renderOrders);
+        timeSelect.addEventListener('change', renderOrders);
+
         ordersList.addEventListener('click', function(e) {
+            const card = e.target.closest('.order-card');
+            if (!card) return;
+
+            const order = readOrders().find(entry => entry.id === card.dataset.id) || defaultOrders.find(entry => entry.id === card.dataset.id);
+            const normalized = order ? normalizeOrder(order) : null;
+            if (!normalized) return;
+
             if (e.target.classList.contains('btn-order')) {
                 window.location.href = 'detailpaket.html';
+                return;
             }
 
             if (e.target.classList.contains('btn-detail')) {
-                const card = e.target.closest('.order-card');
-                const order = readOrders().find((entry) => entry.id === card.dataset.id);
-                if (!order) return;
+                const itemNames = normalized.raw?.items
+                    ? (normalized.raw.items || []).map(item => `${item.name} x${item.quantity}`).join(', ')
+                    : normalized.title;
 
-                const itemNames = (order.items || []).map((item) => `${item.name} x${item.quantity}`).join(', ');
-                alert(`ID Pesanan: ${order.id}\nStatus: ${order.status}\nMetode: ${order.paymentMethod}\nTanggal mulai: ${order.deliveryDate || '-'}\nItem: ${itemNames}\nTotal: ${formatOrderRupiah(order.total || 0)}`);
+                alert(
+                    `ID Pesanan: ${normalized.id}\n` +
+                    `Status: ${normalized.status}\n` +
+                    `Metode: ${normalized.raw?.paymentMethod || '-'}\n` +
+                    `Tanggal: ${formatOrderDate(normalized.date)}\n` +
+                    `Item: ${itemNames}\n` +
+                    `Total: ${formatOrderRupiah(normalized.total)}`
+                );
             }
         });
 
