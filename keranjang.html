@@ -4,18 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Keranjang Belanja - Sehatin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root{
+            --bg: #f9f6f5;
+            --card: #ffffff;
+            --soft-card: #f3f0f0;
+            --text: #2f2f2f;
+            --muted: #5c5b5b;
+            --muted-2: #6a707f;
+            --line: #e8e5e4;
+            --green: #006b1b;
+            --green-dark: #14532d;
+            --green-soft: #aef0ad;
+            --green-soft-2: #baf4b6;
+            --pill: #ece9e8;
+            --shadow: 0 8px 24px rgba(47,47,47,0.06);
+            --shadow-soft: 0 2px 10px rgba(47,47,47,0.04);
+            --radius-xl: 24px;
+            --radius-pill: 9999px;
         }
 
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #f5f5f5;
-            color: #333;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
         }
+
+        a { color: inherit; }
+        button, input { font: inherit; }
+
         /* Header */
         .topbar {
             height: 80px;
@@ -24,15 +46,18 @@
             align-items: center;
             background: rgba(249, 246, 245, 0.8);
             backdrop-filter: blur(12px);
-            position: relative;
-            z-index: 5;
+            position: sticky;
+            top: 0;
+            z-index: 20;
         }
 
         .logo {
-            width: 244px;
-            color: #14532d;
+            width: 84.13px;
+            color: var(--green-dark);
+            font-family: "Plus Jakarta Sans", sans-serif;
             font-size: 24px;
             font-weight: 700;
+            letter-spacing: -0.6px;
             line-height: 32px;
             text-decoration: none;
         }
@@ -42,28 +67,32 @@
             display: flex;
             justify-content: center;
             gap: 32px;
+            margin-left: 126px;
+            margin-right: 126px;
         }
 
         .nav a {
-            color: #5c5b5b;
+            color: var(--muted);
             font-size: 14px;
+            font-weight: 500;
             line-height: 20px;
             text-decoration: none;
             white-space: nowrap;
         }
 
         .header-actions {
-            width: 244px;
+            width: 98.77px;
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            gap: 31px;
+            gap: 24px;
+            margin-left: auto;
         }
 
         .cart-link {
             width: 24px;
             height: 24px;
-            color: #2f2f2f;
+            color: var(--text);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -91,258 +120,397 @@
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
-        @media (max-width: 768px) {
-            .topbar {
-                height: auto;
-                padding: 18px 24px;
-                flex-wrap: wrap;
-                gap: 16px;
-            }
-
-            .logo,
-            .header-actions {
-                width: auto;
-            }
-
-            .nav {
-                order: 3;
-                width: 100%;
-                justify-content: flex-start;
-                overflow-x: auto;
-                gap: 24px;
-                padding-bottom: 2px;
-            }
-
-            .header-actions {
-                margin-left: auto;
-            }
+        /* Main */
+        .page-shell {
+            width: 1120px;
+            margin: 48px auto 0;
         }
 
-
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 5%;
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 2rem;
+        .hero {
+            margin-bottom: 48px;
         }
 
         .page-title {
-            font-size: 2rem;
-            color: #1a1a1a;
-            margin-bottom: 2rem;
+            margin: 0;
+            color: var(--text);
+            font-family: "Plus Jakarta Sans", sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 48px;
+            letter-spacing: -1.2px;
         }
 
-        /* Cart Items */
+        .page-subtitle {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 18px;
+            line-height: 28px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 730.666px 341.333px;
+            gap: 48px;
+            align-items: start;
+        }
+
+        /* Cart list */
         .cart-items {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
         }
 
         .cart-item {
-            display: grid;
-            grid-template-columns: 100px 1fr auto;
-            gap: 1.5rem;
-            align-items: center;
-            padding: 1.5rem 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .cart-item:last-child {
-            border-bottom: none;
+            min-height: 192px;
+            display: flex;
+            gap: 32px;
+            align-items: stretch;
+            padding: 24px;
+            border-radius: var(--radius-xl);
+            background: var(--card);
+            box-shadow: var(--shadow);
         }
 
         .item-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 10px;
+            width: 128px;
+            height: 128px;
+            border-radius: 24px;
             object-fit: cover;
+            flex: 0 0 128px;
+            display: block;
+            background: #ddd;
         }
 
-        .item-info h3 {
-            font-size: 1rem;
-            color: #1a1a1a;
-            margin-bottom: 0.3rem;
+        .item-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            padding-top: 8px;
+            padding-bottom: 4px;
+        }
+
+        .item-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        .item-meta {
+            min-width: 0;
+            max-width: 275px;
         }
 
         .item-badge {
-            display: inline-block;
-            background: #a4f77f;
-            color: #1a6b3b;
-            padding: 0.3rem 0.7rem;
-            border-radius: 15px;
-            font-size: 0.7rem;
+            display: inline-flex;
+            align-items: center;
+            height: 20px;
+            padding: 0 12px;
+            border-radius: var(--radius-pill);
+            background: var(--green-soft);
+            color: var(--green);
+            font-size: 12px;
             font-weight: 700;
+            line-height: 16px;
+            letter-spacing: 0.6px;
             text-transform: uppercase;
-            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            margin-bottom: 4px;
         }
 
-        .item-badge.high-protein {
-            background: #fff3cd;
-            color: #856404;
+        .item-title {
+            margin: 0;
+            color: var(--text);
+            font-family: "Plus Jakarta Sans", sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 32px;
+            letter-spacing: 0;
         }
 
         .item-detail {
-            color: #999;
-            font-size: 0.85rem;
-        }
-
-        .item-price {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #1a1a1a;
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 20px;
             white-space: nowrap;
         }
 
+        .item-price {
+            color: var(--green);
+            font-family: "Plus Jakarta Sans", sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 32px;
+            letter-spacing: 0;
+            white-space: nowrap;
+        }
+
+        .item-bottom {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
         .quantity-control {
+            width: 118.78px;
+            height: 36px;
+            background: var(--pill);
+            border-radius: var(--radius-pill);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            background: #f0f0f0;
-            border-radius: 8px;
-            padding: 0.3rem;
+            justify-content: space-between;
+            padding: 0 12px;
+            flex: 0 0 auto;
         }
 
         .qty-btn {
-            width: 30px;
-            height: 30px;
-            border: none;
+            width: 18px;
+            height: 18px;
+            border: 0;
             background: transparent;
-            cursor: pointer;
-            font-size: 1rem;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            color: #666;
+            color: var(--muted);
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0;
         }
 
-        .qty-btn:hover {
-            color: #1a6b3b;
-        }
+        .qty-btn:hover { color: var(--green); }
 
         .qty-value {
-            min-width: 30px;
+            min-width: 18px;
             text-align: center;
-            font-weight: 600;
+            color: var(--text);
+            font-family: "Plus Jakarta Sans", sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 24px;
+            letter-spacing: 0;
         }
 
         .hapus-btn {
-            color: #999;
-            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
             text-decoration: none;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
+            white-space: nowrap;
         }
 
-        .hapus-btn:hover {
-            color: #d32f2f;
+        .hapus-btn:hover { color: #d32f2f; }
+
+        .hapus-btn::before {
+            content: "";
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 1.5px solid currentColor;
+            border-top: 0;
+            border-radius: 2px;
+            box-sizing: border-box;
+            box-shadow: inset 0 3px 0 0 currentColor;
+            opacity: 0.8;
+            transform: translateY(1px);
         }
 
-        /* Sidebar */
+        /* Summary */
         .summary {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            height: fit-content;
+            width: 341.333px;
+            border-radius: 24px;
+            background: var(--soft-card);
+            box-shadow: var(--shadow-soft);
+            padding: 32px;
             position: sticky;
             top: 100px;
         }
 
         .summary-title {
-            font-size: 1rem;
+            margin: 0 0 32px;
+            color: var(--text);
+            font-family: "Plus Jakarta Sans", sans-serif;
+            font-size: 20px;
             font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 1.5rem;
+            line-height: 28px;
+            letter-spacing: 0;
+        }
+
+        .summary-block {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
         .summary-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .summary-row:last-of-type {
-            border-bottom: none;
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-            border-top: 2px solid #f0f0f0;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #1a1a1a;
+            gap: 16px;
+            min-height: 24px;
         }
 
         .summary-label {
-            color: #666;
-            font-size: 0.9rem;
+            color: var(--muted);
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 24px;
         }
 
         .summary-value {
-            color: #1a1a1a;
+            color: var(--text);
+            font-size: 16px;
             font-weight: 600;
+            line-height: 24px;
+            text-align: right;
+            white-space: nowrap;
         }
 
         .summary-value.free {
-            color: #1a6b3b;
+            color: var(--green);
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+        }
+
+        .summary-total {
+            margin-top: 12px;
+            padding-top: 16px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .summary-total-label {
+            color: var(--text);
+            font-family: "Plus Jakarta Sans", sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 28px;
+        }
+
+        .summary-total-value {
+            color: var(--green);
+            font-family: "Plus Jakarta Sans", sans-serif;
+            font-size: 30px;
+            font-weight: 800;
+            line-height: 36px;
+            white-space: nowrap;
         }
 
         .voucher-section {
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #f0f0f0;
+            margin-top: 28px;
+        }
+
+        .voucher-label {
+            display: block;
+            margin-bottom: 12px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 16px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        .voucher-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
         .voucher-input {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+            width: 175px;
+            height: 44px;
+            padding: 0 16px;
+            border: 1px solid #e3dfde;
+            border-radius: 9999px;
+            background: #fff;
+            color: var(--muted-2);
+            outline: none;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+        }
+
+        .voucher-input::placeholder {
+            color: var(--muted-2);
+            opacity: 1;
         }
 
         .voucher-btn {
-            width: 100%;
-            padding: 0.7rem;
-            background: #a4f77f;
-            color: #1a6b3b;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
+            width: 101px;
+            height: 44px;
+            border: 0;
+            border-radius: 9999px;
+            background: var(--green-soft-2);
+            color: var(--green-dark);
+            font-size: 12px;
             font-weight: 600;
-            font-size: 0.85rem;
-            transition: background 0.3s;
+            line-height: 16px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            cursor: pointer;
         }
 
         .voucher-btn:hover {
-            background: #8FE468;
+            filter: brightness(0.97);
         }
 
         .checkout-btn {
             width: 100%;
-            padding: 1rem;
-            background: #1a6b3b;
-            color: white;
-            border: none;
-            border-radius: 25px;
+            height: 68px;
+            margin-top: 28px;
+            border: 0;
+            border-radius: 24px;
+            background: linear-gradient(180deg, #0f7a25 0%, #0c6f1f 100%);
+            color: #d1ffc8;
+            font-family: "Plus Jakarta Sans", sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 28px;
             cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: background 0.3s;
-            margin-top: 1rem;
+            box-shadow: 0 8px 20px rgba(12,111,31,0.15);
         }
 
-        .checkout-btn:hover {
-            background: #135a2f;
+        .checkout-btn:hover { filter: brightness(1.02); }
+
+        .checkout-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            box-shadow: none;
         }
 
-        /* Footer */
+        .empty-state {
+            padding: 48px 24px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 24px;
+            background: rgba(255,255,255,0.6);
+            border-radius: var(--radius-xl);
+        }
+
+        .empty-state a {
+            display: inline-block;
+            margin-top: 8px;
+            color: var(--green);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* Footer — keep unchanged */
         footer {
             background: #f5f5f5;
             color: #666;
@@ -407,28 +575,135 @@
             object-fit: contain;
         }
 
-        @media (max-width: 768px) {
-            .container {
+        @media (max-width: 1200px) {
+            .page-shell {
+                width: calc(100% - 48px);
+            }
+            .content-grid {
+                grid-template-columns: minmax(0, 1fr) 341.333px;
+            }
+            .nav {
+                margin-left: 80px;
+                margin-right: 80px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .topbar {
+                padding: 0 24px;
+            }
+
+            .page-shell {
+                width: calc(100% - 32px);
+                margin-top: 32px;
+            }
+
+            .content-grid {
                 grid-template-columns: 1fr;
+                gap: 24px;
             }
 
             .summary {
+                width: 100%;
                 position: static;
             }
 
-            .cart-item {
-                grid-template-columns: 80px 1fr;
-                gap: 1rem;
+            .nav {
+                margin-left: 0;
+                margin-right: 0;
+                gap: 20px;
+                overflow-x: auto;
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .topbar {
+                height: auto;
+                padding: 18px 24px;
+                flex-wrap: wrap;
+                gap: 16px;
             }
 
-            .item-price {
-                grid-column: 2;
+            .logo,
+            .header-actions {
+                width: auto;
+            }
+
+            .nav {
+                order: 3;
+                width: 100%;
+                overflow-x: auto;
+                justify-content: flex-start;
+                gap: 24px;
+                padding-bottom: 2px;
+            }
+
+            .header-actions {
+                margin-left: auto;
+            }
+
+            .page-shell {
+                width: calc(100% - 24px);
+                margin-top: 24px;
+            }
+
+            .page-title {
+                font-size: 36px;
+                line-height: 40px;
+            }
+
+            .page-subtitle {
+                font-size: 16px;
+                line-height: 24px;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 16px;
+                padding: 20px;
+            }
+
+            .item-image {
+                width: 100%;
+                max-width: 128px;
+                height: 128px;
+            }
+
+            .item-top,
+            .item-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .summary {
+                padding: 24px;
+            }
+
+            .voucher-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .voucher-input,
+            .voucher-btn {
+                width: 100%;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="topbar">
         <a class="logo" href="index.html">Sehatin</a>
 
@@ -449,64 +724,51 @@
         </div>
     </header>
 
-    <!-- Container -->
-    <div class="container">
-        <!-- Cart Items -->
-        <div>
+    <main class="page-shell">
+        <section class="hero">
             <h1 class="page-title">Keranjang Belanja</h1>
-            <div class="cart-items">
-                <!-- Item 1 -->
-                <div class="cart-item">
-                    <img src="images/cart-item-1.png" alt="Weekly Zen Vitality Plan" class="item-image">
-                    <div class="item-info">
-                        <span class="item-badge">KETO FRIENDLY</span>
-                        <h3>Weekly Zen Vitality Plan</h3>
-                        <div class="item-detail">30y Hari • 21 Balanced Meals</div>
-                        <a href="#" class="hapus-btn">Hapus</a>
+            <p class="page-subtitle">Tinjau paket kesehatan yang Anda pilih dan lanjutkan ke pembayaran.</p>
+        </section>
+
+        <section class="content-grid">
+            <div class="cart-items" aria-live="polite"></div>
+
+            <aside class="summary" aria-label="Ringkasan Pesanan">
+                <h2 class="summary-title">Ringkasan Pesanan</h2>
+
+                <div class="summary-block">
+                    <div class="summary-row">
+                        <span class="summary-label">Subtotal</span>
+                        <span class="summary-value js-subtotal">Rp 0</span>
                     </div>
-                    <div>
-                        <div class="item-price">Rp 2.170.000</div>
-                        <div class="quantity-control">
-                            <button class="qty-btn">−</button>
-                            <div class="qty-value">01</div>
-                            <button class="qty-btn">+</button>
-                        </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Biaya Pengiriman</span>
+                        <span class="summary-value free">GRATIS</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Diskon</span>
+                        <span class="summary-value js-discount">Rp 0</span>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Summary -->
-        <div class="summary">
-            <div class="summary-title">Ringkasan Pesanan</div>
-            
-            <div class="voucher-section">
-                <input type="text" class="voucher-input" placeholder="Kode Voucher">
-                <button class="voucher-btn">GUNAKAN</button>
-            </div>
+                <div class="summary-total">
+                    <span class="summary-total-label">Total</span>
+                    <span class="summary-total-value js-total">Rp 0</span>
+                </div>
 
-            <div class="summary-row">
-                <span class="summary-label">Subtotal</span>
-                <span class="summary-value">RP. 2.170.000</span>
-            </div>
-            <div class="summary-row">
-                <span class="summary-label">Biaya Pengiriman</span>
-                <span class="summary-value free">GRATIS</span>
-            </div>
-            <div class="summary-row">
-                <span class="summary-label">Diskon</span>
-                <span class="summary-value">RP. 0</span>
-            </div>
-            <div class="summary-row">
-                <span>Total</span>
-                <span>RP. 2.170.000</span>
-            </div>
+                <div class="voucher-section">
+                    <label class="voucher-label" for="voucherCode">Kode Voucher</label>
+                    <div class="voucher-row">
+                        <input id="voucherCode" type="text" class="voucher-input" placeholder="KING MU" autocomplete="off">
+                        <button class="voucher-btn" type="button">Gunakan</button>
+                    </div>
+                </div>
 
-            <button class="checkout-btn">Lanjut ke Pembayaran</button>
-        </div>
-    </div>
+                <button class="checkout-btn" type="button">Lanjut ke Pembayaran</button>
+            </aside>
+        </section>
+    </main>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-column">
@@ -542,53 +804,29 @@
     </footer>
 
     <script>
-        // Quantity control
-        document.querySelectorAll('.qty-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const control = this.closest('.quantity-control');
-                const value = control.querySelector('.qty-value');
-                const current = parseInt(value.textContent);
-                if (this.textContent === '−' && current > 1) {
-                    value.textContent = String(current - 1).padStart(2, '0');
-                } else if (this.textContent === '+') {
-                    value.textContent = String(current + 1).padStart(2, '0');
-                }
-            });
-        });
-
-        // Hapus button
-        document.querySelectorAll('.hapus-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                this.closest('.cart-item').remove();
-            });
-        });
-
-        // Checkout button - navigate to checkout
-        document.querySelector('.checkout-btn').addEventListener('click', function() {
-            window.location.href = 'checkout.html';
-        });
-    </script>
-    <script>
         const cartContainer = document.querySelector('.cart-items');
-        const summaryRows = document.querySelectorAll('.summary-row');
+        const subtotalEl = document.querySelector('.js-subtotal');
+        const discountEl = document.querySelector('.js-discount');
+        const totalEl = document.querySelector('.js-total');
         const voucherInput = document.querySelector('.voucher-input');
         const voucherButton = document.querySelector('.voucher-btn');
         const checkoutButton = document.querySelector('.checkout-btn');
+
         let discount = 0;
 
         function formatRupiah(value) {
+            const n = Math.max(0, Number(value) || 0);
             return new Intl.NumberFormat('id-ID', {
                 style: 'currency',
                 currency: 'IDR',
                 maximumFractionDigits: 0
-            }).format(value).replace('Rp', 'Rp ');
+            }).format(n).replace('Rp', 'Rp ');
         }
 
         function readCart() {
             try {
                 return JSON.parse(localStorage.getItem('sehatinCart')) || [];
-            } catch (error) {
+            } catch {
                 return [];
             }
         }
@@ -598,7 +836,11 @@
         }
 
         function getSubtotal(cart) {
-            return cart.reduce((sum, item) => sum + (Number(item.unitPrice) * Number(item.quantity)), 0);
+            return cart.reduce((sum, item) => {
+                const qty = Number(item.quantity) || 0;
+                const price = Number(item.unitPrice) || 0;
+                return sum + (qty * price);
+            }, 0);
         }
 
         function renderCart() {
@@ -609,71 +851,82 @@
 
             if (!cart.length) {
                 cartContainer.innerHTML = `
-                    <div style="padding: 2rem; text-align: center; color: #777;">
+                    <div class="empty-state">
                         Keranjang masih kosong.
                         <br>
-                        <a href="detailpaket.html" style="color: #1a6b3b; font-weight: 700;">Pilih paket catering</a>
+                        <a href="detailpaket.html">Pilih paket catering</a>
                     </div>
                 `;
                 checkoutButton.disabled = true;
-                checkoutButton.style.opacity = '0.55';
-                checkoutButton.style.cursor = 'not-allowed';
             } else {
-                cartContainer.innerHTML = cart.map((item) => `
-                    <div class="cart-item" data-id="${item.id}">
-                        <img src="${item.image || 'images/cart-item-1.png'}" alt="${item.name}" class="item-image">
-                        <div class="item-info">
-                            <span class="item-badge">${item.badge || 'PAKET SEHAT'}</span>
-                            <h3>${item.name}</h3>
-                            <div class="item-detail">${item.durationDays} Hari &bull; ${item.meals || item.packageType}</div>
-                            <a href="#" class="hapus-btn">Hapus</a>
-                        </div>
-                        <div>
-                            <div class="item-price">${formatRupiah(item.unitPrice)}</div>
-                            <div class="quantity-control">
-                                <button class="qty-btn" data-action="decrease" type="button">&minus;</button>
-                                <div class="qty-value">${String(item.quantity).padStart(2, '0')}</div>
-                                <button class="qty-btn" data-action="increase" type="button">+</button>
+                cartContainer.innerHTML = cart.map((item) => {
+                    const id = String(item.id ?? '');
+                    const image = item.image || 'images/cart-item-1.png';
+                    const name = item.name || 'Paket Sehat';
+                    const badge = item.badge || 'PAKET SEHAT';
+                    const durationDays = item.durationDays ?? '-';
+                    const detailText = item.meals || item.packageType || '';
+                    const priceText = formatRupiah(item.unitPrice);
+                    const qtyText = String(Number(item.quantity) || 1).padStart(2, '0');
+
+                    return `
+                        <article class="cart-item" data-id="${id}">
+                            <img src="${image}" alt="${name}" class="item-image">
+                            <div class="item-body">
+                                <div class="item-top">
+                                    <div class="item-meta">
+                                        <span class="item-badge">${badge}</span>
+                                        <h3 class="item-title">${name}</h3>
+                                        <div class="item-detail">${durationDays} Hari • ${detailText}</div>
+                                    </div>
+                                    <div class="item-price">${priceText}</div>
+                                </div>
+
+                                <div class="item-bottom">
+                                    <div class="quantity-control" aria-label="Jumlah item">
+                                        <button class="qty-btn" data-action="decrease" type="button" aria-label="Kurangi">−</button>
+                                        <div class="qty-value">${qtyText}</div>
+                                        <button class="qty-btn" data-action="increase" type="button" aria-label="Tambah">+</button>
+                                    </div>
+                                    <a href="#" class="hapus-btn">Hapus</a>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                `).join('');
+                        </article>
+                    `;
+                }).join('');
                 checkoutButton.disabled = false;
-                checkoutButton.style.opacity = '';
-                checkoutButton.style.cursor = '';
             }
 
-            summaryRows[0].querySelector('.summary-value').textContent = formatRupiah(subtotal);
-            summaryRows[2].querySelector('.summary-value').textContent = formatRupiah(appliedDiscount);
-            summaryRows[3].querySelector('span:last-child').textContent = formatRupiah(total);
+            subtotalEl.textContent = formatRupiah(subtotal);
+            discountEl.textContent = formatRupiah(appliedDiscount);
+            totalEl.textContent = formatRupiah(total);
         }
 
-        cartContainer.addEventListener('click', function(e) {
+        cartContainer.addEventListener('click', (e) => {
             const itemEl = e.target.closest('.cart-item');
             if (!itemEl) return;
 
             const cart = readCart();
-            const item = cart.find((entry) => entry.id === itemEl.dataset.id);
+            const item = cart.find((entry) => String(entry.id) === itemEl.dataset.id);
             if (!item) return;
 
             if (e.target.classList.contains('qty-btn')) {
-                if (e.target.dataset.action === 'increase') {
-                    item.quantity += 1;
-                } else {
-                    item.quantity = Math.max(1, item.quantity - 1);
-                }
+                const action = e.target.dataset.action;
+                const currentQty = Math.max(1, Number(item.quantity) || 1);
+                item.quantity = action === 'increase' ? currentQty + 1 : Math.max(1, currentQty - 1);
                 saveCart(cart);
                 renderCart();
+                return;
             }
 
             if (e.target.classList.contains('hapus-btn')) {
                 e.preventDefault();
-                saveCart(cart.filter((entry) => entry.id !== item.id));
+                saveCart(cart.filter((entry) => String(entry.id) !== String(item.id)));
                 renderCart();
             }
         });
 
-        voucherButton.addEventListener('click', function() {
+        voucherButton.addEventListener('click', () => {
             const cart = readCart();
             const code = voucherInput.value.trim().toUpperCase();
             const subtotal = getSubtotal(cart);
@@ -681,14 +934,14 @@
             renderCart();
         });
 
-        checkoutButton.addEventListener('click', function(e) {
+        checkoutButton.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopImmediatePropagation();
             const cart = readCart();
             if (!cart.length) return;
 
             const subtotal = getSubtotal(cart);
             const appliedDiscount = Math.min(discount, subtotal);
+
             localStorage.setItem('sehatinCheckout', JSON.stringify({
                 items: cart,
                 subtotal,
@@ -697,8 +950,9 @@
                 total: subtotal - appliedDiscount,
                 createdAt: new Date().toISOString()
             }));
+
             window.location.href = 'checkout.html';
-        }, true);
+        });
 
         renderCart();
     </script>
