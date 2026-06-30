@@ -1,44 +1,47 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keranjang Belanja - Sehatin</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Keranjang Belanja – Sehatin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        :root{
-            --bg: #f9f6f5;
-            --card: #ffffff;
-            --soft-card: #f3f0f0;
-            --text: #2f2f2f;
-            --muted: #5c5b5b;
-            --muted-2: #6a707f;
-            --line: #e8e5e4;
-            --green: #006b1b;
-            --green-dark: #14532d;
-            --green-soft: #aef0ad;
-            --green-soft-2: #baf4b6;
-            --pill: #ece9e8;
-            --shadow: 0 8px 24px rgba(47,47,47,0.06);
-            --shadow-soft: 0 2px 10px rgba(47,47,47,0.04);
-            --radius-xl: 24px;
-            --radius-pill: 9999px;
+        /* ── reset & base ── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-
-        * { box-sizing: border-box; }
-        html, body { margin: 0; padding: 0; }
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
         body {
-            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f9f6f5;
+            color: #1e1e1e;
+            line-height: 1.5;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        button,
+        input {
+            font: inherit;
+            border: 0;
+            background: none;
+            outline: none;
+        }
+        button {
+            cursor: pointer;
         }
 
-        a { color: inherit; }
-        button, input { font: inherit; }
-
-        /* Header */
+        /* ── top bar ── */
         .topbar {
             height: 80px;
             padding: 0 80px;
@@ -46,69 +49,64 @@
             align-items: center;
             background: rgba(249, 246, 245, 0.8);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
             z-index: 20;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.02);
         }
-
         .logo {
-            width: 84.13px;
-            color: var(--green-dark);
-            font-family: "Plus Jakarta Sans", sans-serif;
+            flex-shrink: 0;
+            color: #14532d;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 24px;
             font-weight: 700;
             letter-spacing: -0.6px;
             line-height: 32px;
-            text-decoration: none;
         }
-
         .nav {
-            flex: 1;
             display: flex;
-            justify-content: center;
+            align-items: center;
             gap: 32px;
-            margin-left: 126px;
-            margin-right: 126px;
+            margin: 0 126px;
+            flex: 1;
+            justify-content: center;
         }
-
         .nav a {
-            color: var(--muted);
+            color: #5c5b5b;
             font-size: 14px;
             font-weight: 500;
             line-height: 20px;
-            text-decoration: none;
+            transition: color 0.2s;
             white-space: nowrap;
         }
-
+        .nav a:hover {
+            color: #006b1b;
+        }
         .header-actions {
-            width: 98.77px;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
             gap: 24px;
+            flex-shrink: 0;
             margin-left: auto;
         }
-
-        .cart-link {
-            width: 24px;
-            height: 24px;
-            color: var(--text);
+        .cart-icon-link {
             display: flex;
             align-items: center;
             justify-content: center;
-            text-decoration: none;
+            width: 24px;
+            height: 24px;
+            color: #1e1e1e;
         }
-
-        .cart-link svg {
+        .cart-icon-link svg {
             width: 20px;
             height: 20px;
         }
-
         .profile-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: #006b1b;
+            background: linear-gradient(135deg, #0f7a25, #0c6f1f);
             color: #d1ffc8;
             display: flex;
             align-items: center;
@@ -116,37 +114,41 @@
             font-size: 14px;
             font-weight: 700;
             line-height: 20px;
-            text-decoration: none;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+            transition: filter 0.2s;
+        }
+        .profile-avatar:hover {
+            filter: brightness(1.06);
         }
 
-        /* Main */
+        /* ── page shell ── */
         .page-shell {
             width: 1120px;
             margin: 48px auto 0;
+            padding-bottom: 60px;
         }
 
+        /* ── hero ── */
         .hero {
             margin-bottom: 48px;
         }
-
         .page-title {
-            margin: 0;
-            color: var(--text);
-            font-family: "Plus Jakarta Sans", sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 48px;
             font-weight: 800;
             line-height: 48px;
             letter-spacing: -1.2px;
+            color: #1e1e1e;
+            margin: 0;
         }
-
         .page-subtitle {
             margin: 8px 0 0;
-            color: var(--muted);
             font-size: 18px;
             line-height: 28px;
+            color: #5c5b5b;
         }
 
+        /* ── content grid ── */
         .content-grid {
             display: grid;
             grid-template-columns: 730.666px 341.333px;
@@ -154,203 +156,240 @@
             align-items: start;
         }
 
-        /* Cart list */
+        /* ── cart items ── */
         .cart-items {
             display: flex;
             flex-direction: column;
             gap: 24px;
         }
-
         .cart-item {
-            min-height: 192px;
             display: flex;
             gap: 32px;
             align-items: stretch;
             padding: 24px;
-            border-radius: var(--radius-xl);
-            background: var(--card);
-            box-shadow: var(--shadow);
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 8px 24px rgba(47, 47, 47, 0.06);
+            transition: box-shadow 0.2s, transform 0.2s;
+            min-height: 192px;
         }
-
+        .cart-item:hover {
+            box-shadow: 0 12px 32px rgba(47, 47, 47, 0.08);
+        }
         .item-image {
+            flex: 0 0 128px;
             width: 128px;
             height: 128px;
             border-radius: 24px;
             object-fit: cover;
-            flex: 0 0 128px;
+            background: #e8e5e4;
             display: block;
-            background: #ddd;
         }
-
         .item-body {
             flex: 1;
             display: flex;
             flex-direction: column;
             min-width: 0;
-            padding-top: 8px;
-            padding-bottom: 4px;
+            padding: 2px 0;
         }
-
         .item-top {
             display: flex;
             justify-content: space-between;
-            gap: 24px;
+            gap: 16px;
             align-items: flex-start;
         }
-
         .item-meta {
             min-width: 0;
-            max-width: 275px;
+            max-width: 340px;
         }
-
+        .badges-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
         .item-badge {
             display: inline-flex;
             align-items: center;
             height: 20px;
             padding: 0 12px;
-            border-radius: var(--radius-pill);
-            background: var(--green-soft);
-            color: var(--green);
+            border-radius: 9999px;
+            background: #aef0ad;
+            color: #004d12;
             font-size: 12px;
             font-weight: 700;
             line-height: 16px;
             letter-spacing: 0.6px;
             text-transform: uppercase;
             white-space: nowrap;
-            margin-bottom: 4px;
         }
-
+        .item-status {
+            display: inline-flex;
+            align-items: center;
+            height: 20px;
+            padding: 0 12px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 16px;
+            white-space: nowrap;
+        }
+        .status-masih-berlaku {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .status-dibatalkan {
+            background: #ffebee;
+            color: #c62828;
+        }
         .item-title {
-            margin: 0;
-            color: var(--text);
-            font-family: "Plus Jakarta Sans", sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 24px;
             font-weight: 700;
             line-height: 32px;
-            letter-spacing: 0;
+            color: #1e1e1e;
+            margin: 0;
         }
-
         .item-detail {
             margin-top: 4px;
-            color: var(--muted);
             font-size: 14px;
+            font-weight: 400;
             line-height: 20px;
+            color: #5c5b5b;
             white-space: nowrap;
         }
-
         .item-price {
-            color: var(--green);
-            font-family: "Plus Jakarta Sans", sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 24px;
             font-weight: 700;
             line-height: 32px;
-            letter-spacing: 0;
+            color: #006b1b;
             white-space: nowrap;
+            flex-shrink: 0;
         }
-
         .item-bottom {
             margin-top: auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 16px;
+            padding-top: 12px;
         }
 
+        /* quantity control – pill */
         .quantity-control {
-            width: 118.78px;
-            height: 36px;
-            background: var(--pill);
-            border-radius: var(--radius-pill);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            width: 118.78px;
+            height: 36px;
             padding: 0 12px;
-            flex: 0 0 auto;
+            background: #ece9e8;
+            border-radius: 9999px;
+            flex-shrink: 0;
         }
-
         .qty-btn {
-            width: 18px;
-            height: 18px;
-            border: 0;
-            background: transparent;
+            width: 24px;
+            height: 24px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            color: var(--muted);
             font-size: 18px;
             line-height: 1;
-            cursor: pointer;
+            color: #5c5b5b;
+            transition: color 0.2s;
+            border: 0;
+            background: transparent;
             padding: 0;
+            border-radius: 50%;
         }
-
-        .qty-btn:hover { color: var(--green); }
-
+        .qty-btn:hover {
+            color: #006b1b;
+        }
         .qty-value {
-            min-width: 18px;
+            min-width: 24px;
             text-align: center;
-            color: var(--text);
-            font-family: "Plus Jakarta Sans", sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 16px;
             font-weight: 700;
             line-height: 24px;
-            letter-spacing: 0;
+            color: #1e1e1e;
         }
 
+        /* Hapus button with trash icon */
         .hapus-btn {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            color: var(--muted);
+            gap: 8px;
             font-size: 14px;
             font-weight: 500;
             line-height: 20px;
-            text-decoration: none;
-            white-space: nowrap;
+            color: #5c5b5b;
+            transition: color 0.2s;
+            border: 0;
+            background: transparent;
+            padding: 4px 0;
+            cursor: pointer;
+        }
+        .hapus-btn:hover {
+            color: #c62828;
+        }
+        .hapus-btn svg {
+            flex-shrink: 0;
+            width: 16px;
+            height: 16px;
         }
 
-        .hapus-btn:hover { color: #d32f2f; }
-
-        .hapus-btn::before {
-            content: "";
+        /* ── empty state ── */
+        .empty-state {
+            padding: 64px 24px;
+            text-align: center;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 8px 24px rgba(47, 47, 47, 0.06);
+            color: #5c5b5b;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 24px;
+        }
+        .empty-state a {
             display: inline-block;
-            width: 14px;
-            height: 14px;
-            border: 1.5px solid currentColor;
-            border-top: 0;
-            border-radius: 2px;
-            box-sizing: border-box;
-            box-shadow: inset 0 3px 0 0 currentColor;
-            opacity: 0.8;
-            transform: translateY(1px);
+            margin-top: 16px;
+            padding: 12px 32px;
+            background: #aef0ad;
+            color: #004d12;
+            font-weight: 700;
+            border-radius: 9999px;
+            transition: filter 0.2s;
+        }
+        .empty-state a:hover {
+            filter: brightness(0.95);
         }
 
-        /* Summary */
+        /* ── summary ── */
         .summary {
             width: 341.333px;
-            border-radius: 24px;
-            background: var(--soft-card);
-            box-shadow: var(--shadow-soft);
             padding: 32px;
+            background: #f3f0f0;
+            border-radius: 24px;
+            box-shadow: 0 2px 10px rgba(47, 47, 47, 0.04);
             position: sticky;
             top: 100px;
         }
-
         .summary-title {
-            margin: 0 0 32px;
-            color: var(--text);
-            font-family: "Plus Jakarta Sans", sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 20px;
             font-weight: 700;
             line-height: 28px;
-            letter-spacing: 0;
+            color: #1e1e1e;
+            margin: 0 0 28px 0;
         }
-
         .summary-block {
             display: flex;
             flex-direction: column;
             gap: 16px;
         }
-
         .summary-row {
             display: flex;
             justify-content: space-between;
@@ -358,166 +397,156 @@
             gap: 16px;
             min-height: 24px;
         }
-
         .summary-label {
-            color: var(--muted);
             font-size: 16px;
             font-weight: 500;
             line-height: 24px;
+            color: #5c5b5b;
         }
-
         .summary-value {
-            color: var(--text);
             font-size: 16px;
             font-weight: 600;
             line-height: 24px;
+            color: #1e1e1e;
             text-align: right;
             white-space: nowrap;
         }
-
         .summary-value.free {
-            color: var(--green);
+            color: #006b1b;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 700;
             line-height: 20px;
+            letter-spacing: 0.4px;
         }
-
         .summary-total {
-            margin-top: 12px;
-            padding-top: 16px;
-            border-top: 1px solid var(--line);
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 16px;
+            margin-top: 16px;
+            padding-top: 20px;
+            border-top: 1.5px solid #e8e5e4;
         }
-
         .summary-total-label {
-            color: var(--text);
-            font-family: "Plus Jakarta Sans", sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 18px;
             font-weight: 700;
             line-height: 28px;
+            color: #1e1e1e;
         }
-
         .summary-total-value {
-            color: var(--green);
-            font-family: "Plus Jakarta Sans", sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 30px;
             font-weight: 800;
             line-height: 36px;
+            color: #006b1b;
             white-space: nowrap;
         }
 
+        /* ── voucher ── */
         .voucher-section {
-            margin-top: 28px;
+            margin-top: 32px;
         }
-
         .voucher-label {
             display: block;
-            margin-bottom: 12px;
-            color: var(--muted);
             font-size: 12px;
             font-weight: 600;
             line-height: 16px;
             letter-spacing: 1.2px;
             text-transform: uppercase;
+            color: #5c5b5b;
+            margin-bottom: 12px;
         }
-
         .voucher-row {
             display: flex;
             gap: 8px;
             align-items: center;
         }
-
         .voucher-input {
-            width: 175px;
+            flex: 1;
             height: 44px;
             padding: 0 16px;
             border: 1px solid #e3dfde;
             border-radius: 9999px;
-            background: #fff;
-            color: var(--muted-2);
-            outline: none;
+            background: #ffffff;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             line-height: 20px;
+            color: #1e1e1e;
+            transition: border-color 0.2s;
+            min-width: 0;
         }
-
+        .voucher-input:focus {
+            border-color: #006b1b;
+        }
         .voucher-input::placeholder {
-            color: var(--muted-2);
-            opacity: 1;
+            color: #6a707f;
+            font-weight: 500;
         }
-
         .voucher-btn {
+            flex-shrink: 0;
             width: 101px;
             height: 44px;
             border: 0;
             border-radius: 9999px;
-            background: var(--green-soft-2);
-            color: var(--green-dark);
+            background: #baf4b6;
+            color: #14532d;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             line-height: 16px;
-            letter-spacing: 1.2px;
+            letter-spacing: 0.8px;
             text-transform: uppercase;
+            transition: background 0.2s, color 0.2s;
             cursor: pointer;
         }
-
         .voucher-btn:hover {
-            filter: brightness(0.97);
+            background: #aef0ad;
+        }
+        .voucher-btn.active {
+            background: #006b1b;
+            color: #ffffff;
         }
 
+        /* ── checkout button ── */
         .checkout-btn {
             width: 100%;
-            height: 68px;
-            margin-top: 28px;
+            height: 60px;
+            margin-top: 32px;
             border: 0;
-            border-radius: 24px;
+            border-radius: 20px;
             background: linear-gradient(180deg, #0f7a25 0%, #0c6f1f 100%);
             color: #d1ffc8;
-            font-family: "Plus Jakarta Sans", sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 18px;
             font-weight: 700;
             line-height: 28px;
+            box-shadow: 0 8px 20px rgba(12, 111, 31, 0.15);
+            transition: filter 0.2s, transform 0.1s, box-shadow 0.2s;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(12,111,31,0.15);
         }
-
-        .checkout-btn:hover { filter: brightness(1.02); }
-
+        .checkout-btn:hover:not(:disabled) {
+            filter: brightness(1.05);
+            transform: translateY(-1px);
+            box-shadow: 0 12px 28px rgba(12, 111, 31, 0.2);
+        }
+        .checkout-btn:active:not(:disabled) {
+            transform: translateY(1px);
+            box-shadow: 0 4px 12px rgba(12, 111, 31, 0.15);
+        }
         .checkout-btn:disabled {
-            opacity: 0.55;
+            opacity: 0.5;
             cursor: not-allowed;
             box-shadow: none;
+            transform: none;
         }
 
-        .empty-state {
-            padding: 48px 24px;
-            text-align: center;
-            color: var(--muted);
-            font-size: 16px;
-            line-height: 24px;
-            background: rgba(255,255,255,0.6);
-            border-radius: var(--radius-xl);
-        }
-
-        .empty-state a {
-            display: inline-block;
-            margin-top: 8px;
-            color: var(--green);
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        /* Footer — keep unchanged */
+        /* ── footer ── */
         footer {
             background: #f5f5f5;
             color: #666;
             padding: 3rem 5%;
-            margin-top: 3rem;
+            margin-top: 0;
         }
-
         .footer-content {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -525,14 +554,12 @@
             max-width: 1200px;
             margin: 0 auto 2rem;
         }
-
         .footer-column h3 {
             font-size: 1rem;
             margin-bottom: 1rem;
             color: #1a6b3b;
             font-weight: 700;
         }
-
         .footer-column a {
             display: block;
             color: #666;
@@ -541,11 +568,14 @@
             margin-bottom: 0.5rem;
             transition: color 0.3s;
         }
-
         .footer-column a:hover {
             color: #1a6b3b;
         }
-
+        .footer-column p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
         .footer-bottom {
             border-top: 1px solid #ddd;
             padding-top: 2rem;
@@ -557,24 +587,19 @@
             font-size: 0.9rem;
             color: #999;
         }
-
         .footer-icons {
             display: flex;
             gap: 1.5rem;
         }
-
         .footer-icons a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .footer-icons img {
             width: 24px;
             height: 24px;
-            object-fit: contain;
         }
 
+        /* ── responsive ── */
         @media (max-width: 1200px) {
             .page-shell {
                 width: calc(100% - 48px);
@@ -583,139 +608,161 @@
                 grid-template-columns: minmax(0, 1fr) 341.333px;
             }
             .nav {
-                margin-left: 80px;
-                margin-right: 80px;
+                margin: 0 60px;
             }
         }
-
         @media (max-width: 992px) {
             .topbar {
                 padding: 0 24px;
             }
-
             .page-shell {
                 width: calc(100% - 32px);
                 margin-top: 32px;
             }
-
             .content-grid {
                 grid-template-columns: 1fr;
                 gap: 24px;
             }
-
             .summary {
                 width: 100%;
                 position: static;
             }
-
             .nav {
-                margin-left: 0;
-                margin-right: 0;
+                margin: 0 20px;
                 gap: 20px;
                 overflow-x: auto;
                 justify-content: flex-start;
             }
         }
-
         @media (max-width: 768px) {
             .topbar {
                 height: auto;
-                padding: 18px 24px;
+                padding: 16px 20px;
                 flex-wrap: wrap;
-                gap: 16px;
+                gap: 12px;
             }
-
             .logo,
             .header-actions {
                 width: auto;
             }
-
             .nav {
                 order: 3;
                 width: 100%;
                 overflow-x: auto;
                 justify-content: flex-start;
                 gap: 24px;
-                padding-bottom: 2px;
+                padding-bottom: 4px;
+                margin: 0;
             }
-
             .header-actions {
                 margin-left: auto;
             }
-
             .page-shell {
-                width: calc(100% - 24px);
-                margin-top: 24px;
+                width: calc(100% - 20px);
+                margin-top: 20px;
             }
-
             .page-title {
-                font-size: 36px;
+                font-size: 32px;
                 line-height: 40px;
             }
-
             .page-subtitle {
                 font-size: 16px;
                 line-height: 24px;
             }
-
             .cart-item {
                 flex-direction: column;
                 align-items: stretch;
                 gap: 16px;
                 padding: 20px;
             }
-
             .item-image {
+                flex: 0 0 auto;
                 width: 100%;
-                max-width: 128px;
-                height: 128px;
+                max-width: 100%;
+                height: 180px;
             }
-
-            .item-top,
-            .item-bottom {
+            .item-top {
                 flex-direction: column;
-                align-items: flex-start;
+                gap: 8px;
             }
-
+            .item-meta {
+                max-width: 100%;
+            }
+            .item-price {
+                font-size: 20px;
+            }
+            .item-bottom {
+                flex-wrap: wrap;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            .quantity-control {
+                width: 100%;
+                max-width: 200px;
+            }
+            .hapus-btn {
+                justify-content: center;
+            }
             .summary {
                 padding: 24px;
             }
-
             .voucher-row {
                 flex-direction: column;
                 align-items: stretch;
             }
-
             .voucher-input,
             .voucher-btn {
                 width: 100%;
             }
-
             .footer-content {
                 grid-template-columns: 1fr;
             }
-
             .footer-bottom {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 12px;
             }
         }
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 26px;
+                line-height: 34px;
+            }
+            .cart-item {
+                padding: 16px;
+            }
+            .item-image {
+                height: 140px;
+            }
+            .item-title {
+                font-size: 20px;
+                line-height: 28px;
+            }
+            .summary-total-value {
+                font-size: 24px;
+                line-height: 30px;
+            }
+            .checkout-btn {
+                font-size: 16px;
+                height: 52px;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <!-- ─── TOPBAR ─── -->
     <header class="topbar">
         <a class="logo" href="index.html">Sehatin</a>
-
         <nav class="nav" aria-label="Navigasi utama">
             <a href="index.html">Beranda</a>
             <a href="paketcatering.html">Paket</a>
             <a href="monitoring.html">Pantau Nutrisi</a>
             <a href="riwayat.html">Pesanan</a>
         </nav>
-
         <div class="header-actions">
-            <a class="cart-link" href="keranjang.html" aria-label="Keranjang">
+            <a class="cart-icon-link" href="keranjang.html" aria-label="Keranjang">
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M3.75 4.75h2.1l1.65 9.05a2 2 0 0 0 1.97 1.64h6.92a2 2 0 0 0 1.92-1.43l1.37-4.64H7.07M9.25 19.25h.01M17.25 19.25h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -724,6 +771,7 @@
         </div>
     </header>
 
+    <!-- ─── MAIN ─── -->
     <main class="page-shell">
         <section class="hero">
             <h1 class="page-title">Keranjang Belanja</h1>
@@ -759,7 +807,7 @@
                 <div class="voucher-section">
                     <label class="voucher-label" for="voucherCode">Kode Voucher</label>
                     <div class="voucher-row">
-                        <input id="voucherCode" type="text" class="voucher-input" placeholder="KING MU" autocomplete="off">
+                        <input id="voucherCode" type="text" class="voucher-input" placeholder="KING MU" autocomplete="off" />
                         <button class="voucher-btn" type="button">Gunakan</button>
                     </div>
                 </div>
@@ -769,11 +817,12 @@
         </section>
     </main>
 
+    <!-- ─── FOOTER ─── -->
     <footer>
         <div class="footer-content">
             <div class="footer-column">
                 <h3>Sehatin</h3>
-                <p style="color: #666; font-size: 0.9rem;">Katering sehat premium yang membawa kualitas restoran ke meja makan Anda setiap hari.</p>
+                <p>Katering sehat premium yang membawa kualitas restoran ke meja makan Anda setiap hari.</p>
             </div>
             <div class="footer-column">
                 <h3>Layanan</h3>
@@ -792,9 +841,9 @@
                 <a href="#">Tanya Jawab</a>
                 <a href="#">Hubungi Kami</a>
                 <div class="footer-icons">
-                    <a href="#"><img src="images/icon_share.png" alt="Share"></a>
-                    <a href="#"><img src="images/icon_mail.png" alt="Email"></a>
-                    <a href="#"><img src="images/icon_call.png" alt="Telepon"></a>
+                    <a href="#"><img src="images/icon_share.png" alt="Share" onerror="this.style.display='none'" /></a>
+                    <a href="#"><img src="images/icon_mail.png" alt="Email" onerror="this.style.display='none'" /></a>
+                    <a href="#"><img src="images/icon_call.png" alt="Telepon" onerror="this.style.display='none'" /></a>
                 </div>
             </div>
         </div>
@@ -804,157 +853,200 @@
     </footer>
 
     <script>
-        const cartContainer = document.querySelector('.cart-items');
-        const subtotalEl = document.querySelector('.js-subtotal');
-        const discountEl = document.querySelector('.js-discount');
-        const totalEl = document.querySelector('.js-total');
-        const voucherInput = document.querySelector('.voucher-input');
-        const voucherButton = document.querySelector('.voucher-btn');
-        const checkoutButton = document.querySelector('.checkout-btn');
+        (function() {
+            'use strict';
 
-        let discount = 0;
+            // ─── DOM refs ───
+            const container = document.querySelector('.cart-items');
+            const subtotalEl = document.querySelector('.js-subtotal');
+            const discountEl = document.querySelector('.js-discount');
+            const totalEl = document.querySelector('.js-total');
+            const voucherInput = document.getElementById('voucherCode');
+            const voucherBtn = document.querySelector('.voucher-btn');
+            const checkoutBtn = document.querySelector('.checkout-btn');
 
-        function formatRupiah(value) {
-            const n = Math.max(0, Number(value) || 0);
-            return new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                maximumFractionDigits: 0
-            }).format(n).replace('Rp', 'Rp ');
-        }
+            let discount = 0;
+            const validCodes = ['KING MU', 'SEHATIN10', 'HEMAT10'];
 
-        function readCart() {
-            try {
-                return JSON.parse(localStorage.getItem('sehatinCart')) || [];
-            } catch {
-                return [];
+            // ─── helpers ───
+            function formatRupiah(val) {
+                const num = Math.max(0, Number(val) || 0);
+                return new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    maximumFractionDigits: 0
+                }).format(num).replace('Rp', 'Rp ');
             }
-        }
 
-        function saveCart(cart) {
-            localStorage.setItem('sehatinCart', JSON.stringify(cart));
-        }
+            function readCart() {
+                try {
+                    const raw = localStorage.getItem('sehatinCart');
+                    return raw ? JSON.parse(raw) : [];
+                } catch {
+                    return [];
+                }
+            }
 
-        function getSubtotal(cart) {
-            return cart.reduce((sum, item) => {
-                const qty = Number(item.quantity) || 0;
-                const price = Number(item.unitPrice) || 0;
-                return sum + (qty * price);
-            }, 0);
-        }
+            function saveCart(cart) {
+                localStorage.setItem('sehatinCart', JSON.stringify(cart));
+            }
 
-        function renderCart() {
-            const cart = readCart();
-            const subtotal = getSubtotal(cart);
-            const appliedDiscount = Math.min(discount, subtotal);
-            const total = subtotal - appliedDiscount;
+            function getSubtotal(cart) {
+                return cart.reduce((sum, item) => {
+                    const qty = Math.max(0, Number(item.quantity) || 0);
+                    const price = Math.max(0, Number(item.unitPrice) || 0);
+                    return sum + qty * price;
+                }, 0);
+            }
 
-            if (!cart.length) {
-                cartContainer.innerHTML = `
-                    <div class="empty-state">
-                        Keranjang masih kosong.
-                        <br>
-                        <a href="detailpaket.html">Pilih paket catering</a>
-                    </div>
-                `;
-                checkoutButton.disabled = true;
-            } else {
-                cartContainer.innerHTML = cart.map((item) => {
-                    const id = String(item.id ?? '');
-                    const image = item.image || 'images/cart-item-1.png';
-                    const name = item.name || 'Paket Sehat';
-                    const badge = item.badge || 'PAKET SEHAT';
-                    const durationDays = item.durationDays ?? '-';
-                    const detailText = item.meals || item.packageType || '';
-                    const priceText = formatRupiah(item.unitPrice);
-                    const qtyText = String(Number(item.quantity) || 1).padStart(2, '0');
+            // ─── render ───
+            function render() {
+                const cart = readCart();
+                const subtotal = getSubtotal(cart);
+                const appliedDiscount = Math.min(discount, subtotal);
+                const total = subtotal - appliedDiscount;
 
-                    return `
-                        <article class="cart-item" data-id="${id}">
-                            <img src="${image}" alt="${name}" class="item-image">
-                            <div class="item-body">
-                                <div class="item-top">
-                                    <div class="item-meta">
-                                        <span class="item-badge">${badge}</span>
-                                        <h3 class="item-title">${name}</h3>
-                                        <div class="item-detail">${durationDays} Hari • ${detailText}</div>
-                                    </div>
-                                    <div class="item-price">${priceText}</div>
-                                </div>
-
-                                <div class="item-bottom">
-                                    <div class="quantity-control" aria-label="Jumlah item">
-                                        <button class="qty-btn" data-action="decrease" type="button" aria-label="Kurangi">−</button>
-                                        <div class="qty-value">${qtyText}</div>
-                                        <button class="qty-btn" data-action="increase" type="button" aria-label="Tambah">+</button>
-                                    </div>
-                                    <a href="#" class="hapus-btn">Hapus</a>
-                                </div>
-                            </div>
-                        </article>
+                if (!cart.length) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            Keranjang masih kosong.
+                            <br />
+                            <a href="paketcatering.html">Mulai Belanja Paket</a>
+                        </div>
                     `;
-                }).join('');
-                checkoutButton.disabled = false;
+                    checkoutBtn.disabled = true;
+                } else {
+                    container.innerHTML = cart.map((item) => {
+                        const id = String(item.id || '');
+                        const image = item.image || 'https://placehold.co/128x128/eee/999?text=Image';
+                        const name = item.name || 'Paket Sehat';
+                        const badge = item.badge || 'PAKET SEHAT';
+                        const duration = item.durationDays ?? '-';
+                        const detail = item.meals || item.packageType || '';
+                        const price = Number(item.unitPrice) || 0;
+                        const qty = Math.max(1, Number(item.quantity) || 1);
+                        const qtyStr = String(qty).padStart(2, '0');
+                        const status = item.status || '';
+
+                        let statusClass = '';
+                        let statusLabel = '';
+                        if (status) {
+                            const slug = status.toLowerCase().replace(/\s+/g, '-');
+                            statusClass = 'item-status status-' + slug;
+                            statusLabel = status;
+                        }
+
+                        return `
+                            <article class="cart-item" data-id="${id}">
+                                <img src="${image}" alt="${name}" class="item-image" onerror="this.src='https://placehold.co/128x128/eee/999?text=Image'" />
+                                <div class="item-body">
+                                    <div class="item-top">
+                                        <div class="item-meta">
+                                            <div class="badges-wrapper">
+                                                <span class="item-badge">${badge}</span>
+                                                ${status ? `<span class="${statusClass}">${statusLabel}</span>` : ''}
+                                            </div>
+                                            <h3 class="item-title">${name}</h3>
+                                            <div class="item-detail">${duration} Hari • ${detail}</div>
+                                        </div>
+                                        <div class="item-price">${formatRupiah(price)}</div>
+                                    </div>
+
+                                    <div class="item-bottom">
+                                        <div class="quantity-control" aria-label="Jumlah item">
+                                            <button class="qty-btn" data-action="decrease" type="button" aria-label="Kurangi">−</button>
+                                            <div class="qty-value">${qtyStr}</div>
+                                            <button class="qty-btn" data-action="increase" type="button" aria-label="Tambah">+</button>
+                                        </div>
+                                        <button class="hapus-btn" type="button">
+                                            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                                <path d="M2.25 13.5C1.8375 13.5 1.48438 13.3531 1.19062 13.0594C0.896875 12.7656 0.75 12.4125 0.75 12V2.25H0V0.75H3.75V0H8.25V0.75H12V2.25H11.25V12C11.25 12.4125 11.1031 12.7656 10.8094 13.0594C10.5156 13.3531 10.1625 13.5 9.75 13.5H2.25ZM9.75 2.25H2.25V12H9.75V2.25ZM3.75 10.5H5.25V3.75H3.75V10.5ZM6.75 10.5H8.25V3.75H6.75V10.5Z" fill="currentColor"/>
+                                            </svg>
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </div>
+                            </article>
+                        `;
+                    }).join('');
+                    checkoutBtn.disabled = false;
+                }
+
+                subtotalEl.textContent = formatRupiah(subtotal);
+                discountEl.textContent = discount > 0 ? '- ' + formatRupiah(appliedDiscount) : formatRupiah(0);
+                totalEl.textContent = formatRupiah(total);
             }
 
-            subtotalEl.textContent = formatRupiah(subtotal);
-            discountEl.textContent = formatRupiah(appliedDiscount);
-            totalEl.textContent = formatRupiah(total);
-        }
+            // ─── event: qty + hapus ───
+            container.addEventListener('click', function(e) {
+                const itemEl = e.target.closest('.cart-item');
+                if (!itemEl) return;
+                const id = itemEl.dataset.id;
+                if (!id) return;
 
-        cartContainer.addEventListener('click', (e) => {
-            const itemEl = e.target.closest('.cart-item');
-            if (!itemEl) return;
+                const cart = readCart();
+                const idx = cart.findIndex((it) => String(it.id) === id);
+                if (idx === -1) return;
 
-            const cart = readCart();
-            const item = cart.find((entry) => String(entry.id) === itemEl.dataset.id);
-            if (!item) return;
+                // qty
+                if (e.target.classList.contains('qty-btn')) {
+                    const action = e.target.dataset.action;
+                    const current = Math.max(1, Number(cart[idx].quantity) || 1);
+                    cart[idx].quantity = action === 'increase' ? current + 1 : Math.max(1, current - 1);
+                    saveCart(cart);
+                    render();
+                    return;
+                }
 
-            if (e.target.classList.contains('qty-btn')) {
-                const action = e.target.dataset.action;
-                const currentQty = Math.max(1, Number(item.quantity) || 1);
-                item.quantity = action === 'increase' ? currentQty + 1 : Math.max(1, currentQty - 1);
-                saveCart(cart);
-                renderCart();
-                return;
-            }
+                // hapus
+                if (e.target.closest('.hapus-btn')) {
+                    cart.splice(idx, 1);
+                    saveCart(cart);
+                    render();
+                }
+            });
 
-            if (e.target.classList.contains('hapus-btn')) {
-                e.preventDefault();
-                saveCart(cart.filter((entry) => String(entry.id) !== String(item.id)));
-                renderCart();
-            }
-        });
+            // ─── voucher ───
+            voucherBtn.addEventListener('click', function() {
+                const cart = readCart();
+                const code = voucherInput.value.trim().toUpperCase();
+                const subtotal = getSubtotal(cart);
 
-        voucherButton.addEventListener('click', () => {
-            const cart = readCart();
-            const code = voucherInput.value.trim().toUpperCase();
-            const subtotal = getSubtotal(cart);
-            discount = ['SEHATIN10', 'HEMAT10'].includes(code) ? Math.round(subtotal * 0.1) : 0;
-            renderCart();
-        });
+                if (validCodes.includes(code)) {
+                    discount = Math.round(subtotal * 0.1);
+                    voucherBtn.textContent = 'AKTIF';
+                    voucherBtn.classList.add('active');
+                } else {
+                    discount = 0;
+                    voucherBtn.textContent = 'GUNAKAN';
+                    voucherBtn.classList.remove('active');
+                    alert('Kode Voucher tidak valid.');
+                }
+                render();
+            });
 
-        checkoutButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            const cart = readCart();
-            if (!cart.length) return;
+            // ─── checkout ───
+            checkoutBtn.addEventListener('click', function() {
+                const cart = readCart();
+                if (!cart.length) return;
+                const subtotal = getSubtotal(cart);
+                const appliedDiscount = Math.min(discount, subtotal);
+                localStorage.setItem('sehatinCheckout', JSON.stringify({
+                    items: cart,
+                    subtotal: subtotal,
+                    shipping: 0,
+                    discount: appliedDiscount,
+                    total: subtotal - appliedDiscount,
+                    createdAt: new Date().toISOString()
+                }));
+                window.location.href = 'checkout.html';
+            });
 
-            const subtotal = getSubtotal(cart);
-            const appliedDiscount = Math.min(discount, subtotal);
+            // ─── init ───
+            render();
 
-            localStorage.setItem('sehatinCheckout', JSON.stringify({
-                items: cart,
-                subtotal,
-                shipping: 0,
-                discount: appliedDiscount,
-                total: subtotal - appliedDiscount,
-                createdAt: new Date().toISOString()
-            }));
-
-            window.location.href = 'checkout.html';
-        });
-
-        renderCart();
+        })();
     </script>
+
 </body>
 </html>
