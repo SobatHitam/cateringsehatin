@@ -1,76 +1,88 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Sehatin</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout – Sehatin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
     <style>
-        * {
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #f5f5f5;
-            color: #333;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f9f6f5;
+            color: #2f2f2f;
+            -webkit-font-smoothing: antialiased;
         }
-        /* Header */
+
+        /* ===== TOP NAV ===== */
         .topbar {
             height: 80px;
             padding: 0 80px;
             display: flex;
             align-items: center;
-            background: rgba(249, 246, 245, 0.8);
+            background: rgba(249, 246, 245, 0.80);
             backdrop-filter: blur(12px);
-            position: relative;
-            z-index: 5;
+            -webkit-backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.02);
         }
 
         .logo {
-            width: 244px;
-            color: #14532d;
-            font-size: 24px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 700;
+            font-size: 24px;
             line-height: 32px;
+            letter-spacing: -0.6px;
+            color: #14532d;
             text-decoration: none;
+            flex-shrink: 0;
         }
 
         .nav {
-            flex: 1;
             display: flex;
-            justify-content: center;
+            align-items: center;
             gap: 32px;
+            margin: 0 auto;
         }
 
         .nav a {
-            color: #5c5b5b;
             font-size: 14px;
             line-height: 20px;
+            font-weight: 500;
+            color: #5c5b5b;
             text-decoration: none;
+            transition: color 0.2s;
             white-space: nowrap;
+        }
+        .nav a:hover {
+            color: #006b1b;
         }
 
         .header-actions {
-            width: 244px;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
             gap: 31px;
+            flex-shrink: 0;
         }
 
         .cart-link {
-            width: 24px;
-            height: 24px;
-            color: #2f2f2f;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: #2f2f2f;
             text-decoration: none;
         }
-
         .cart-link svg {
             width: 20px;
             height: 20px;
@@ -92,440 +104,609 @@
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
+        @media (max-width: 1024px) {
+            .topbar {
+                padding: 0 32px;
+            }
+            .nav {
+                gap: 20px;
+            }
+        }
         @media (max-width: 768px) {
             .topbar {
                 height: auto;
-                padding: 18px 24px;
+                padding: 16px 24px;
                 flex-wrap: wrap;
-                gap: 16px;
+                gap: 12px;
             }
-
-            .logo,
-            .header-actions {
-                width: auto;
-            }
-
             .nav {
                 order: 3;
                 width: 100%;
                 justify-content: flex-start;
                 overflow-x: auto;
                 gap: 24px;
-                padding-bottom: 2px;
+                padding-bottom: 4px;
             }
-
             .header-actions {
                 margin-left: auto;
             }
         }
 
-
-        /* Container */
+        /* ===== CONTAINER ===== */
         .container {
             max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 5%;
+            margin: 0 auto;
+            padding: 0 40px 40px;
             display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 2rem;
+            grid-template-columns: 1fr 341px;
+            gap: 48px;
+            align-items: start;
         }
 
-        .page-header {
-            grid-column: 1 / -1;
-            margin-bottom: 1rem;
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 24px 40px;
+                gap: 32px;
+            }
+        }
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 0 16px 40px;
+                gap: 24px;
+            }
         }
 
-        .page-header h1 {
-            font-size: 2rem;
-            color: #1a1a1a;
-            margin-bottom: 0.5rem;
+        /* ===== LEFT COLUMN ===== */
+        .left-col {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
         }
 
-        .page-header p {
-            color: #666;
-            font-size: 0.95rem;
+        /* ===== HERO ===== */
+        .hero h1 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            font-size: 48px;
+            line-height: 48px;
+            letter-spacing: -1.2px;
+            color: #2f2f2f;
+            margin-bottom: 16px;
         }
 
-        /* Form Sections */
-        .form-section {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        .hero p {
+            font-size: 18px;
+            line-height: 28px;
+            color: #5c5b5b;
+            max-width: 672px;
         }
 
-        .form-section h2 {
-            font-size: 1.2rem;
-            color: #1a1a1a;
-            margin-bottom: 1.5rem;
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+                line-height: 36px;
+            }
+            .hero p {
+                font-size: 16px;
+                line-height: 24px;
+            }
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .card__title {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 12px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 32px;
+            color: #2f2f2f;
+            margin-bottom: 32px;
+        }
+
+        .card__title .icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            color: #006b1b;
         }
 
         .section-icon {
             width: 24px;
             height: 24px;
-            object-fit: contain;
+            flex-shrink: 0;
         }
 
-        /* Address Section */
-        .address-input {
-            width: 100%;
-            padding: 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            font-family: inherit;
+        /* ===== ALAMAT PENGIRIMAN ===== */
+        .address-label {
+            font-size: 14px;
+            line-height: 20px;
+            color: #5c5b5b;
+            margin-bottom: 8px;
+            display: block;
         }
 
-        .map-container {
-            width: 100%;
-            height: 250px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            font-size: 0.9rem;
+        /* ===== MAP WRAPPER – FIXED STACKING ===== */
+        .map-wrapper {
+            position: relative;
+            border-radius: 12px;
             overflow: hidden;
+            margin-top: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            isolation: isolate;
+            z-index: 0;
         }
 
         #map {
             width: 100%;
-            height: 100%;
+            height: 366px;
+            background: #e8e4e2;
+            position: relative;
+            z-index: 0;
+        }
+
+        .leaflet-control-container {
+            z-index: 5 !important;
+            position: relative;
+        }
+        .leaflet-top,
+        .leaflet-bottom {
+            z-index: 5 !important;
+        }
+
+        /* ===== SEARCH BAR – ON TOP OF MAP ===== */
+        .map-search-bar {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-radius: 10px;
+            padding: 4px 4px 4px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.07);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            pointer-events: auto;
+            transition: box-shadow 0.2s;
+        }
+        .map-search-bar:focus-within {
+            box-shadow: 0 6px 24px rgba(0, 107, 27, 0.12);
+            border-color: #7fc28d;
         }
 
-        .location-info {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 1rem;
+        .map-search-bar .search-icon {
+            width: 18px;
+            height: 18px;
+            color: #8a8787;
+            flex-shrink: 0;
         }
 
-        /* Date Selection */
-        .date-group {
+        .map-search-bar input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 10px 0;
+            font-size: 14px;
+            line-height: 20px;
+            color: #2f2f2f;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            min-width: 0;
+        }
+        .map-search-bar input::placeholder {
+            color: #b0adad;
+            font-weight: 400;
+        }
+
+        .map-search-bar .btn-cari {
+            background: #006b1b;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .map-search-bar .btn-cari:hover {
+            background: #005716;
+            box-shadow: 0 4px 12px rgba(0, 107, 27, 0.20);
+        }
+        .map-search-bar .btn-cari:active {
+            transform: scale(0.97);
+        }
+
+        .leaflet-control-zoom {
+            margin-top: 80px !important;
+            margin-right: 12px !important;
+        }
+        .leaflet-control-attribution {
+            font-size: 9px !important;
+            opacity: 0.5;
+            background: rgba(255, 255, 255, 0.7) !important;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 6px 0 0 0 !important;
+            padding: 2px 8px !important;
+        }
+        .leaflet-control-zoom a {
+            background: #ffffff !important;
+            color: #2f2f2f !important;
+            border: none !important;
+            width: 34px !important;
+            height: 34px !important;
+            line-height: 34px !important;
+            font-size: 16px !important;
+            border-radius: 6px !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+        }
+        .leaflet-control-zoom a:hover {
+            background: #f5f5f5 !important;
+        }
+
+        .map-pin-tip {
+            margin-top: 12px;
+            font-size: 12px;
+            line-height: 16px;
+            font-style: italic;
+            color: #5c5b5b;
+        }
+
+        /* Custom green map pin */
+        .custom-pin {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+        }
+        .custom-pin svg {
+            width: 42px;
+            height: 42px;
+        }
+
+        /* ===== CATATAN ===== */
+        .textarea-field {
+            width: 100%;
+            min-height: 100px;
+            padding: 16px;
+            border: 1px solid #e8e4e2;
+            border-radius: 8px;
+            font-size: 16px;
+            line-height: 24px;
+            font-family: 'Inter', sans-serif;
+            color: #2f2f2f;
+            background: #ffffff;
+            resize: vertical;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        .textarea-field:focus {
+            border-color: #7fc28d;
+            box-shadow: 0 0 0 3px rgba(0, 122, 34, 0.08);
+        }
+        .textarea-field::placeholder {
+            color: #b6b4b4;
+        }
+
+        /* ===== DATE SELECTION ===== */
+        .date-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 16px;
         }
 
         .date-btn {
-            padding: 1.2rem 0.8rem;
-            border: 2px solid #e0e0e0;
-            background: white;
-            border-radius: 30px;
-            cursor: pointer;
+            background: #ffffff;
+            border: 1px solid #e8e4e2;
+            border-radius: 999px;
+            padding: 16px 8px;
             text-align: center;
-            transition: all 0.3s;
+            cursor: pointer;
+            transition: all 0.2s;
             min-height: 100px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            font-family: 'Inter', sans-serif;
         }
-
         .date-btn:hover {
-            border-color: #1a6b3b;
+            border-color: #006b1b;
         }
-
         .date-btn.active {
-            background: #1a6b3b;
-            color: white;
-            border-color: #1a6b3b;
+            background: #006b1b;
+            border-color: #006b1b;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 107, 27, 0.20);
         }
 
-        .date-day {
-            font-size: 0.65rem;
+        .date-btn .day {
+            font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
-            color: #999;
-            display: block;
-            margin-bottom: 0.4rem;
             letter-spacing: 0.5px;
-        }
-
-        .date-btn.active .date-day {
-            color: #fff;
-        }
-
-        .date-number {
-            font-size: 1.4rem;
-            font-weight: 700;
-            line-height: 1;
-        }
-
-        .date-month {
-            font-size: 0.65rem;
             color: #999;
-            display: block;
-            margin-top: 0.3rem;
+            margin-bottom: 4px;
+        }
+        .date-btn.active .day {
+            color: rgba(255, 255, 255, 0.70);
         }
 
-        .date-btn.active .date-month {
+        .date-btn .number {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.1;
+            color: #2f2f2f;
+        }
+        .date-btn.active .number {
+            color: #ffffff;
+        }
+
+        .date-btn .month {
+            font-size: 11px;
+            color: #999;
+            margin-top: 2px;
+        }
+        .date-btn.active .month {
             color: #a4f77f;
         }
 
-        /* Payment Methods */
+        @media (max-width: 600px) {
+            .date-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .date-btn {
+                min-height: 80px;
+                padding: 12px 6px;
+            }
+            .date-btn .number {
+                font-size: 20px;
+            }
+        }
+
+        /* ===== PAYMENT METHODS ===== */
         .payment-methods {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
+            gap: 16px;
         }
 
         .payment-option {
-            padding: 2rem 1.5rem;
-            border: 2px solid #e0e0e0;
-            background: white;
+            background: #ffffff;
+            border: 1px solid #e8e4e2;
             border-radius: 12px;
+            padding: 24px 20px;
             cursor: pointer;
-            text-align: left;
-            transition: all 0.3s;
+            transition: all 0.2s;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            min-height: 180px;
-            justify-content: flex-start;
+            min-height: 158px;
         }
-
         .payment-option:hover {
-            border-color: #1a6b3b;
+            border-color: #006b1b;
         }
-
         .payment-option.active {
-            border-color: #1a6b3b;
-            background: #ffffff;
-            box-shadow: 0 0 0 1px rgba(26, 107, 59, 0.28);
+            border-color: #006b1b;
+            box-shadow: 0 0 0 2px rgba(0, 107, 27, 0.15);
         }
 
         .payment-icon {
-            width: 24px;
-            height: 24px;
-            margin-bottom: 1rem;
-            object-fit: contain;
+            width: 22px;
+            height: 22px;
+            margin-bottom: 12px;
+            flex-shrink: 0;
         }
 
         .payment-name {
             font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
+            font-size: 16px;
+            line-height: 24px;
+            color: #2f2f2f;
+            margin-bottom: 4px;
         }
 
         .payment-desc {
-            font-size: 0.7rem;
-            color: #999;
-            line-height: 1.4;
-        }
-
-        /* Summary Sidebar */
-        .summary {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            height: fit-content;
-            position: sticky;
-            top: 100px;
-        }
-
-        .summary-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 1.5rem;
-        }
-
-        .summary-item {
-            display: flex;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .summary-item:last-of-type {
-            border-bottom: none;
-            padding-bottom: 0;
-            margin-bottom: 0;
-        }
-
-        .item-image-small {
-            width: 50px;
-            height: 50px;
-            border-radius: 8px;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .item-details {
-            flex: 1;
-        }
-
-        .item-name {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 0.2rem;
-        }
-
-        .item-desc {
-            font-size: 0.7rem;
-            color: #999;
-        }
-
-        .item-price {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #1a6b3b;
-        }
-
-        .summary-totals {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 2px solid #f0f0f0;
-        }
-
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.8rem;
-            font-size: 0.9rem;
-        }
-
-        .total-row.grand {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            padding-top: 0.5rem;
-        }
-
-        .pay-btn {
-            width: 100%;
-            padding: 1rem;
-            background: #1a6b3b;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: background 0.3s;
-            margin-top: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .pay-btn:hover {
-            background: #135a2f;
-        }
-
-        /* Footer */
-        footer {
-            background: #f5f5f5;
-            color: #666;
-            padding: 3rem 5%;
-            margin-top: 3rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto 2rem;
-        }
-
-        .footer-column h3 {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            color: #1a6b3b;
-            font-weight: 700;
-        }
-
-        .footer-column a {
-            display: block;
-            color: #666;
-            text-decoration: none;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            transition: color 0.3s;
-        }
-
-        .footer-column a:hover {
-            color: #1a6b3b;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #ddd;
-            padding-top: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            font-size: 0.9rem;
-            color: #999;
-        }
-
-        .footer-icons {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .footer-icons a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .footer-icons img {
-            width: 24px;
-            height: 24px;
-            object-fit: contain;
+            font-size: 12px;
+            line-height: 16px;
+            color: #8a8787;
         }
 
         @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
+            .payment-methods {
+                grid-template-columns: 1fr 1fr;
             }
-
-            .summary {
-                position: static;
-            }
-
-            .date-group {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
+        }
+        @media (max-width: 480px) {
             .payment-methods {
                 grid-template-columns: 1fr;
             }
         }
 
-        /* Payment Gateway Modal - Figma Design */
-        .payment-modal {
+        /* ===== RIGHT COLUMN – SUMMARY ===== */
+        .summary {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            position: sticky;
+            top: 100px;
+            align-self: start;
+        }
+
+        .summary__title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 28px;
+            color: #2f2f2f;
+            margin-bottom: 24px;
+        }
+
+        .summary__item {
+            display: flex;
+            gap: 16px;
+            padding-bottom: 24px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #f0eeee;
+        }
+
+        .summary__item:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .summary__item-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: #f0eeee;
+        }
+
+        .summary__item-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .summary__item-name {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 20px;
+            color: #2f2f2f;
+        }
+
+        .summary__item-meta {
+            font-size: 12px;
+            line-height: 16px;
+            color: #8a8787;
+        }
+
+        .summary__item-price {
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 20px;
+            color: #006b1b;
+            margin-top: 4px;
+        }
+
+        .summary__totals {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #f0eeee;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .summary__row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            line-height: 20px;
+            color: #5c5b5b;
+        }
+
+        .summary__row--grand {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 28px;
+            color: #2f2f2f;
+            padding-top: 8px;
+            border-top: 1px solid #f0eeee;
+            margin-top: 4px;
+        }
+
+        .summary__row--grand .value {
+            color: #006b1b;
+        }
+
+        .summary__row .value {
+            font-weight: 600;
+            color: #2f2f2f;
+        }
+
+        .summary__row .value--free {
+            color: #006b1b;
+            font-weight: 600;
+        }
+
+        .btn-bayar {
+            width: 100%;
+            margin-top: 24px;
+            padding: 18px 24px;
+            background: linear-gradient(135deg, #006b1b 0%, #0a7a28 100%);
+            color: #d1ffc8;
+            border: none;
+            border-radius: 999px;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 28px;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 8px 20px rgba(0, 107, 27, 0.22);
+        }
+        .btn-bayar:hover {
+            background: linear-gradient(135deg, #005716 0%, #006b1b 100%);
+            box-shadow: 0 12px 28px rgba(0, 107, 27, 0.30);
+            transform: translateY(-1px);
+        }
+        .btn-bayar:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .summary {
+                position: static;
+            }
+        }
+
+        /* ===== PAYMENT MODAL (Virtual Account) ===== */
+        .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            width: 100%;
-            height: 100%;
             background: rgba(255, 255, 255, 0.32);
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 1000;
             justify-content: center;
             align-items: flex-start;
-            padding: 66px 1rem 1rem;
+            padding: 66px 16px 16px;
             overflow-y: auto;
         }
-        .payment-modal.active { display: flex; }
+        .modal-overlay.active {
+            display: flex;
+        }
+
         .modal {
             width: 672px;
             max-width: 100%;
@@ -538,7 +719,7 @@
             overflow: hidden;
             color: #2f2f2f;
         }
-        /* Header */
+
         .modal__header {
             min-height: 96px;
             padding: 24px 24px 22px;
@@ -547,45 +728,61 @@
             align-items: center;
             border-bottom: 1px solid #e9e7e7;
         }
-        .header__content {
-            display: flex; gap: 12px;
-            align-items: center; flex: 1;
+
+        .modal__header-left {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex: 1;
         }
-        .header__icon-circle {
-            width: 40px; height: 40px;
-            background: #2fa64a;
+
+        .modal__header-icon {
+            width: 40px;
+            height: 40px;
+            background: #006b1b;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
             color: #ffffff;
+            flex-shrink: 0;
         }
-        .header__icon-circle svg { width: 24px; height: 24px; }
-        .header__title {
-            font-size: 18px; font-weight: 700;
-            color: #2f2f2f;
+        .modal__header-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .modal__header-title {
+            font-size: 18px;
+            font-weight: 700;
             line-height: 1.25;
         }
-        .header__subtitle {
-            font-size: 14px; font-weight: 400;
+        .modal__header-sub {
+            font-size: 14px;
             color: #5c5b5b;
             line-height: 1.45;
         }
-        .header__close-btn {
-            width: 40px; height: 40px;
+
+        .modal__close {
+            width: 40px;
+            height: 40px;
             background: transparent;
             border: none;
             cursor: pointer;
+            color: #2f2f2f;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #2f2f2f;
-            transition: color 0.3s;
+            transition: color 0.2s;
         }
-        .header__close-btn svg { width: 22px; height: 22px; }
-        .header__close-btn:hover { color: #006b1b; }
-        /* Body */
+        .modal__close:hover {
+            color: #006b1b;
+        }
+        .modal__close svg {
+            width: 22px;
+            height: 22px;
+        }
+
         .modal__body {
             flex: 1;
             overflow-y: auto;
@@ -595,10 +792,20 @@
             gap: 34px;
             background: #f9f6f5;
         }
+
+        .modal__body::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modal__body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .modal__body::-webkit-scrollbar-thumb {
+            background: #d1d0cf;
+            border-radius: 3px;
+        }
+
         /* Payment Summary */
-        .payment-summary {
-            width: 100%;
-            min-height: 170px;
+        .pay-summary {
             background: linear-gradient(100deg, #ffffff 0%, #ffffff 48%, #f3fff4 100%);
             border: 1px solid #c9f5d3;
             border-radius: 10px;
@@ -606,98 +813,137 @@
             display: flex;
             gap: 0;
         }
-        .summary__section {
+
+        .pay-summary__col {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
-        .summary__section--va { flex: 0 0 48%; }
-        .summary__section--amount {
+        .pay-summary__col--va {
+            flex: 0 0 48%;
+        }
+        .pay-summary__col--amount {
             align-items: flex-end;
             text-align: right;
         }
-        .summary__divider {
+
+        .pay-summary__divider {
             width: 1px;
             background: #efeeee;
             margin: 0 0 0 16px;
         }
-        .summary__label {
-            font-size: 14px; font-weight: 400;
+
+        .pay-summary__label {
+            font-size: 14px;
             color: #6a6868;
             line-height: 1.35;
             margin-bottom: 10px;
         }
-        .summary__amount {
-            font-size: 30px; font-weight: 800;
+
+        .pay-summary__amount {
+            font-size: 30px;
+            font-weight: 800;
             color: #2f2f2f;
-            letter-spacing: 0;
             line-height: 1.18;
         }
-        .summary__va-actions {
+
+        .pay-summary__actions {
             display: flex;
             align-items: center;
             gap: 24px;
             margin-top: 8px;
+            flex-wrap: wrap;
         }
-        .summary__copy-btn {
+
+        .pay-summary__copy {
             background: transparent;
             border: none;
             padding: 0;
-            font-size: 14px; font-weight: 500;
+            font-size: 14px;
+            font-weight: 500;
             color: #007a22;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 4px;
-            width: fit-content;
-            transition: all 0.2s;
+            transition: color 0.2s;
         }
-        .summary__copy-btn svg { width: 16px; height: 16px; }
-        .summary__copy-btn:hover { color: #005b1a; }
-        .summary__timer {
+        .pay-summary__copy:hover {
+            color: #005b1a;
+        }
+        .pay-summary__copy svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .pay-summary__timer {
             display: flex;
             align-items: center;
             gap: 4px;
             font-size: 12px;
             color: #5c5b5b;
         }
-        .summary__timer-value {
-            font-size: 12px; font-weight: 600;
+        .pay-summary__timer-value {
+            font-size: 12px;
+            font-weight: 600;
             color: #f04a1a;
         }
-        .summary__view-details {
+
+        .pay-summary__details {
             background: transparent;
             border: none;
             color: #006b1b;
-            font-size: 14px; font-weight: 500;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
             text-align: left;
             padding: 0;
             margin-left: 16px;
         }
-        .summary__view-details:hover { text-decoration: underline; }
-        /* Instructions */
-        .instructions {
-            width: 100%;
+        .pay-summary__details:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .pay-summary {
+                flex-direction: column;
+            }
+            .pay-summary__divider {
+                width: 100%;
+                height: 1px;
+                margin: 18px 0;
+            }
+            .pay-summary__col--amount {
+                align-items: flex-start;
+                text-align: left;
+            }
+            .pay-summary__details {
+                margin-left: 0;
+                margin-top: 12px;
+            }
+            .pay-summary__actions {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+
+        /* Accordion */
+        .accordion {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
         }
-        .instructions__heading {
-            font-size: 18px; font-weight: 700;
-            color: #2f2f2f;
-        }
-        .accordion {
-            display: flex; flex-direction: column; gap: 14px;
-        }
+
         .accordion__item {
             border: 1px solid #eeeeee;
             border-radius: 10px;
             overflow: hidden;
             background: #ffffff;
         }
-        .accordion__button {
+
+        .accordion__btn {
             width: 100%;
             min-height: 62px;
             padding: 14px 16px;
@@ -707,17 +953,20 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 16px; font-weight: 500;
+            font-size: 16px;
+            font-weight: 500;
             color: #2f2f2f;
             transition: background 0.2s;
+            font-family: 'Inter', sans-serif;
+            text-align: left;
         }
-        .accordion__button:hover { background: #fbfbfb; }
-        .accordion__button.active {
-            background: #ffffff;
-            color: #2f2f2f;
+        .accordion__btn:hover {
+            background: #fbfbfb;
         }
-        .accordion__icon {
-            width: 32px; height: 32px;
+
+        .accordion__btn .icon {
+            width: 32px;
+            height: 32px;
             background: #e9e9e9;
             border-radius: 50%;
             display: flex;
@@ -726,20 +975,26 @@
             flex-shrink: 0;
             color: #2f2f2f;
         }
-        .accordion__button.active .accordion__icon {
+        .accordion__item.active .accordion__btn .icon {
             background: #abf4ac;
             color: #007a22;
         }
-        .accordion__icon svg { width: 18px; height: 18px; }
+        .accordion__btn .icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
         .accordion__toggle {
             margin-left: auto;
-            width: 14px; height: 14px;
+            width: 14px;
+            height: 14px;
             flex-shrink: 0;
             transition: transform 0.2s;
         }
         .accordion__item.active .accordion__toggle {
             transform: rotate(180deg);
         }
+
         .accordion__content {
             display: none;
             padding: 4px 24px 18px 40px;
@@ -748,19 +1003,21 @@
         .accordion__item.active .accordion__content {
             display: block;
         }
+
         .accordion__list {
             list-style: none;
-            padding-left: 0;
             display: flex;
             flex-direction: column;
             gap: 10px;
+            padding-left: 0;
         }
         .accordion__list-item {
-            font-size: 14px; font-weight: 400;
+            font-size: 14px;
             color: #676565;
             line-height: 1.5;
         }
-        /* Footer */
+
+        /* Modal Footer */
         .modal__footer {
             min-height: 94px;
             padding: 23px 24px;
@@ -771,6 +1028,7 @@
             border-top: 1px solid #e4e2e2;
             background: #ffffff;
         }
+
         .btn {
             height: 48px;
             padding: 0 28px;
@@ -778,71 +1036,67 @@
             font-size: 16px;
             border: none;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
             font-weight: 500;
             transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
         }
         .btn--secondary {
             background: transparent;
             color: #2f2f2f;
             min-width: 150px;
         }
-        .btn--secondary:hover { background: #f6f4f4; }
+        .btn--secondary:hover {
+            background: #f6f4f4;
+        }
         .btn--primary {
-            background: #168a35;
+            background: #006b1b;
             color: #ffffff;
             font-weight: 600;
             min-width: 172px;
             justify-content: center;
-            box-shadow: 0 10px 20px rgba(22, 138, 53, 0.24);
+            box-shadow: 0 10px 20px rgba(0, 107, 27, 0.22);
         }
         .btn--primary:hover {
-            background: #087a26;
-            box-shadow: 0 0 0 2px rgba(0, 107, 27, 0.2);
+            background: #005716;
+            box-shadow: 0 12px 24px rgba(0, 107, 27, 0.28);
         }
         .btn__icon {
-            width: 15px; height: 15px;
+            width: 15px;
+            height: 15px;
             flex-shrink: 0;
         }
-        .modal__body::-webkit-scrollbar { width: 6px; }
-        .modal__body::-webkit-scrollbar-track { background: transparent; }
-        .modal__body::-webkit-scrollbar-thumb {
-            background: #d1d0cf;
-            border-radius: 3px;
-        }
-        .modal__body::-webkit-scrollbar-thumb:hover { background: #b0afae; }
-        @media (max-width: 768px) {
-            .payment-modal { padding-top: 24px; }
-            .modal { width: 92vw; max-height: 92vh; }
-            .modal__header { height: auto; }
-            .modal__footer { flex-direction: column; gap: 12px; }
-            .btn { width: 100%; justify-content: center; }
-            .payment-summary { flex-direction: column; }
-            .summary__divider { width: 100%; height: 1px; margin: 18px 0; }
-            .summary__section--amount { align-items: flex-start; text-align: left; }
-            .summary__view-details { margin-left: 0; margin-top: 12px; }
-            .summary__va-actions { flex-direction: column; align-items: flex-start; gap: 10px; }
+
+        @media (max-width: 600px) {
+            .modal__footer {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .btn--secondary {
+                min-width: 0;
+            }
+            .btn--primary {
+                min-width: 0;
+            }
         }
 
-        /* QRIS Digital Wallet Modal */
-        .qris-modal {
-            padding-top: 70px;
-        }
-
+        /* ===== QRIS MODAL ===== */
         .qris-dialog {
             width: 635px;
             max-width: 100%;
-            min-height: 749px;
             background: #ffffff;
             border-radius: 12px;
             box-shadow: 0 18px 48px rgba(47, 47, 47, 0.08);
             overflow: hidden;
-            color: #2f2f2f;
             position: relative;
+            color: #2f2f2f;
         }
-
         .qris-dialog::before {
             content: '';
             position: absolute;
@@ -861,14 +1115,12 @@
             justify-content: space-between;
             border-bottom: 1px solid #efeeee;
         }
-
         .qris-title {
             font-size: 20px;
             font-weight: 600;
             line-height: 1.4;
         }
-
-        .qris-close-btn {
+        .qris-close {
             width: 40px;
             height: 40px;
             border: none;
@@ -879,19 +1131,18 @@
             align-items: center;
             justify-content: center;
         }
-
-        .qris-close-btn svg {
+        .qris-close svg {
             width: 22px;
             height: 22px;
         }
 
         .qris-content {
-            min-height: 595px;
             padding: 24px 24px 0;
             background: #f8f8f8;
+            min-height: 595px;
         }
 
-        .qris-summary {
+        .qris-summary-box {
             height: 84px;
             padding: 16px;
             border-radius: 8px;
@@ -899,28 +1150,24 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 3px 8px rgba(47, 47, 47, 0.08);
+            box-shadow: 0 3px 8px rgba(47, 47, 47, 0.06);
         }
-
-        .qris-summary__label {
+        .qris-summary-box__label {
             color: #5c5b5b;
             font-size: 14px;
             line-height: 20px;
             margin-bottom: 4px;
         }
-
-        .qris-summary__amount {
+        .qris-summary-box__amount {
             color: #006b1b;
             font-size: 18px;
             font-weight: 700;
             line-height: 28px;
         }
-
-        .qris-summary__order {
+        .qris-summary-box__order {
             text-align: right;
         }
-
-        .qris-summary__id {
+        .qris-summary-box__id {
             color: #2f2f2f;
             font-size: 14px;
             font-weight: 500;
@@ -950,7 +1197,6 @@
             align-items: center;
             justify-content: center;
         }
-
         .qris-code-card img {
             width: 152px;
             height: 152px;
@@ -965,28 +1211,24 @@
             border-color: #006b1b;
             border-style: solid;
         }
-
         .qris-corner--tl {
             top: 16px;
             left: 16px;
             border-width: 2px 0 0 2px;
             border-top-left-radius: 4px;
         }
-
         .qris-corner--tr {
             top: 16px;
             right: 16px;
             border-width: 2px 2px 0 0;
             border-top-right-radius: 4px;
         }
-
         .qris-corner--bl {
             bottom: 16px;
             left: 16px;
             border-width: 0 0 2px 2px;
             border-bottom-left-radius: 4px;
         }
-
         .qris-corner--br {
             bottom: 16px;
             right: 16px;
@@ -1001,7 +1243,6 @@
             font-size: 14px;
             line-height: 20px;
         }
-
         .qris-deadline {
             margin-top: 8px;
             display: flex;
@@ -1011,22 +1252,21 @@
             color: #2f2f2f;
             font-weight: 500;
         }
-
         .qris-deadline svg {
             width: 18px;
             height: 18px;
         }
-
         .qris-deadline__time {
             color: #bd3d1d;
         }
 
         .qris-footer {
-            height: 80px;
             padding: 0 24px 24px;
             background: #f8f8f8;
+            height: 80px;
+            display: flex;
+            align-items: center;
         }
-
         .qris-status-btn {
             width: 100%;
             height: 56px;
@@ -1038,32 +1278,39 @@
             font-size: 16px;
             font-weight: 600;
             transition: background 0.2s, box-shadow 0.2s;
+            font-family: 'Inter', sans-serif;
         }
-
         .qris-status-btn:hover {
             background: #006b1b;
             box-shadow: 0 10px 20px rgba(0, 122, 34, 0.22);
         }
 
         @media (max-width: 768px) {
-            .qris-modal { padding-top: 24px; }
-            .qris-dialog { min-height: auto; max-height: 92vh; overflow-y: auto; }
-            .qris-content { min-height: auto; padding-bottom: 24px; }
-            .qris-code-stage { margin-top: 48px; }
-            .qris-instructions { margin-top: 48px; }
+            .modal-overlay {
+                padding-top: 24px;
+            }
+            .qris-dialog {
+                max-height: 92vh;
+                overflow-y: auto;
+            }
+            .qris-content {
+                min-height: auto;
+                padding-bottom: 24px;
+            }
+            .qris-code-stage {
+                margin-top: 48px;
+            }
+            .qris-instructions {
+                margin-top: 48px;
+            }
         }
 
-        /* Credit Card Payment Modal */
-        .credit-modal {
-            padding-top: 58px;
-        }
-
+        /* ===== CREDIT CARD MODAL ===== */
         .credit-dialog {
             width: 512px;
             max-width: 100%;
-            min-height: 742px;
-            border-radius: 24px;
             background: #ffffff;
+            border-radius: 24px;
             box-shadow: 0 18px 48px rgba(47, 47, 47, 0.10);
             overflow: hidden;
             position: relative;
@@ -1072,11 +1319,21 @@
 
         .credit-hero {
             height: 192px;
-            background: url('images/credit-fresh-header.svg') center/cover no-repeat;
             position: relative;
+            overflow: hidden;
+            background: #f0f0f0; /* fallback */
+        }
+        .credit-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
         }
 
-        .credit-close-btn {
+        .credit-close {
             position: absolute;
             top: 16px;
             right: 16px;
@@ -1090,10 +1347,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 14px rgba(47, 47, 47, 0.12);
+            box-shadow: 0 4px 14px rgba(47, 47, 47, 0.10);
+            z-index: 2;
         }
-
-        .credit-close-btn svg {
+        .credit-close svg {
             width: 18px;
             height: 18px;
         }
@@ -1102,28 +1359,25 @@
             padding: 8px 32px 32px;
         }
 
-        .credit-heading-row {
-            margin-top: 0;
+        .credit-head {
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
             gap: 24px;
+            margin-top: 0;
         }
-
-        .credit-title {
+        .credit-head__title {
             font-size: 24px;
             font-weight: 700;
             line-height: 32px;
             margin-bottom: 8px;
         }
-
-        .credit-plan {
+        .credit-head__plan {
             color: #5c5b5b;
             font-size: 14px;
             line-height: 20px;
         }
-
-        .credit-amount {
+        .credit-head__amount {
             color: #006b1b;
             font-size: 18px;
             font-weight: 600;
@@ -1138,54 +1392,49 @@
             flex-direction: column;
             gap: 22px;
         }
-
-        .credit-field-group {
+        .credit-field {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
-
-        .credit-label {
+        .credit-field__label {
             color: #5c5b5b;
             font-size: 12px;
             font-weight: 600;
-            letter-spacing: .6px;
+            letter-spacing: 0.6px;
             line-height: 16px;
+            text-transform: uppercase;
         }
-
         .credit-input-wrap {
             position: relative;
         }
-
         .credit-input {
             width: 100%;
             height: 44px;
-            border: 1px solid #e8e8e8;
+            border: 1px solid #e8e4e2;
             border-radius: 8px;
             padding: 0 48px 0 16px;
-            font: inherit;
             font-size: 14px;
+            font-family: 'Inter', sans-serif;
             color: #2f2f2f;
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
+            background: #ffffff;
         }
-
         .credit-input::placeholder {
             color: #b6b4b4;
         }
-
         .credit-input:focus {
             border-color: #7fc28d;
-            box-shadow: 0 0 0 3px rgba(0, 122, 34, 0.10);
+            box-shadow: 0 0 0 3px rgba(0, 122, 34, 0.08);
         }
-
         .credit-input-icon {
             position: absolute;
             right: 16px;
             top: 50%;
+            transform: translateY(-50%);
             width: 18px;
             height: 18px;
-            transform: translateY(-50%);
             color: #a3a1a1;
             pointer-events: none;
         }
@@ -1196,16 +1445,12 @@
             gap: 16px;
         }
 
-        .credit-action {
-            margin-top: 24px;
-        }
-
         .credit-pay-btn {
             width: 100%;
             height: 56px;
             border: none;
             border-radius: 999px;
-            background: #007a22;
+            background: #006b1b;
             color: #ffffff;
             cursor: pointer;
             font-size: 16px;
@@ -1215,13 +1460,12 @@
             justify-content: center;
             gap: 8px;
             transition: background 0.2s, box-shadow 0.2s;
+            font-family: 'Inter', sans-serif;
         }
-
         .credit-pay-btn:hover {
-            background: #006b1b;
-            box-shadow: 0 12px 22px rgba(0, 122, 34, 0.22);
+            background: #005716;
+            box-shadow: 0 12px 22px rgba(0, 107, 27, 0.20);
         }
-
         .credit-pay-btn svg {
             width: 18px;
             height: 18px;
@@ -1237,117 +1481,263 @@
             font-size: 12px;
             line-height: 16px;
         }
-
         .credit-secure svg {
             width: 14px;
             height: 14px;
         }
 
-        @media (max-width: 768px) {
-            .credit-modal { padding-top: 24px; }
+        @media (max-width: 600px) {
+            .credit-content {
+                padding: 0 24px 28px;
+            }
+            .credit-head {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .credit-head__amount {
+                padding-top: 0;
+            }
+            .credit-row {
+                grid-template-columns: 1fr;
+            }
             .credit-dialog {
-                width: 92vw;
-                min-height: auto;
                 max-height: 92vh;
                 overflow-y: auto;
             }
-            .credit-hero { height: 160px; }
-            .credit-content { padding: 0 24px 28px; }
-            .credit-heading-row { flex-direction: column; gap: 4px; }
-            .credit-amount { padding-top: 0; }
-            .credit-row { grid-template-columns: 1fr; }
+            .credit-hero {
+                height: 140px;
+            }
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #f5f3f2;
+            padding: 48px 80px 32px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.2fr;
+            gap: 48px;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+        }
+
+        .footer-column h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 24px;
+            color: #14532d;
+            margin-bottom: 16px;
+        }
+
+        .footer-column p {
+            font-size: 14px;
+            line-height: 22px;
+            color: #5c5b5b;
+            max-width: 280px;
+        }
+
+        .footer-column a {
+            display: block;
+            font-size: 14px;
+            line-height: 20px;
+            color: #5c5b5b;
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: #006b1b;
+        }
+
+        .footer-icons {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .footer-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e8e4e2;
+            transition: background 0.2s;
+        }
+
+        .footer-icons a:hover {
+            background: #006b1b;
+        }
+
+        .footer-icons img {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #e8e4e2;
+            padding-top: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #8a8787;
+        }
+
+        @media (max-width: 1024px) {
+            .footer {
+                padding: 40px 32px 28px;
+            }
+            .footer-content {
+                gap: 32px;
+            }
+        }
+        @media (max-width: 768px) {
+            .footer {
+                padding: 32px 24px 24px;
+            }
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 32px;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+        }
+        @media (max-width: 480px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+
+    <!-- ===== TOP NAV ===== -->
     <header class="topbar">
         <a class="logo" href="index.html">Sehatin</a>
-
-        <nav class="nav" aria-label="Navigasi utama">
+        <nav class="nav">
             <a href="index.html">Beranda</a>
             <a href="paketcatering.html">Paket</a>
             <a href="monitoring.html">Pantau Nutrisi</a>
             <a href="riwayat.html">Pesanan</a>
         </nav>
-
         <div class="header-actions">
             <a class="cart-link" href="keranjang.html" aria-label="Keranjang">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M3.75 4.75h2.1l1.65 9.05a2 2 0 0 0 1.97 1.64h6.92a2 2 0 0 0 1.92-1.43l1.37-4.64H7.07M9.25 19.25h.01M17.25 19.25h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3.75 4.75h2.1l1.65 9.05a2 2 0 0 0 1.97 1.64h6.92a2 2 0 0 0 1.92-1.43l1.37-4.64H7.07" />
+                    <circle cx="9.25" cy="19.25" r="0.75" />
+                    <circle cx="17.25" cy="19.25" r="0.75" />
                 </svg>
             </a>
-            <a class="profile-avatar" href="profil.html" aria-label="Profil JD">JD</a>
+            <a class="profile-avatar" href="profil.html">JD</a>
         </div>
     </header>
 
-    <!-- Container -->
+    <!-- ===== MAIN CONTENT ===== -->
     <div class="container">
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1>Selesaikan perjalanan vitalitas Anda.</h1>
-            <p>Tinjau rencana nutrisi Anda dan pilih lokasi pengiriman yang Anda inginkan. 
-                Kesegaran tiba sesuai jadwal Anda..</p>
-        </div>
+        <!-- LEFT COLUMN -->
+        <div class="left-col">
 
-        <!-- Main Content -->
-        <div>
-            <!-- Alamat Pengiriman -->
-            <div class="form-section">
-                <h2><img src="images/icon_location.png" alt="Location" class="section-icon"> Alamat pengiriman</h2>
-                <textarea class="address-input" placeholder="Tandai Lokasi Pengiriman" rows="3"></textarea>
-                
-                <div class="map-container">
+            <!-- HERO -->
+            <div class="hero">
+                <h1>Selesaikan perjalanan vitalitas Anda.</h1>
+                <p>Tinjau rencana nutrisi Anda dan pilih lokasi pengiriman yang Anda inginkan. Kesegaran tiba sesuai jadwal Anda.</p>
+            </div>
+
+            <!-- ALAMAT PENGIRIMAN -->
+            <section class="card">
+                <h2 class="card__title">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                        <circle cx="12" cy="9" r="3" />
+                    </svg>
+                    Alamat pengiriman
+                </h2>
+
+                <span class="address-label">Tandai Lokasi Pengiriman</span>
+
+                <div class="map-wrapper">
                     <div id="map"></div>
+                    <!-- Search bar overlay -->
+                    <div class="map-search-bar">
+                        <svg class="search-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="9" r="6" />
+                            <path d="M13.5 13.5L18 18" />
+                        </svg>
+                        <input type="text" placeholder="Cari Lokasi" id="searchLocation" autocomplete="off" />
+                        <button class="btn-cari" id="searchBtn">Cari</button>
+                    </div>
                 </div>
-                
-                <div class="location-info">
-                    Daerah jini ke Geranium Anda untuk pengiriman yang lebih lebih lebar!
+
+                <div class="map-pin-tip">Geser pin ke bangunan Anda untuk pengiriman yang lebih tepat.</div>
+            </section>
+
+            <!-- CATATAN OPSIONAL -->
+            <section class="card">
+                <h2 class="card__title" style="font-size:20px; line-height:28px; margin-bottom:20px;">
+                    Catatan Opsional / Pesan (Catatan Pesanan)
+                </h2>
+                <textarea class="textarea-field" placeholder="mis. Tolong titipkan ke satpam." rows="4" id="orderNote"></textarea>
+            </section>
+
+            <!-- PENGIRIMAN MULAI DARI -->
+            <section class="card">
+                <h2 class="card__title">
+                    <img src="images/icon_calendar.png" alt="Calendar" class="section-icon">
+                    Pengiriman Mulai Dari:
+                </h2>
+
+                <div class="date-grid" id="dateGrid">
+                    <button class="date-btn active" data-date="2026-06-24">
+                        <span class="day">SEN</span>
+                        <span class="number">24</span>
+                        <span class="month">Jun</span>
+                    </button>
+                    <button class="date-btn" data-date="2026-06-25">
+                        <span class="day">SEL</span>
+                        <span class="number">25</span>
+                        <span class="month">Jun</span>
+                    </button>
+                    <button class="date-btn" data-date="2026-06-26">
+                        <span class="day">RAB</span>
+                        <span class="number">26</span>
+                        <span class="month">Jun</span>
+                    </button>
+                    <button class="date-btn" data-date="2026-06-27">
+                        <span class="day">KAM</span>
+                        <span class="number">27</span>
+                        <span class="month">Jun</span>
+                    </button>
+                    <button class="date-btn" data-date="2026-06-28">
+                        <span class="day">JUM</span>
+                        <span class="number">28</span>
+                        <span class="month">Jun</span>
+                    </button>
                 </div>
-            </div>
+            </section>
 
-            <!-- Catatan Pesanan -->
-            <div class="form-section">
-                <h2>Catatan Optional / Pesan (Cataran Pesanan)</h2>
-                <textarea class="address-input" placeholder="mis. Tolong dikiipkan ke saptaim." rows="4"></textarea>
-            </div>
+            <!-- METODE PEMBAYARAN -->
+            <section class="card">
+                <h2 class="card__title">
+                    <img src="images/icon_pay.png" alt="Payment" class="section-icon">
+                    Metode Pembayaran
+                </h2>
 
-            <!-- Pengiriman Mulai Dari -->
-            <div class="form-section">
-                <h2><img src="images/icon_calendar.png" alt="Calendar" class="section-icon"> Pengiriman Mulai Dari:</h2>
-                <div class="date-group">
-                    <button class="date-btn active">
-                        <span class="date-day">SEN</span>
-                        <span class="date-number">24</span>
-                        <span class="date-month">Jun</span>
-                    </button>
-                    <button class="date-btn">
-                        <span class="date-day">SEL</span>
-                        <span class="date-number">25</span>
-                        <span class="date-month">Jun</span>
-                    </button>
-                    <button class="date-btn">
-                        <span class="date-day">RAB</span>
-                        <span class="date-number">26</span>
-                        <span class="date-month">Jun</span>
-                    </button>
-                    <button class="date-btn">
-                        <span class="date-day">KAM</span>
-                        <span class="date-number">27</span>
-                        <span class="date-month">Jun</span>
-                    </button>
-                    <button class="date-btn">
-                        <span class="date-day">JUM</span>
-                        <span class="date-number">28</span>
-                        <span class="date-month">Jun</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Metode Pembayaran -->
-            <div class="form-section">
-                <h2><img src="images/icon_pay.png" alt="Payment" class="section-icon"> Metode Pembayaran</h2>
-                <div class="payment-methods">
+                <div class="payment-methods" id="paymentGrid">
                     <div class="payment-option active" data-payment="bank">
                         <img src="images/icon_bank.png" alt="Bank" class="payment-icon">
                         <div class="payment-name">Transfer Bank</div>
@@ -1364,174 +1754,151 @@
                         <div class="payment-desc">Pembayaran melalui kartu Visa/Mastercard.</div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
 
-        <!-- Order Summary Sidebar -->
-        <div class="summary">
-            <div class="summary-title">Ulasan Pesanan</div>
-            
-            <!-- Order Items -->
-            <div class="summary-item">
-                <img src="images/cart-item-1.png" alt="Keto Keto Plan" class="item-image-small">
-                <div class="item-details">
-                    <div class="item-name">Lion Cleen Keto Plan</div>
-                    <div class="item-desc">Lengkaplah 7 Hari</div>
-                    <div class="item-price">Rp 2.170.000</div>
+        <!-- RIGHT COLUMN – SUMMARY -->
+        <aside class="summary" id="orderSummary">
+            <div class="summary__title">Ulasan Pesanan</div>
+
+            <div class="summary__item" id="summaryItem">
+                <img src="images/cart-item-1.png" alt="Item" class="summary__item-img" id="summaryImg" />
+                <div class="summary__item-details">
+                    <div>
+                        <div class="summary__item-name" id="summaryName">Weight Loss Delight</div>
+                        <div class="summary__item-meta" id="summaryMeta">7 Hari, FULL DAY</div>
+                    </div>
+                    <div class="summary__item-price" id="summaryPrice">Rp 735.000</div>
                 </div>
             </div>
 
-            <!-- Totals -->
-            <div class="summary-totals">
-                <div class="total-row">
+            <div class="summary__totals">
+                <div class="summary__row">
                     <span>Subtotal</span>
-                    <span>Rp 2.170.000</span>
+                    <span class="value" id="subtotalVal">Rp 735.000</span>
                 </div>
-                <div class="total-row">
+                <div class="summary__row">
                     <span>Biaya Pengiriman</span>
-                    <span style="color: #1a6b3b;">GRATIS</span>
+                    <span class="value--free" id="shippingVal">GRATIS</span>
                 </div>
-                <div class="total-row">
+                <div class="summary__row">
                     <span>Diskon</span>
-                    <span>RP. 0</span>
+                    <span class="value" id="discountVal">Rp 0</span>
                 </div>
-                <div class="total-row grand">
+                <div class="summary__row summary__row--grand">
                     <span>Total</span>
-                    <span>Rp 2.170.000</span>
+                    <span class="value" id="totalVal">Rp 735.000</span>
                 </div>
             </div>
 
-            <button class="pay-btn">Bayar →</button>
-        </div>
+            <button class="btn-bayar" id="payBtn">
+                Bayar
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 10h10M12 7l3 3-3 3" />
+                </svg>
+            </button>
+        </aside>
     </div>
 
-    <!-- Payment Gateway Modal -->
-    <div class="payment-modal" id="paymentModal">
+    <!-- ===== PAYMENT MODAL – VA ===== -->
+    <div class="modal-overlay" id="vaModal">
         <div class="modal">
-            <!-- Modal Header -->
             <div class="modal__header">
-                <div class="header__content">
-                    <div class="header__icon-circle" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M4 10.25h16M6 10.25v7.5M10 10.25v7.5M14 10.25v7.5M18 10.25v7.5M4.75 19.75h14.5M3.75 21.75h16.5M12 2.75l8 4.5H4l8-4.5Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <div class="modal__header-left">
+                    <div class="modal__header-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2" />
+                            <line x1="2" y1="10" x2="22" y2="10" />
                         </svg>
                     </div>
                     <div>
-                        <div class="header__title" id="modalTitle">Virtual Account Payment</div>
-                        <div class="header__subtitle" id="modalSubtitle">Bank Transfer (BCA)</div>
+                        <div class="modal__header-title">Virtual Account Payment</div>
+                        <div class="modal__header-sub">Bank Transfer (BCA)</div>
                     </div>
                 </div>
-                <button class="header__close-btn" onclick="closePaymentModal()" aria-label="Close payment modal">
-                    <svg viewBox="0 0 24 24" fill="none">
-                        <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <button class="modal__close" onclick="closeVaModal()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <path d="M18 6 6 18M6 6l12 12" />
                     </svg>
                 </button>
             </div>
 
-            <!-- Modal Body -->
             <div class="modal__body">
-                <!-- Payment Summary -->
-                <div class="payment-summary">
-                    <div class="summary__section summary__section--va">
+                <div class="pay-summary">
+                    <div class="pay-summary__col pay-summary__col--va">
                         <div>
-                            <div class="summary__label">Virtual Account Number</div>
-                            <div class="summary__amount" id="vaNumberDisplay">8277 0812<br>3456 7890</div>
+                            <div class="pay-summary__label">Virtual Account Number</div>
+                            <div class="pay-summary__amount" id="vaNumberDisplay">8277 0812 3456 7890</div>
                         </div>
-                        <div class="summary__va-actions">
-                            <button class="summary__copy-btn" onclick="copyVANumber()">
-                                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                                    <path d="M7 5.5V3.75A1.75 1.75 0 0 1 8.75 2h5.5A1.75 1.75 0 0 1 16 3.75v8.5A1.75 1.75 0 0 1 14.25 14H12.5M5.75 6h5.5A1.75 1.75 0 0 1 13 7.75v8.5A1.75 1.75 0 0 1 11.25 18h-5.5A1.75 1.75 0 0 1 4 16.25v-8.5A1.75 1.75 0 0 1 5.75 6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                        <div class="pay-summary__actions">
+                            <button class="pay-summary__copy" onclick="copyVaNumber()">
+                                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+                                    <path d="M7 5.5V3.75A1.75 1.75 0 0 1 8.75 2h5.5A1.75 1.75 0 0 1 16 3.75v8.5A1.75 1.75 0 0 1 14.25 14H12.5M5.75 6h5.5A1.75 1.75 0 0 1 13 7.75v8.5A1.75 1.75 0 0 1 11.25 18h-5.5A1.75 1.75 0 0 1 4 16.25v-8.5A1.75 1.75 0 0 1 5.75 6Z" />
                                 </svg>
                                 Copy
                             </button>
-                            <div class="summary__timer">
+                            <div class="pay-summary__timer">
                                 <span>Expires in</span>
-                                <span class="summary__timer-value" id="countdownTimer">23:59:59</span>
+                                <span class="pay-summary__timer-value" id="countdownTimer">23:59:59</span>
                             </div>
                         </div>
                     </div>
-                    <div class="summary__divider"></div>
-                    <div class="summary__section summary__section--amount">
+                    <div class="pay-summary__divider"></div>
+                    <div class="pay-summary__col pay-summary__col--amount">
                         <div>
-                            <div class="summary__label">Total Amount</div>
-                            <div class="summary__amount" id="modalAmountDisplay">Rp 350.000</div>
+                            <div class="pay-summary__label">Total Amount</div>
+                            <div class="pay-summary__amount" id="modalTotalAmount">Rp 735.000</div>
                         </div>
-                        <button class="summary__view-details" onclick="alert('Payment Details')">View Details &rsaquo;</button>
+                        <button class="pay-summary__details" onclick="alert('Payment Details')">View Details &rsaquo;</button>
                     </div>
                 </div>
 
-                <!-- Instructions Accordion -->
-                <div class="instructions">
-                    <div class="instructions__heading">How to Pay</div>
+                <div style="display:flex;flex-direction:column;gap:16px;">
+                    <div style="font-size:18px;font-weight:700;color:#2f2f2f;">How to Pay</div>
                     <div class="accordion">
-                        <!-- Mobile Banking -->
                         <div class="accordion__item active">
-                            <button class="accordion__button active" onclick="toggleAccordion(this)">
-                                <div class="accordion__icon" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24" fill="none">
-                                        <path d="M9 3.75h6A2.25 2.25 0 0 1 17.25 6v12A2.25 2.25 0 0 1 15 20.25H9A2.25 2.25 0 0 1 6.75 18V6A2.25 2.25 0 0 1 9 3.75ZM11 17.25h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-                                    </svg>
-                                </div>
+                            <button class="accordion__btn" onclick="toggleAccordionItem(this)">
+                                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2" /><line x1="12" y1="18" x2="12.01" y2="18" /></svg></span>
                                 <span>Mobile Banking (m-BCA)</span>
-                                <svg class="accordion__toggle" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
+                                <svg class="accordion__toggle" viewBox="0 0 12 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l5 5 5-5" /></svg>
                             </button>
                             <div class="accordion__content">
                                 <ol class="accordion__list">
                                     <li class="accordion__list-item">Log in to your m-BCA app.</li>
-                                    <li class="accordion__list-item">Select m-Transfer &gt; BCA Virtual Account.</li>
-                                    <li class="accordion__list-item">Enter the Virtual Account Number 8277 0812 3456 7890.</li>
-                                    <li class="accordion__list-item">Verify the payment details (Merchant: Sehatin, Amount: Rp 350.000).</li>
-                                    <li class="accordion__list-item">Enter your m-BCA PIN to complete the payment.</li>
+                                    <li class="accordion__list-item">Select m-Transfer → BCA Virtual Account.</li>
+                                    <li class="accordion__list-item">Enter Virtual Account Number <strong>8277 0812 3456 7890</strong>.</li>
+                                    <li class="accordion__list-item">Verify merchant: Sehatin, Amount: <span id="vaAmountLabel">Rp 735.000</span>.</li>
+                                    <li class="accordion__list-item">Enter your m-BCA PIN to complete.</li>
                                 </ol>
                             </div>
                         </div>
-
-                        <!-- ATM BCA -->
                         <div class="accordion__item">
-                            <button class="accordion__button" onclick="toggleAccordion(this)">
-                                <div class="accordion__icon" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24" fill="none">
-                                        <path d="M7 8.5h10M8.5 13h7M7 4.75h10A2.25 2.25 0 0 1 19.25 7v10A2.25 2.25 0 0 1 17 19.25H7A2.25 2.25 0 0 1 4.75 17V7A2.25 2.25 0 0 1 7 4.75Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-                                    </svg>
-                                </div>
+                            <button class="accordion__btn" onclick="toggleAccordionItem(this)">
+                                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2" /><line x1="2" y1="10" x2="22" y2="10" /></svg></span>
                                 <span>ATM BCA</span>
-                                <svg class="accordion__toggle" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
+                                <svg class="accordion__toggle" viewBox="0 0 12 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l5 5 5-5" /></svg>
                             </button>
                             <div class="accordion__content">
                                 <ol class="accordion__list">
-                                    <li class="accordion__list-item">Insert your ATM card</li>
-                                    <li class="accordion__list-item">Enter PIN</li>
-                                    <li class="accordion__list-item">Select Transfer/m-Transfer menu</li>
-                                    <li class="accordion__list-item">Choose Transfer to Virtual Account</li>
-                                    <li class="accordion__list-item">Enter VA number: 8277 0812 3456 7890</li>
+                                    <li class="accordion__list-item">Insert your ATM card and enter PIN.</li>
+                                    <li class="accordion__list-item">Select Transfer → BCA Virtual Account.</li>
+                                    <li class="accordion__list-item">Enter VA number: <strong>8277 0812 3456 7890</strong>.</li>
+                                    <li class="accordion__list-item">Confirm the payment details.</li>
                                 </ol>
                             </div>
                         </div>
-
-                        <!-- Internet Banking -->
                         <div class="accordion__item">
-                            <button class="accordion__button" onclick="toggleAccordion(this)">
-                                <div class="accordion__icon" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24" fill="none">
-                                        <path d="M5.75 6.25h12.5v8.5H5.75v-8.5ZM4 18.25h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                </div>
+                            <button class="accordion__btn" onclick="toggleAccordionItem(this)">
+                                <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16v16H4z" /><path d="M4 9h16" /></svg></span>
                                 <span>Internet Banking (KlikBCA)</span>
-                                <svg class="accordion__toggle" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
+                                <svg class="accordion__toggle" viewBox="0 0 12 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l5 5 5-5" /></svg>
                             </button>
                             <div class="accordion__content">
                                 <ol class="accordion__list">
-                                    <li class="accordion__list-item">Log in to KlikBCA.com</li>
-                                    <li class="accordion__list-item">Select Funds Transfer menu</li>
-                                    <li class="accordion__list-item">Choose Transfer to Virtual Account</li>
-                                    <li class="accordion__list-item">Enter VA number: 8277 0812 3456 7890</li>
-                                    <li class="accordion__list-item">Verify and complete transaction</li>
+                                    <li class="accordion__list-item">Log in to KlikBCA.com.</li>
+                                    <li class="accordion__list-item">Select Funds Transfer → Transfer to Virtual Account.</li>
+                                    <li class="accordion__list-item">Enter VA number: <strong>8277 0812 3456 7890</strong>.</li>
+                                    <li class="accordion__list-item">Verify and complete the transaction.</li>
                                 </ol>
                             </div>
                         </div>
@@ -1539,41 +1906,36 @@
                 </div>
             </div>
 
-            <!-- Modal Footer -->
             <div class="modal__footer">
-                <button class="btn btn--secondary" onclick="selectPaymentMethod('methods')">Change Method</button>
-                <button class="btn btn--primary" onclick="checkStatus()">
+                <button class="btn btn--secondary" onclick="closeVaModal();">Change Method</button>
+                <button class="btn btn--primary" onclick="checkPaymentStatus()">
                     Cek Status
-                    <svg class="btn__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                        <path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" stroke="currentColor" stroke-width="1.6"/>
-                        <path d="m6.75 10.1 2.1 2.1 4.4-4.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                    <svg class="btn__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" /><path d="m6.75 10.1 2.1 2.1 4.4-4.7" /></svg>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- QRIS Digital Wallet Modal -->
-    <div class="payment-modal qris-modal" id="qrisModal">
+    <!-- ===== QRIS MODAL ===== -->
+    <div class="modal-overlay" id="qrisModal">
         <div class="qris-dialog">
             <div class="qris-header">
-                <div class="qris-title">Qris</div>
-                <button class="qris-close-btn" onclick="closeQrisModal()" aria-label="Close QRIS modal">
-                    <svg viewBox="0 0 24 24" fill="none">
-                        <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <div class="qris-title">QRIS</div>
+                <button class="qris-close" onclick="closeQrisModal()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <path d="M18 6 6 18M6 6l12 12" />
                     </svg>
                 </button>
             </div>
-
             <div class="qris-content">
-                <div class="qris-summary">
+                <div class="qris-summary-box">
                     <div>
-                        <div class="qris-summary__label">Total Payment</div>
-                        <div class="qris-summary__amount">Rp 450.000</div>
+                        <div class="qris-summary-box__label">Total Payment</div>
+                        <div class="qris-summary-box__amount" id="qrisAmount">Rp 735.000</div>
                     </div>
-                    <div class="qris-summary__order">
-                        <div class="qris-summary__label">Order ID</div>
-                        <div class="qris-summary__id">#SH-8829</div>
+                    <div class="qris-summary-box__order">
+                        <div class="qris-summary-box__label">Order ID</div>
+                        <div class="qris-summary-box__id" id="qrisOrderId">#SH-8829</div>
                     </div>
                 </div>
 
@@ -1583,99 +1945,88 @@
                     <span class="qris-corner qris-corner--bl"></span>
                     <span class="qris-corner qris-corner--br"></span>
                     <div class="qris-code-card">
-                        <img src="images/qris-code.svg" alt="QRIS payment code">
+                        <img src="images/qris-code.svg" alt="QRIS code" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=color:#2f2f2f;font-weight:600;>QRIS<br>Code</span>'" />
                     </div>
                 </div>
 
                 <div class="qris-instructions">
                     <div>Scan QR code using your E-Wallet app.</div>
                     <div class="qris-deadline">
-                        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                            <path d="M10 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13ZM7.75 2h4.5M10 7v3.4l2.15 1.25" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="10" cy="10" r="7.5" />
+                            <path d="M10 5v5l3 1.5" />
                         </svg>
                         <span>Please pay within: <span class="qris-deadline__time" id="qrisCountdownTimer">14:57</span></span>
                     </div>
                 </div>
             </div>
-
             <div class="qris-footer">
-                <button class="qris-status-btn" onclick="checkStatus()">Cek Status Pembayaran</button>
+                <button class="qris-status-btn" onclick="checkPaymentStatus()">Cek Status Pembayaran</button>
             </div>
         </div>
     </div>
 
-    <!-- Credit Card Payment Modal -->
-    <div class="payment-modal credit-modal" id="creditModal">
+    <!-- ===== CREDIT CARD MODAL ===== -->
+    <div class="modal-overlay" id="creditModal">
         <div class="credit-dialog">
             <div class="credit-hero">
-                <button class="credit-close-btn" onclick="closeCreditModal()" aria-label="Close credit card modal">
-                    <svg viewBox="0 0 24 24" fill="none">
-                        <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <img src="images/payment_credit.png" alt="Payment Credit" />
+                <button class="credit-close" onclick="closeCreditModal()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <path d="M18 6 6 18M6 6l12 12" />
                     </svg>
                 </button>
             </div>
 
             <div class="credit-content">
-                <div class="credit-heading-row">
+                <div class="credit-head">
                     <div>
-                        <div class="credit-title">Complete Payment</div>
-                        <div class="credit-plan">Weekly Vitality Plan</div>
+                        <div class="credit-head__title">Complete Payment</div>
+                        <div class="credit-head__plan" id="creditPlanName">Weekly Vitality Plan</div>
                     </div>
-                    <div class="credit-amount">Rp.300.000</div>
+                    <div class="credit-head__amount" id="creditAmount">Rp 735.000</div>
                 </div>
 
-                <form class="credit-form" onsubmit="event.preventDefault(); checkStatus();">
-                    <label class="credit-field-group">
-                        <span class="credit-label">CARDHOLDER NAME</span>
+                <form class="credit-form" onsubmit="event.preventDefault(); processCreditPayment();">
+                    <div class="credit-field">
+                        <span class="credit-field__label">Cardholder Name</span>
                         <span class="credit-input-wrap">
-                            <input class="credit-input" type="text" placeholder="Name" autocomplete="cc-name">
-                            <svg class="credit-input-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                                <path d="M10 10.25a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM4 17c.55-2.65 2.8-4.5 6-4.5s5.45 1.85 6 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                            </svg>
+                            <input class="credit-input" type="text" placeholder="Name" autocomplete="cc-name" />
+                            <svg class="credit-input-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M10 10.25a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM4 17c.55-2.65 2.8-4.5 6-4.5s5.45 1.85 6 4.5" /></svg>
                         </span>
-                    </label>
+                    </div>
 
-                    <label class="credit-field-group">
-                        <span class="credit-label">CARD NUMBER</span>
+                    <div class="credit-field">
+                        <span class="credit-field__label">Card Number</span>
                         <span class="credit-input-wrap">
-                            <input class="credit-input" type="text" placeholder="exp: 12345" autocomplete="cc-number" inputmode="numeric">
-                            <svg class="credit-input-icon" viewBox="0 0 22 18" fill="none" aria-hidden="true">
-                                <path d="M2.75 3.75h16.5v10.5H2.75V3.75ZM2.75 7h16.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-                            </svg>
+                            <input class="credit-input" type="text" placeholder="1234 5678 9012 3456" autocomplete="cc-number" inputmode="numeric" />
+                            <svg class="credit-input-icon" viewBox="0 0 22 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="2.5" y="3.5" width="17" height="11" rx="1.5" /><line x1="2.5" y1="7" x2="19.5" y2="7" /></svg>
                         </span>
-                    </label>
+                    </div>
 
                     <div class="credit-row">
-                        <label class="credit-field-group">
-                            <span class="credit-label">EXPIRY DATE</span>
+                        <div class="credit-field">
+                            <span class="credit-field__label">Expiry Date</span>
                             <span class="credit-input-wrap">
-                                <input class="credit-input" type="text" placeholder="MM/YY" autocomplete="cc-exp" inputmode="numeric">
+                                <input class="credit-input" type="text" placeholder="MM/YY" autocomplete="cc-exp" inputmode="numeric" />
                             </span>
-                        </label>
-
-                        <label class="credit-field-group">
-                            <span class="credit-label">CVV</span>
+                        </div>
+                        <div class="credit-field">
+                            <span class="credit-field__label">CVV</span>
                             <span class="credit-input-wrap">
-                                <input class="credit-input" type="text" placeholder="123" autocomplete="cc-csc" inputmode="numeric">
-                                <svg class="credit-input-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                                    <path d="M10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14ZM10 9.5v4M10 6.75h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                </svg>
+                                <input class="credit-input" type="text" placeholder="123" autocomplete="cc-csc" inputmode="numeric" />
+                                <svg class="credit-input-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="7" /><path d="M10 9.5v4M10 6.75h.01" /></svg>
                             </span>
-                        </label>
+                        </div>
                     </div>
 
                     <div class="credit-action">
                         <button class="credit-pay-btn" type="submit">
-                            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                                <path d="M6.25 8.5V6.75a3.75 3.75 0 0 1 7.5 0V8.5M5.25 8.5h9.5v7.75h-9.5V8.5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Rp.300.000
+                            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="8" width="9" height="8" rx="1.5" /><path d="M7 8V6.5a2.5 2.5 0 0 1 5 0V8" /></svg>
+                            <span id="creditPayLabel">Rp 735.000</span>
                         </button>
                         <div class="credit-secure">
-                            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                                <path d="M8 14s4.5-2.2 4.5-6.2V3.5L8 2 3.5 3.5v4.3C3.5 11.8 8 14 8 14Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-                                <path d="m5.8 7.8 1.45 1.45 2.95-3.1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
+                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 14s4.5-2.2 4.5-6.2V3.5L8 2 3.5 3.5v4.3C3.5 11.8 8 14 8 14Z" /><path d="m5.8 7.8 1.45 1.45 2.95-3.1" /></svg>
                             Secure, encrypted transaction
                         </div>
                     </div>
@@ -1684,8 +2035,8 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
         <div class="footer-content">
             <div class="footer-column">
                 <h3>Sehatin</h3>
@@ -1719,30 +2070,104 @@
         </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-    <script>
-        // Initialize map
-        const map = L.map('map').setView([-7.8050, 110.3693], 13);
-        
-        // Add tile layer
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors',
-            maxZoom: 19
-        }).addTo(map);
-        
-        // Add marker for delivery location
-        const marker = L.marker([-7.8050, 110.3693], {
-            icon: L.icon({
-                iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-                iconAnchor: [16, 32]
-            })
-        }).addTo(map);
-        
-        marker.bindPopup('<strong>Lokasi Pengiriman</strong><br>Yogyakarta');
+    <!-- ===== SCRIPTS ===== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js">
     </script>
     <script>
-        // Date selection
+        // ===== CUSTOM GREEN MAP PIN =====
+        const greenPinSvg = `
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="pinShadow" x="-10%" y="-10%" width="130%" height="140%">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.30" />
+            </filter>
+          </defs>
+          <ellipse cx="24" cy="41" rx="12" ry="4" fill="#000000" fill-opacity="0.16" />
+          <path d="M24 4 C14.5 4 7 11.5 7 21 C7 30.5 24 44 24 44 C24 44 41 30.5 41 21 C41 11.5 33.5 4 24 4 Z" fill="#0a7a28" filter="url(#pinShadow)" />
+          <path d="M24 6 C15.6 6 9 12.6 9 21 C9 29.4 24 41 24 41 C24 41 39 29.4 39 21 C39 12.6 32.4 6 24 6 Z" fill="#006b1b" />
+          <path d="M24 14 C20.1 14 17 17.1 17 21 C17 24.9 20.1 28 24 28 C27.9 28 31 24.9 31 21 C31 17.1 27.9 14 24 14 Z" fill="#ffffff" fill-opacity="0.92" />
+          <circle cx="24" cy="21" r="4.5" fill="#006b1b" />
+          <circle cx="24" cy="21" r="2.5" fill="#ffffff" fill-opacity="0.85" />
+        </svg>
+        `;
+
+        function createGreenIcon() {
+            const iconUrl = 'data:image/svg+xml,' + encodeURIComponent(greenPinSvg);
+            return L.icon({
+                iconUrl: iconUrl,
+                iconSize: [48, 48],
+                iconAnchor: [24, 44],
+                popupAnchor: [0, -36],
+            });
+        }
+
+        // ===== LEAFLET MAP =====
+        const map = L.map('map', {
+            center: [-7.8050, 110.3693],
+            zoom: 14,
+            zoomControl: true,
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors',
+            maxZoom: 19,
+        }).addTo(map);
+
+        const greenIcon = createGreenIcon();
+
+        const marker = L.marker([-7.8050, 110.3693], {
+            draggable: true,
+            icon: greenIcon,
+        }).addTo(map);
+
+        marker.bindPopup('📍 Lokasi Pengiriman');
+
+        marker.on('dragend', function(e) {
+            const pos = e.target.getLatLng();
+            document.getElementById('searchLocation').value =
+                `${pos.lat.toFixed(5)}, ${pos.lng.toFixed(5)}`;
+        });
+
+        // ===== MAP SEARCH =====
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const query = document.getElementById('searchLocation').value.trim();
+            if (!query) return;
+
+            const btn = this;
+            const origText = btn.textContent;
+            btn.textContent = 'Mencari...';
+            btn.disabled = true;
+
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`)
+                .then(r => r.json())
+                .then(data => {
+                    btn.textContent = origText;
+                    btn.disabled = false;
+                    if (data && data.length) {
+                        const lat = parseFloat(data[0].lat);
+                        const lng = parseFloat(data[0].lon);
+                        map.setView([lat, lng], 15);
+                        marker.setLatLng([lat, lng]);
+                        const displayName = data[0].display_name || 'Lokasi';
+                        marker.bindPopup(`📍 ${displayName}`).openPopup();
+                    } else {
+                        alert('Lokasi tidak ditemukan. Coba dengan kata kunci lain.');
+                    }
+                })
+                .catch(() => {
+                    btn.textContent = origText;
+                    btn.disabled = false;
+                    alert('Gagal mencari lokasi. Periksa koneksi internet Anda.');
+                });
+        });
+
+        document.getElementById('searchLocation').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('searchBtn').click();
+            }
+        });
+
+        // ===== DATE SELECTION =====
         document.querySelectorAll('.date-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
@@ -1750,7 +2175,7 @@
             });
         });
 
-        // Payment method selection
+        // ===== PAYMENT METHOD SELECTION =====
         let selectedPaymentMethod = 'bank';
 
         document.querySelectorAll('.payment-option').forEach(option => {
@@ -1761,316 +2186,192 @@
             });
         });
 
-        // Payment Gateway Modal Functions
-        let countdownInterval = null;
-        let qrisCountdownInterval = null;
-        let currentMethod = 'bank';
-
-        function openPaymentModal() {
-            closeQrisModal();
-            closeCreditModal();
-            document.getElementById('paymentModal').classList.add('active');
-            startCountdown();
-        }
-
-        function closePaymentModal() {
-            document.getElementById('paymentModal').classList.remove('active');
-            if (countdownInterval) clearInterval(countdownInterval);
-        }
-
-        function openQrisModal() {
-            closePaymentModal();
-            closeCreditModal();
-            document.getElementById('qrisModal').classList.add('active');
-            startQrisCountdown();
+        // ===== MODAL CONTROLS =====
+        function closeVaModal() {
+            document.getElementById('vaModal').classList.remove('active');
+            if (window.countdownInterval) clearInterval(window.countdownInterval);
         }
 
         function closeQrisModal() {
             document.getElementById('qrisModal').classList.remove('active');
-            if (qrisCountdownInterval) clearInterval(qrisCountdownInterval);
-        }
-
-        function openCreditModal() {
-            closePaymentModal();
-            closeQrisModal();
-            document.getElementById('creditModal').classList.add('active');
+            if (window.qrisCountdownInterval) clearInterval(window.qrisCountdownInterval);
         }
 
         function closeCreditModal() {
             document.getElementById('creditModal').classList.remove('active');
         }
 
-        function toggleAccordion(button) {
-            const item = button.closest('.accordion__item');
+        function openVaModal() {
+            closeQrisModal();
+            closeCreditModal();
+            document.getElementById('vaModal').classList.add('active');
+            startCountdown();
+        }
+
+        function openQrisModal() {
+            closeVaModal();
+            closeCreditModal();
+            document.getElementById('qrisModal').classList.add('active');
+            startQrisCountdown();
+        }
+
+        function openCreditModal() {
+            closeVaModal();
+            closeQrisModal();
+            document.getElementById('creditModal').classList.add('active');
+        }
+
+        function toggleAccordionItem(btn) {
+            const item = btn.closest('.accordion__item');
             const wasActive = item.classList.contains('active');
-            
-            // Close all accordion items
             document.querySelectorAll('.accordion__item').forEach(el => {
                 el.classList.remove('active');
-                el.querySelector('.accordion__button').classList.remove('active');
             });
-            
-            // Open clicked item if it wasn't active
             if (!wasActive) {
                 item.classList.add('active');
-                button.classList.add('active');
             }
         }
 
-        function copyVANumber() {
-            const vaText = '8277081234567890';
-            navigator.clipboard.writeText(vaText).then(() => {
+        function copyVaNumber() {
+            const va = '8277081234567890';
+            navigator.clipboard.writeText(va).then(() => {
                 const btn = event.target.closest('button');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = 'Copied!';
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy:', err);
-                alert('Failed to copy VA number');
-            });
+                const orig = btn.innerHTML;
+                btn.innerHTML = 'Copied! ✅';
+                setTimeout(() => btn.innerHTML = orig, 2000);
+            }).catch(() => alert('Salin VA: ' + va));
         }
 
-        function selectPaymentMethod(method) {
-            if (method === 'methods') {
-                alert('Payment method selector - redirect to payment methods selection');
-            } else {
-                currentMethod = method;
-                alert(`Selected payment method: ${method}`);
-            }
-        }
-
+        // ===== COUNTDOWN =====
         function startCountdown() {
-            if (countdownInterval) clearInterval(countdownInterval);
-            let hours = 23;
-            let minutes = 59;
-            let seconds = 59;
+            if (window.countdownInterval) clearInterval(window.countdownInterval);
+            let h = 23,
+                m = 59,
+                s = 59;
 
-            function updateTimer() {
-                const timerEl = document.getElementById('countdownTimer');
-                if (timerEl) {
-                    timerEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                }
-
-                seconds--;
-                if (seconds < 0) {
-                    seconds = 59;
-                    minutes--;
-                    if (minutes < 0) {
-                        minutes = 59;
-                        hours--;
-                        if (hours < 0) {
-                            clearInterval(countdownInterval);
-                            alert('Payment time expired');
-                            closePaymentModal();
-                        }
-                    }
-                }
+            function tick() {
+                const el = document.getElementById('countdownTimer');
+                if (el) el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                s--;
+                if (s < 0) { s = 59;
+                    m--; if (m < 0) { m = 59;
+                        h--; if (h < 0) { clearInterval(window.countdownInterval);
+                            alert('Waktu pembayaran habis.');
+                            closeVaModal(); return; } } }
             }
-
-            updateTimer();
-            countdownInterval = setInterval(updateTimer, 1000);
+            tick();
+            window.countdownInterval = setInterval(tick, 1000);
         }
 
         function startQrisCountdown() {
-            if (qrisCountdownInterval) clearInterval(qrisCountdownInterval);
-            let minutes = 14;
-            let seconds = 57;
+            if (window.qrisCountdownInterval) clearInterval(window.qrisCountdownInterval);
+            let m = 14,
+                s = 57;
 
-            function updateTimer() {
-                const timerEl = document.getElementById('qrisCountdownTimer');
-                if (timerEl) {
-                    timerEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                }
-
-                seconds--;
-                if (seconds < 0) {
-                    seconds = 59;
-                    minutes--;
-                    if (minutes < 0) {
-                        clearInterval(qrisCountdownInterval);
-                        alert('QRIS payment time expired');
-                        closeQrisModal();
-                    }
-                }
+            function tick() {
+                const el = document.getElementById('qrisCountdownTimer');
+                if (el) el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                s--;
+                if (s < 0) { s = 59;
+                    m--; if (m < 0) { clearInterval(window.qrisCountdownInterval);
+                        alert('Waktu QRIS habis.');
+                        closeQrisModal(); return; } }
             }
-
-            updateTimer();
-            qrisCountdownInterval = setInterval(updateTimer, 1000);
+            tick();
+            window.qrisCountdownInterval = setInterval(tick, 1000);
         }
 
-        function checkStatus() {
-            alert('Checking payment status...');
-            setTimeout(() => {
-                completePayment();
-            }, 1500);
-        }
-
-        function processPayment() {
-            completePayment();
-        }
-
-        function completePayment() {
-            closePaymentModal();
-            closeQrisModal();
-            closeCreditModal();
-            setTimeout(() => {
-                window.location.href = 'pembayaran.html';
-            }, 500);
-        }
-
-        // Pay button - show the modal for the selected method
-        document.querySelector('.pay-btn').addEventListener('click', function() {
-            if (selectedPaymentMethod === 'wallet') {
-                openQrisModal();
-            } else if (selectedPaymentMethod === 'bank') {
-                openPaymentModal();
-            } else {
-                openCreditModal();
-            }
-        });
-
-        // Close modal when clicking outside
-        document.getElementById('paymentModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closePaymentModal();
-            }
-        });
-
-        document.getElementById('qrisModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeQrisModal();
-            }
-        });
-
-        document.getElementById('creditModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeCreditModal();
-            }
-        });
-    </script>
-    <script>
+        // ===== CHECKOUT DATA =====
         const CHECKOUT_KEY = 'sehatinCheckout';
         const CART_KEY = 'sehatinCart';
         const ORDERS_KEY = 'sehatinOrders';
 
-        function trxFormatRupiah(value) {
-            return new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                maximumFractionDigits: 0
-            }).format(value).replace('Rp', 'Rp ');
+        function trxRead(key, fallback) {
+            try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; }
         }
 
-        function trxRead(key, fallback) {
-            try {
-                return JSON.parse(localStorage.getItem(key)) || fallback;
-            } catch (error) {
-                return fallback;
-            }
+        function trxFormatRupiah(value) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 })
+                .format(value).replace('Rp', 'Rp ');
         }
 
         function trxGetCheckout() {
             const saved = trxRead(CHECKOUT_KEY, null);
             if (saved && Array.isArray(saved.items) && saved.items.length) return saved;
-
             const cart = trxRead(CART_KEY, []);
             const subtotal = cart.reduce((sum, item) => sum + Number(item.unitPrice) * Number(item.quantity), 0);
             return {
                 items: cart,
-                subtotal,
+                subtotal: subtotal || 735000,
                 shipping: 0,
                 discount: 0,
-                total: subtotal,
-                createdAt: new Date().toISOString()
+                total: subtotal || 735000,
+                createdAt: new Date().toISOString(),
+                orderId: `SH-${Date.now().toString().slice(-6)}`
             };
-        }
-
-        function trxOrderId() {
-            const checkout = trxGetCheckout();
-            if (checkout.orderId) return checkout.orderId;
-            const id = `SH-${Date.now().toString().slice(-6)}`;
-            checkout.orderId = id;
-            localStorage.setItem(CHECKOUT_KEY, JSON.stringify(checkout));
-            return id;
         }
 
         function trxRenderCheckout() {
             const checkout = trxGetCheckout();
             const items = checkout.items || [];
-            const summaryBox = document.querySelector('.summary');
-            const summaryItem = summaryBox ? summaryBox.querySelector('.summary-item') : null;
-            const totalRows = document.querySelectorAll('.summary-totals .total-row');
+            const first = items.length ? items[0] : null;
 
-            if (summaryItem) {
-                if (!items.length) {
-                    summaryItem.innerHTML = `
-                        <div class="item-details">
-                            <div class="item-name">Belum ada pesanan</div>
-                            <div class="item-desc">Silakan pilih paket terlebih dahulu</div>
-                            <div class="item-price">${trxFormatRupiah(0)}</div>
-                        </div>
-                    `;
-                } else {
-                    const first = items[0];
-                    summaryItem.innerHTML = `
-                        <img src="${first.image || 'images/cart-item-1.png'}" alt="${first.name}" class="item-image-small">
-                        <div class="item-details">
-                            <div class="item-name">${first.name}</div>
-                            <div class="item-desc">${first.packageType || ''} &bull; ${first.durationDays} Hari &bull; Qty ${first.quantity}</div>
-                            <div class="item-price">${trxFormatRupiah(Number(first.unitPrice) * Number(first.quantity))}</div>
-                        </div>
-                    `;
-                }
+            const nameEl = document.getElementById('summaryName');
+            const metaEl = document.getElementById('summaryMeta');
+            const priceEl = document.getElementById('summaryPrice');
+            const imgEl = document.getElementById('summaryImg');
+
+            if (first) {
+                nameEl.textContent = first.name || 'Weight Loss Delight';
+                metaEl.textContent = `${first.packageType || '7 Hari'}${first.durationDays ? ', ' + first.durationDays + ' Hari' : ''}`;
+                const qty = Number(first.quantity) || 1;
+                const unit = Number(first.unitPrice) || 735000;
+                priceEl.textContent = trxFormatRupiah(unit * qty);
+                imgEl.src = first.image || 'images/cart-item-1.png';
+                imgEl.alt = first.name;
+            } else {
+                nameEl.textContent = 'Belum ada pesanan';
+                metaEl.textContent = 'Silakan pilih paket terlebih dahulu';
+                priceEl.textContent = trxFormatRupiah(0);
+                imgEl.src = 'images/cart-item-1.png';
             }
 
-            if (totalRows.length >= 4) {
-                totalRows[0].querySelector('span:last-child').textContent = trxFormatRupiah(checkout.subtotal || 0);
-                totalRows[1].querySelector('span:last-child').textContent = checkout.shipping ? trxFormatRupiah(checkout.shipping) : 'GRATIS';
-                totalRows[2].querySelector('span:last-child').textContent = trxFormatRupiah(checkout.discount || 0);
-                totalRows[3].querySelector('span:last-child').textContent = trxFormatRupiah(checkout.total || 0);
-            }
+            const subtotal = checkout.subtotal || 0;
+            const shipping = checkout.shipping || 0;
+            const discount = checkout.discount || 0;
+            const total = checkout.total || subtotal;
 
-            const amount = trxFormatRupiah(checkout.total || 0);
-            const firstName = items[0]?.name || 'Weekly Vitality Plan';
-            const modalAmount = document.getElementById('modalAmountDisplay');
-            if (modalAmount) modalAmount.textContent = amount;
-            document.querySelectorAll('.qris-summary__amount, .credit-amount').forEach((el) => {
-                el.textContent = amount;
-            });
-            const qrisId = document.querySelector('.qris-summary__id');
-            if (qrisId) qrisId.textContent = `#${trxOrderId()}`;
-            const creditPlan = document.querySelector('.credit-plan');
-            if (creditPlan) creditPlan.textContent = firstName;
-            const creditPayButton = document.querySelector('.credit-pay-btn');
-            if (creditPayButton) {
-                const svg = creditPayButton.querySelector('svg');
-                creditPayButton.innerHTML = '';
-                if (svg) creditPayButton.appendChild(svg);
-                creditPayButton.append(` ${amount}`);
-            }
-        }
+            document.getElementById('subtotalVal').textContent = trxFormatRupiah(subtotal);
+            document.getElementById('shippingVal').textContent = shipping > 0 ? trxFormatRupiah(shipping) : 'GRATIS';
+            document.getElementById('discountVal').textContent = trxFormatRupiah(discount);
+            document.getElementById('totalVal').textContent = trxFormatRupiah(total);
 
-        function trxSelectedDeliveryDate() {
-            const active = document.querySelector('.date-btn.active');
-            if (!active) return '';
-            const day = active.querySelector('.date-day')?.textContent.trim() || '';
-            const date = active.querySelector('.date-number')?.textContent.trim() || '';
-            const month = active.querySelector('.date-month')?.textContent.trim() || '';
-            return `${day} ${date} ${month}`.trim();
+            const totalStr = trxFormatRupiah(total);
+            document.getElementById('modalTotalAmount').textContent = totalStr;
+            document.getElementById('vaAmountLabel').textContent = totalStr;
+            document.getElementById('qrisAmount').textContent = totalStr;
+            document.getElementById('creditAmount').textContent = totalStr;
+            document.getElementById('creditPayLabel').textContent = totalStr;
+
+            const planName = first ? first.name : 'Weekly Vitality Plan';
+            document.getElementById('creditPlanName').textContent = planName;
+
+            const orderId = checkout.orderId || `SH-${Date.now().toString().slice(-6)}`;
+            document.getElementById('qrisOrderId').textContent = `#${orderId}`;
+
+            if (!localStorage.getItem(CHECKOUT_KEY)) {
+                checkout.orderId = orderId;
+                localStorage.setItem(CHECKOUT_KEY, JSON.stringify(checkout));
+            }
         }
 
         function trxSaveCompletedOrder() {
             const checkout = trxGetCheckout();
             if (!checkout.items || !checkout.items.length) return null;
-
-            const orderId = trxOrderId();
+            const orderId = checkout.orderId || `SH-${Date.now().toString().slice(-6)}`;
             const existing = trxRead(ORDERS_KEY, []);
-            const alreadySaved = existing.some((order) => order.id === orderId);
-            if (alreadySaved) return orderId;
+            if (existing.some(o => o.id === orderId)) return orderId;
 
-            const notes = document.querySelectorAll('.address-input');
             const order = {
                 id: orderId,
                 items: checkout.items,
@@ -2080,12 +2381,11 @@
                 total: checkout.total || 0,
                 paymentMethod: selectedPaymentMethod || 'bank',
                 status: 'Selesai',
-                deliveryDate: trxSelectedDeliveryDate(),
-                address: notes[0]?.value || 'Yogyakarta',
-                note: notes[1]?.value || '',
+                deliveryDate: document.querySelector('.date-btn.active')?.dataset.date || '',
+                address: document.getElementById('searchLocation')?.value || 'Yogyakarta',
+                note: document.getElementById('orderNote')?.value || '',
                 createdAt: new Date().toISOString()
             };
-
             localStorage.setItem(ORDERS_KEY, JSON.stringify([order, ...existing]));
             localStorage.removeItem(CART_KEY);
             localStorage.removeItem(CHECKOUT_KEY);
@@ -2093,16 +2393,44 @@
         }
 
         function completePayment() {
-            closePaymentModal();
+            closeVaModal();
             closeQrisModal();
             closeCreditModal();
             trxSaveCompletedOrder();
-            setTimeout(() => {
-                window.location.href = 'pembayaran.html';
-            }, 500);
+            setTimeout(() => { window.location.href = 'pembayaran.html'; }, 500);
         }
 
+        function checkPaymentStatus() {
+            alert('Memeriksa status pembayaran...');
+            setTimeout(completePayment, 1500);
+        }
+
+        function processCreditPayment() {
+            checkPaymentStatus();
+        }
+
+        // ===== PAY BUTTON =====
+        document.getElementById('payBtn').addEventListener('click', function() {
+            if (selectedPaymentMethod === 'wallet') openQrisModal();
+            else if (selectedPaymentMethod === 'credit') openCreditModal();
+            else openVaModal();
+        });
+
+        // ===== CLOSE MODALS ON OVERLAY CLICK =====
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                    if (window.countdownInterval) clearInterval(window.countdownInterval);
+                    if (window.qrisCountdownInterval) clearInterval(window.qrisCountdownInterval);
+                }
+            });
+        });
+
+        // ===== INIT =====
         trxRenderCheckout();
+
+        console.log('🚀 Checkout page loaded – credit card header updated with payment_credit.png');
     </script>
 </body>
 </html>
